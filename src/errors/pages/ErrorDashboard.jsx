@@ -18,5 +18,42 @@ export default function ErrorDashboard({ selectedProject }) {
     fetchErrors();
   }, [selectedProject, selectedHandled, selectedTime]); // currentPage cannot be in here or it causes an infinite loop
 
+  function convertHandledToBoolean(handled) {
+    if (handled === "Handled") {
+      return true;
+    } else if (handled === "Unhandled") {
+      return false;
+    } else {
+      return null;
+    }
+  }
+
+  function convertToTimeStamp(period) {
+    const now = new Date();
+    let pastDate;
+
+    switch (period) {
+      case "Last 7 days":
+        pastDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "Last 14 days":
+        pastDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+        break;
+      case "Last 30 days":
+        pastDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case "Last 90 days":
+        pastDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        break;
+      case "Forever":
+        pastDate = new Date(0);
+        break;
+      default:
+        throw new Error("Invalid period provided.");
+    }
+
+    return pastDate.toISOString();
+  }
+
   return <ul>{currentErrors}</ul>;
 }
