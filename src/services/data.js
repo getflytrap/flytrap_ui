@@ -188,3 +188,12 @@ export const createAccount = async (
     console.error("Error creating account:", e);
   }
 };
+
+export const deleteAccount = async (id) => {
+  try {
+    await apiClient.delete(`/api/users/${id}`);
+    return { success: true, message: "User deleted successfully." };
+  } catch (e) {
+    console.error("Error deleting account:", e);
+  }
+};
