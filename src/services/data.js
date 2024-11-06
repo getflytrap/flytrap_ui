@@ -84,3 +84,33 @@ export const renameProject = async (projectId, newProjectName) => {
     console.error("Error updating project name:", e);
   }
 };
+
+// Errors and Rejections Per Project
+export const getErrors = async (
+  projectId,
+  selectedHandled,
+  selectedTime,
+  currentPage,
+  limit
+) => {
+  try {
+    const params = {
+      handled: selectedHandled,
+      time: selectedTime,
+      page: currentPage,
+      limit: limit,
+    };
+
+    const { data } = await apiClient.get(`/api/projects/${projectId}/errors`, {
+      params,
+    });
+
+    return {
+      errors: data.errors,
+      totalPages: data.total_pages,
+      currentPage: data.current_page,
+    };
+  } catch (e) {
+    console.error("Error fetching errors:", e);
+  }
+};
