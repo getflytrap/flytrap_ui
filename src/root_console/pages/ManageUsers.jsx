@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { getUsers } from "../../services/data";
+
+import CreateUser from "../components/CreateUser";
+import DeleteUser from "../components/DeleteUser";
+import AssignUsers from "../components/AssignUsers";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -31,6 +35,20 @@ const ManageUsers = () => {
       <Heading as="h1" size="2xl" mb={6} textAlign="center">
         Manage Users
       </Heading>
+
+      <Stack spacing={4}>
+        <Stack direction={{ base: "column", md: "row" }} spacing={4}>
+          <Box flex="1" p={5} textAlign="center">
+            <CreateUser setUsers={setUsers} />
+          </Box>
+          <Box flex="1" p={5} textAlign="center">
+            <DeleteUser users={users} setUsers={setUsers} />
+          </Box>
+        </Stack>
+        <Box flex="1" p={5} textAlign="center">
+          <AssignUsers users={users} />
+        </Box>
+      </Stack>
     </Box>
   );
 };
