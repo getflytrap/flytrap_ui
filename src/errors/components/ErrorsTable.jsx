@@ -11,6 +11,9 @@ import {
   Center,
   Button,
   HStack,
+  VStack,
+  LoadingSpinner,
+  Alert,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -89,6 +92,25 @@ const ErrorsTable = ({
           ))}
         </Tbody>
       </Table>
+      <HStack justify="space-between" mt={4}>
+        <Button
+          leftIcon={<ChevronLeftIcon />}
+          onClick={prevPage}
+          isDisabled={currentPage === 1}
+        >
+          Previous Page
+        </Button>
+        <Text>
+          Page {currentPage} of {totalPages}
+        </Text>
+        <Button
+          rightIcon={<ChevronRightIcon />}
+          onClick={nextPage}
+          isDisabled={currentPage === totalPages}
+        >
+          Next Page
+        </Button>
+      </HStack>
     </Box>
   );
 };
