@@ -11,11 +11,20 @@ export function useAuth() {
     const tokenExpiration =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60); // 1-hour expiration
     setTokenExpirationDate(tokenExpiration);
+
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        token,
+        expiration: tokenExpiration.toISOString(),
+      })
+    );
   }, []);
 
   const logout = useCallback(() => {
     setToken(null);
     setTokenExpirationDate(null);
+    localStorage.removeItem("userData");
   }, []);
 
   useEffect(() => {
@@ -27,6 +36,17 @@ export function useAuth() {
       clearTimeout(logoutTimer);
     }
   }, [token, logout, tokenExpirationDate]);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiration) > new Date()
+    ) {
+      login(storedData.token, new Date(storedData.expiration));
+    }
+  }, [login]);
 
   return { token, login, logout };
 }
