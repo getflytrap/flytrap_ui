@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { getErrors } from "../../services/data";
+
+import ErrorsTable from "../components/ErrorsTable";
+import FilterBar from "../components/FilterBar";
+
+const ERROR_LIMIT_PER_PAGE = 10;
 
 export default function ErrorDashboard({ selectedProject }) {
   const location = useLocation();
@@ -17,6 +23,34 @@ export default function ErrorDashboard({ selectedProject }) {
   useEffect(() => {
     fetchErrors();
   }, [selectedProject, selectedHandled, selectedTime]); // currentPage cannot be in here or it causes an infinite loop
+
+  async function prevPage() {
+    fetchErrors(currentPage - 1);
+  }
+
+  async function nextPage() {
+    fetchErrors(currentPage + 1);
+  }
+
+  async function fetchErrors(pageToRequest = 1) {
+    console.log(convertToTimeStamp(selectedTime));
+
+    try {
+      const data = await getErrors(
+        selectedProject?.project_id,
+        convertHandledToBoolean(selectedHandled),
+        convertToTimeStamp(selectedTime),
+        pageToRequest,
+        ERROR_LIMIT_PER_PAGE
+      );
+
+      setCurrentErrors(data.errors);
+      setCurrentPage(data.current_page);
+      setTotalPages(data.total_pages);
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 
   function convertHandledToBoolean(handled) {
     if (handled === "Handled") {
@@ -55,5 +89,23 @@ export default function ErrorDashboard({ selectedProject }) {
     return pastDate.toISOString();
   }
 
-  return <ul>{currentErrors}</ul>;
+  return (
+    <>
+      <FilterBar
+        selectedHandled={selectedHandled}
+        setSelectedHandled={setSelectedHandled}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+      />
+      <ErrorsTable
+        errors={currentErrors}
+        selectedHandled={selectedHandled}
+        selectedTime={selectedTime}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
+    </>
+  );
 }
