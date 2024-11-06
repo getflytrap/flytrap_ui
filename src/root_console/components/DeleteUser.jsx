@@ -1,8 +1,22 @@
 import { useState } from "react";
-import { Box, Button, Select, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Select,
+  Heading,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 const DeleteUser = ({ users }) => {
   const [selectedUserName, setSelectedUserName] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -36,9 +50,32 @@ const DeleteUser = ({ users }) => {
         ))}
       </Select>
 
-      <Button colorScheme="red" width="full" isDisabled={!selectedUserName}>
+      <Button
+        colorScheme="red"
+        width="full"
+        onClick={onOpen}
+        isDisabled={!selectedUserName}
+      >
         Delete User
       </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalBody>
+            <Text>Are you sure you want to delete {selectedUserName}?</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" onClick={/* deletion logic here */}>
+              Delete User
+            </Button>
+            <Button ml={3} onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
