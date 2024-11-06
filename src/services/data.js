@@ -134,3 +134,17 @@ export const getError = async (projectId, errorId) => {
     console.error("Error fetching error:", error);
   }
 };
+
+export const toggleError = async (projectId, errorId, newResolvedState) => {
+  try {
+    const { data } = await apiClient.patch(
+      `/api/projects/${projectId}/errors/${errorId}`,
+      {
+        resolved: newResolvedState,
+      }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error updating error state:", error);
+  }
+};
