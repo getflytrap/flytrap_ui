@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Stack, Text, Button, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Text,
+  Button,
+  HStack,
+  VStack,
+  LoadingSpinner,
+  Stack,
+} from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { getAllProjects } from "../../services/data";
 
@@ -10,6 +20,8 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
   const navigate = useNavigate();
 
   const [loadedProjects, setLoadedProjects] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(3);
 
   useEffect(() => {
     fetchProjects();
@@ -26,6 +38,14 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
     } catch (e) {
       alert("Couldn't fetch project data");
     }
+  }
+
+  function prevPage() {
+    fetchProjects(currentPage - 1);
+  }
+
+  function nextPage() {
+    fetchProjects(currentPage + 1);
   }
 
   const handleClick = (project) => {
@@ -74,6 +94,23 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
           </Box>
         ))}
       </Stack>
+      <HStack justify="space-between" mt={4}>
+        <Button
+          leftIcon={<ChevronLeftIcon />}
+          onClick={prevPage}
+          isDisabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+
+        <Button
+          rightIcon={<ChevronRightIcon />}
+          onClick={nextPage}
+          isDisabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </HStack>
     </>
   );
 }
