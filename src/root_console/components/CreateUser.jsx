@@ -8,8 +8,9 @@ import {
   Input,
   useToast
 } from "@chakra-ui/react";
+import { createAccount } from "../../services/data";
 
-const CreateUser = () => {
+const CreateUser = ({ setUsers }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,6 +18,43 @@ const CreateUser = () => {
   const [confirmedPassword, setConfirmedPassword] = useState("");
 
   const toast = useToast();
+
+  async function postNewUserData() {
+    try {
+      const data = await createAccount(
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmedPassword
+      );
+
+      const newUser = {
+        id: data.user_id,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        is_root: false,
+      };
+
+      setUsers((prevUsers) => [...prevUsers, newUser]);
+      toast({
+        title: "Successful Creation",
+        description: "User Successfully Created",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "Creation error",
+        description: "User could not be created",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  }
 
   const validateInputs = () => {
     if (firstName.length === 0) {
@@ -76,7 +114,8 @@ const CreateUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-    console.log("Form validated and ready to submit");
+    
+    postNewUserData();
   };
 
   return (
