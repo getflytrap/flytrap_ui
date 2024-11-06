@@ -63,6 +63,14 @@ const Login = () => {
     }
   };
 
+  async function prevPage() {
+    fetchProjects(currentPage - 1);
+  }
+
+  async function nextPage() {
+    fetchProjects(currentPage + 1);
+  }
+
   const handleChangePassword = () => {
     alert("This will be replaced with a 'Change Password' modal");
   };
