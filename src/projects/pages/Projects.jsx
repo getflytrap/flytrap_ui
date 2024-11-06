@@ -22,6 +22,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Center,
+  Spinner
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -37,6 +39,7 @@ import {
   createProject,
   getAllProjects,
 } from "../../services/data";
+import WarningModal from "../../shared/WarningModal";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -214,6 +217,30 @@ export default function Projects({ setSelectedProject }) {
     } catch {
       toast({ title: "Creation Error", description: "Could not create project.", status: "error" });
     }
+  }
+
+  if (loadingError) {
+    return (
+      <WarningModal
+        isOpen={true}
+        onClose={() => setLoadingError(false)}
+        errorMessage={loadingError.message}
+      />
+    ); // this still requires wiring
+  }
+
+  if (isLoading) {
+    return (
+      <Center height="100vh">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
   }
 
   return (
