@@ -5,13 +5,16 @@ import {
   VStack, 
   Text, 
   HStack,
-  IconButton, 
+  IconButton,
+  Button,
+  useToast,
   Heading,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { 
   getAllProjects, 
   getUsersForProject, 
+  addUserToProject,
   removeUserFromProject 
 } from "../../services/data";
 
@@ -19,17 +22,29 @@ const AssignUsers = ({ users }) => {
   const [projects, setProjects] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
       const data = await getAllProjects();
       setProjects(data.projects);
     };
-    fetchProjects();
+    try {
+      fetchProjects();
+    } catch {
+      alert("Could not fetch projects");
+    }
   }, []);
+
+  function handleProjectSelection(name) {
+    const selection = projects.find((project) => project.project_name === name);
+    fetchUsersForProject(selection);
+  }
 
   async function fetchUsersForProject(selection) {
     try {
+      console.log("project selection", selection);
       const data = await getUsersForProject(selection.project_id);
       const usersForProject = users.filter((user) => data.includes(user.id));
       setCurrentUsers(usersForProject);
@@ -39,21 +54,58 @@ const AssignUsers = ({ users }) => {
     }
   }
 
-  function handleProjectSelection(name) {
-    const selection = projects.find((project) => project.project_name === name);
-    fetchUsersForProject(selection);
-  }
-
   async function deleteUserFromProject(project_id, user_id) {
     try {
       await removeUserFromProject(project_id, user_id);
       setCurrentUsers((prevUsers) =>
         prevUsers.filter((user) => user.id !== user_id)
       );
+
+      toast({
+        title: "User removed.",
+        description: "User has been removed from the project.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch {
       alert("Could not remove user from project");
     }
   }
+
+  const addNewUserToProject = async () => {
+    try {
+      const data = await addUserToProject(
+        selectedProject.project_id,
+        selectedUsers
+      );
+
+      setCurrentUsers((prevUsers) => {
+        const newUsers = selectedUsers.map((id) =>
+          users.find((user) => user.id === Number(id))
+        );
+
+        console.log(users);
+
+        return [...prevUsers, ...newUsers];
+      });
+
+      setSelectedUsers([]);
+      toast({
+        title: "Users added.",
+        description: "Users have been added to the project.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch {
+      alert("Could not add users to project");
+    }
+  };
+
+  const availableUsers = users.filter(
+    (user) => !currentUsers.some((currentUser) => currentUser.id === user.id)
+  );
 
   return (
     <Box
@@ -110,8 +162,34 @@ const AssignUsers = ({ users }) => {
           </VStack>
         </VStack>
 
-        {/* Placeholder */}
-        <Text>Add User</Text>
+        {/* Add User Column */}
+        <VStack align="start" flex={1} spacing={4}>
+          <Text fontWeight="bold" fontSize="lg">
+            Add User
+          </Text>
+          <Select
+            placeholder="Select users to add"
+            multiple
+            size="lg"
+            height="200px"
+            onChange={(e) => {
+              const valueArray = Array.from(
+                e.target.selectedOptions,
+                (option) => option.value
+              );
+              setSelectedUsers(valueArray);
+            }}
+          >
+            {availableUsers.map((user) => (
+              <option key={user.id} value={user.id}>
+                {`${user.first_name} ${user.last_name}`}
+              </option>
+            ))}
+          </Select>
+          <Button mt={2} onClick={addNewUserToProject} colorScheme="teal">
+            Add
+          </Button>
+        </VStack>
       </HStack>
     </Box>
   );
