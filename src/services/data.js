@@ -208,3 +208,15 @@ export const updatePassword = async (id, password) => {
     console.error("Error updating password:", e);
   }
 };
+
+export const postLoginData = async (email, password) => {
+  try {
+    const { data } = await apiClient.post("/api/login", {
+      email,
+      password,
+    });
+    return data;
+  } catch (e) {
+    console.error("Error logging in:", e);
+  }
+};
