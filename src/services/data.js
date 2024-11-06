@@ -148,3 +148,12 @@ export const toggleError = async (projectId, errorId, newResolvedState) => {
     console.error("Error updating error state:", error);
   }
 };
+
+export const deleteError = async (projectId, errorId) => {
+  try {
+    await apiClient.delete(`/api/projects/${projectId}/errors/${errorId}`);
+    return { success: true, message: "Error deleted successfully." };
+  } catch (error) {
+    console.error("Error deleting error:", error);
+  }
+};
