@@ -167,3 +167,24 @@ export const getUsers = async () => {
     console.error("Error fetching users:", e);
   }
 };
+
+export const createAccount = async (
+  first_name,
+  last_name,
+  email,
+  password,
+  confirmed_password
+) => {
+  try {
+    const { data } = await apiClient.post("/api/users", {
+      first_name,
+      last_name,
+      email,
+      password,
+      confirmed_password,
+    });
+    return data;
+  } catch (e) {
+    console.error("Error creating account:", e);
+  }
+};
