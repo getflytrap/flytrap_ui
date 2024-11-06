@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   VStack,
@@ -40,14 +41,29 @@ import {
 const PROJECT_LIMIT_PER_PAGE = 10;
 
 export default function Projects({ setSelectedProject }) {
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [loadedProjects, setLoadedProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
+  const [projectName, setProjectName] = useState("");
   const [newProjectName, setNewProjectName] = useState("");
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState();
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
 
   const { 
     isOpen: isNewProjectOpen, 
@@ -65,8 +81,10 @@ export default function Projects({ setSelectedProject }) {
       setIsLoading(true);
       const data = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
       setLoadedProjects(data.projects);
+      setSelectedProject(data[0]);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
+
       setIsLoading(false);
     } catch (e) {
       setLoadingError(e.message);
@@ -86,6 +104,106 @@ export default function Projects({ setSelectedProject }) {
     onNewProjectOpen();
   };
 
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    navigate("/errors");
+  };
+
+  const handleEditClick = (project, event) => {
+    event.stopPropagation();
+    setSelectedProjectId(project.project_id);
+    setProjectName(project.project_name);
+    onEditOpen();
+  };
+
+  const handleDeleteClick = (project, event) => {
+    event.stopPropagation();
+    setSelectedProjectId(project.project_id);
+    onDeleteOpen();
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      const data = await renameProject(selectedProjectId, projectName);
+
+      setLoadedProjects((prevProjects) => {
+        const otherProjects = [];
+        let projectToEdit;
+
+        prevProjects.forEach((project) => {
+          if (project.project_id === data.project_id) {
+            projectToEdit = project;
+          } else {
+            otherProjects.push(project);
+          }
+        });
+
+        projectToEdit.project_name = data.project_name;
+        return [projectToEdit, ...otherProjects];
+      });
+      toast({
+        title: "Successful Renaming of Project",
+        description: "Project successfully renamed",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+      onEditClose();
+    } catch {
+      toast({
+        title: "Error Renaming Project",
+        description: "Project could not be renamed",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleConfirmDeletion = async () => {
+    try {
+      const data = await deleteProject(selectedProjectId);
+
+      setLoadedProjects((prevProjects) =>
+        prevProjects.filter(
+          (project) => project.project_id !== selectedProjectId
+        )
+      );
+      toast({
+        title: "Successful Deleting of Project",
+        description: "Project successfully deleted",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+      onDeleteClose();
+    } catch {
+      toast({
+        title: "Error Deleting Project",
+        description: "Project could not be deleted",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    if (newProjectName.length < 8) {
+      toast({
+        title: "Validation Error",
+        description: "Project name must be at least 8 characters long.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    createNewProject();
+    onNewProjectClose();
+  };
+
   async function createNewProject() {
     try {
       const data = await createProject(newProjectName);
@@ -97,15 +215,6 @@ export default function Projects({ setSelectedProject }) {
       toast({ title: "Creation Error", description: "Could not create project.", status: "error" });
     }
   }
-
-  const handleSubmit = () => {
-    if (newProjectName.length < 8) {
-      toast({ title: "Validation Error", description: "Project name must be at least 8 characters long.", status: "error" });
-      return;
-    }
-    createNewProject();
-    onNewProjectClose();
-  };
 
   return (
     <Box>
@@ -180,15 +289,70 @@ export default function Projects({ setSelectedProject }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New Project</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
             <FormControl>
               <FormLabel>Project Name</FormLabel>
-              <Input value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} placeholder="Enter project name" />
+              <Input 
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)} 
+              placeholder="Enter project name"
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handleSubmit}>Submit</Button>
-            <Button onClick={onNewProjectClose}>Cancel</Button>
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>Submit</Button>
+            <Button variant="ghost" onClick={onNewProjectClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Edit Project Modal */}
+      <Modal isOpen={isEditOpen} onClose={onEditClose}>
+        <ModalOverlay />
+        <ModalContent p={4}>
+          <ModalHeader>Edit Project Name</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="Enter project name"
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleEditSubmit}>
+              Submit
+            </Button>
+            <Button variant="ghost" onClick={onEditClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Delete Project Modal */}
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+        <ModalOverlay />
+        <ModalContent p={4}>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Are you sure you want to delete this project? This action cannot
+              be undone.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={handleConfirmDeletion}>
+              Confirm Delete Project
+            </Button>
+            <Button variant="ghost" onClick={onDeleteClose}>
+              Cancel
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
