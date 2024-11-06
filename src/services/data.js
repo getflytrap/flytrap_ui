@@ -73,3 +73,14 @@ export const deleteProject = async (projectId) => {
     console.error("Error deleting project:", e);
   }
 };
+
+export const renameProject = async (projectId, newProjectName) => {
+  try {
+    const { data } = await apiClient.patch(`/api/projects/${projectId}`, {
+      new_name: newProjectName,
+    });
+    return data;
+  } catch (e) {
+    console.error("Error updating project name:", e);
+  }
+};
