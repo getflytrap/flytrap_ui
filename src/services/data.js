@@ -252,3 +252,12 @@ export const removeUserFromProject = async (projectId, userId) => {
     console.error("Error removing user from project:", e);
   }
 };
+
+export const getUsersForProject = async (projectId) => {
+  try {
+    const { data } = await apiClient.get(`/api/projects/${projectId}/users`);
+    return data;
+  } catch (e) {
+    console.error("Error fetching users for project:", e);
+  }
+};
