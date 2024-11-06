@@ -235,3 +235,20 @@ export const addUserToProject = async (projectId, userId) => {
     console.error("Error adding user to project:", e);
   }
 };
+
+export const removeUserFromProject = async (projectId, userId) => {
+  try {
+    const { data } = await apiClient.delete(
+      `/api/projects/${projectId}/users/${userId}`,
+      {
+        data: {
+          project_id: projectId,
+          user_id: userId,
+        },
+      }
+    );
+    return data;
+  } catch (e) {
+    console.error("Error removing user from project:", e);
+  }
+};
