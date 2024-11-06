@@ -1,15 +1,32 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+
+let logoutTimer;
 
 export function useAuth() {
   const [token, setToken] = useState(null);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
-  const login = useCallback((token) => {
+  const login = useCallback((token, expirationDate) => {
     setToken(token);
+    const tokenExpiration =
+      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60); // 1-hour expiration
+    setTokenExpirationDate(tokenExpiration);
   }, []);
 
   const logout = useCallback(() => {
     setToken(null);
+    setTokenExpirationDate(null);
   }, []);
+
+  useEffect(() => {
+    if (token && tokenExpirationDate) {
+      const remainingTime =
+        tokenExpirationDate.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(logout, remainingTime);
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [token, logout, tokenExpirationDate]);
 
   return { token, login, logout };
 }
