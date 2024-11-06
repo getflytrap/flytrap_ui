@@ -23,7 +23,7 @@ import {
   FormLabel,
   Input,
   Center,
-  Spinner
+  Spinner,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -217,6 +217,51 @@ export default function Projects({ setSelectedProject }) {
     } catch {
       toast({ title: "Creation Error", description: "Could not create project.", status: "error" });
     }
+  }
+
+  if (!loadedProjects || loadedProjects.length === 0) {
+    return (
+      <>
+        <Button
+          colorScheme="purple"
+          size="lg"
+          onClick={handleNewProjectClick}
+          mb="40px"
+          mx="auto"
+          display="block"
+        >
+          Start A New Project
+        </Button>
+        <Heading mb="40px">No current projects.</Heading>
+
+        {/* New Project Modal */}
+        <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose}>
+          <ModalOverlay />
+          <ModalContent p={4}>
+            <ModalHeader>Create New Project</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl>
+                <FormLabel>Project Name</FormLabel>
+                <Input
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  placeholder="Enter project name"
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+                Submit
+              </Button>
+              <Button variant="ghost" onClick={onNewProjectClose}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
   }
 
   if (loadingError) {
