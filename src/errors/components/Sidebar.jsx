@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Stack,
-  Text,
-  Button,
-  HStack,
-  VStack,
-  LoadingSpinner,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Stack, Text, Button, HStack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { getAllProjects } from "../../services/data";
