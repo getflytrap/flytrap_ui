@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Heading, Center, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  Center,
+  Spinner,
+} from "@chakra-ui/react";
 
-export default function ErrorDetails() {
+const ErrorDetails = () => {
   const [fetchedError, setFetchedError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
@@ -24,6 +33,30 @@ export default function ErrorDetails() {
     fetchData();
   }, [id]);
 
+  function renameAndFilterProperties() {
+    const result = [];
+    for (let pair of Object.entries(fetchedError)) {
+      if (!pair[1]) continue;
+      switch (pair[0]) {
+        case "error_id":
+          result.push(["Id", pair[1]]);
+          break;
+        case "name":
+          result.push(["Name", pair[1]]);
+          break;
+        case "message":
+          result.push(["Message", pair[1]]);
+          break;
+        case "created_at":
+          result.push(["Created At", pair[1]]);
+          break;
+      }
+    }
+    return result;
+  }
+
+  const existingProperties = renameAndFilterProperties();
+
   if (isLoading) {
     return (
       <Center height="100vh">
@@ -35,7 +68,20 @@ export default function ErrorDetails() {
   return (
     <Box>
       <Heading as="h2">Error Details</Heading>
-      {/* Display fetchedError data here */}
+      <Box borderWidth={1} borderRadius="md">
+        <Table variant="simple">
+          <Tbody>
+            {existingProperties.map(([key, value]) => (
+              <Tr key={key}>
+                <Td fontWeight="bold">{key}</Td>
+                <Td>{value}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 }
+
+export default ErrorDetails
