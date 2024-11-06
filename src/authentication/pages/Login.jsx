@@ -28,6 +28,41 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      async function postData() {
+        const data = await postLoginData(email, password);
+        console.log("login data", data);
+        auth.login(data.access_token);
+
+        toast({
+          title: "Successful Login",
+          description: "You are successfully logged in",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+
+        if (userIsRootUser) {
+          navigate("/admin-console");
+        } else {
+          navigate("/");
+        }
+      }
+
+      postData();
+    } catch {
+      toast({
+        title: "Login error",
+        description: "User could not be logged in - check your inputs",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
       <Heading as="h1" size="xl">
