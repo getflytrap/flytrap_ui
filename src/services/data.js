@@ -42,3 +42,14 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// * --- API calls --- * //
+// Projects
+export const getAllProjects = async () => {
+  try {
+    const { data } = await apiClient.get("/api/projects");
+    return data;
+  } catch (e) {
+    console.error("Error fetching projects:", e);
+  }
+};
