@@ -220,3 +220,18 @@ export const postLoginData = async (email, password) => {
     console.error("Error logging in:", e);
   }
 };
+
+export const addUserToProject = async (projectId, userId) => {
+  try {
+    const { data } = await apiClient.post(
+      `/api/projects/${projectId}/users/${userId}`,
+      {
+        project_id: projectId,
+        user_id: userId,
+      }
+    );
+    return data;
+  } catch (e) {
+    console.error("Error adding user to project:", e);
+  }
+};
