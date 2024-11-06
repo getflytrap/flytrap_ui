@@ -53,3 +53,14 @@ export const getAllProjects = async () => {
     console.error("Error fetching projects:", e);
   }
 };
+
+export const createProject = async (projectName) => {
+  try {
+    const { data } = await apiClient.post("/api/projects", {
+      name: projectName,
+    });
+    return data;
+  } catch (e) {
+    console.error("Error creating project:", e);
+  }
+};
