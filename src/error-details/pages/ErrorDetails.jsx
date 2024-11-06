@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
+  Text,
   Button,
   Heading,
   Table,
@@ -15,10 +16,19 @@ import {
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
-const ErrorDetails = ({ selectedProject }) => {
+import WarningModal from "../../shared/WarningModal";
+import { deleteError } from "../../services/data";
+
+const ErrorDetails = ({
+  selectedProject,
+  setSelectedProject,
+  projects,
+}) => {
   const [fetchedError, setFetchedError] = useState({});
+  const [loadingError, setLoadingError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [resolved, setResolved] = useState(false);
+  const location = useLocation();
 
   const { id } = useParams();
 
@@ -26,21 +36,46 @@ const ErrorDetails = ({ selectedProject }) => {
   const toast = useToast();
 
   useEffect(() => {
-    async function fetchData() {
+    try {
+      setLoadingError(false);
       setIsLoading(true);
-      // Simulate data fetching
-      const data = {
-        error_id: 1,
-        name: "Database Connection Error",
-        message: "Unable to connect to the database.",
-        created_at: "2024-10-03T09:20:00Z",
-        stack_trace: "Error stack trace...",
-      };
-      setFetchedError(data);
+
+      async function fetchData() {
+        // const data = await getError(selectedProject.project_id, id);
+
+        // dummy data
+        const data = {
+          error_id: 1,
+          name: "Database Connection Error",
+          message: "Unable to connect to the database.",
+          created_at: "2024-10-03T09:20:00Z",
+          line_number: 45,
+          col_number: 15,
+          project_id: "123e4567-e89b-12d3-a456-426614174000",
+          stack_trace:
+            'Traceback (most recent call last):\n  File "app.py", line 23, in connect_db\n    connection = psycopg2.connect(...)\n  File "psycopg2/__init__.py", line 164, in connect\n    raise OperationalError(...)\nOperationalError: could not connect to server: Connection refused\n\tIs the server running on host \'localhost\' (127.0.0.1) and accepting\n\tTCP/IP connections on port 5432?',
+          handled: false,
+          resolved: false,
+        };
+        setFetchedError(data);
+        setResolved(data.resolved);
+
+        // to set selectedProject if user begins at this route - necessary?
+
+        // if (selectedProject.project_id !== data.project_id) {
+        //   const currentProject = projects.find(
+        //     (project) => project.project_id === data.project_id
+        //   );
+        //   setSelectedProject(currentProject);
+        // }
+        setIsLoading(false);
+      }
+      fetchData();
+    } catch (e) {
+      setLoadingError(e.message);
       setIsLoading(false);
     }
-    fetchData();
-  }, [id]);
+  }, []);
 
   async function handleToggleResolved() {
     let resolvedPayload = resolved ? false : true;
@@ -56,6 +91,29 @@ const ErrorDetails = ({ selectedProject }) => {
       setResolved(resolvedPayload);
     } catch (e) {
       alert("Could not toggle resolved state of error");
+    }
+  }
+
+  async function removeError() {
+    try {
+      const data = await deleteError(selectedProject.project_id, id);
+      toast({
+        title: "Successful Deletion",
+        description: "Error successfully deleted",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+
+      navigate("/errors");
+    } catch (e) {
+      toast({
+        title: "Deletion Error",
+        description: "Error could not be created",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   }
 
@@ -76,12 +134,31 @@ const ErrorDetails = ({ selectedProject }) => {
         case "created_at":
           result.push(["Created At", pair[1]]);
           break;
+        case "line_number":
+          result.push(["Line Number", pair[1]]);
+          break;
+        case "col_number":
+          result.push(["Column Number", pair[1]]);
+          break;
+        case "handled":
+          result.push(["Handled", pair[1]]);
+          break;
       }
     }
     return result;
   }
 
   const existingProperties = renameAndFilterProperties();
+
+  const handleDeleteClick = () => {
+    const confirmAction = window.confirm(
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
+    );
+
+    if (confirmAction) {
+      removeError();
+    }
+  };
 
   const handleReturnToErrors = () => {
     navigate("/errors", {
@@ -93,10 +170,30 @@ const ErrorDetails = ({ selectedProject }) => {
     });
   };
 
+  if (!fetchedError) {
+    return <Heading>No Data</Heading>;
+  }
+
+  if (loadingError) {
+    return (
+      <WarningModal
+        isOpen={true}
+        onClose={() => setLoadingError(false)}
+        errorMessage={loadingError.message}
+      />
+    );
+  }
+
   if (isLoading) {
     return (
       <Center height="100vh">
-        <Spinner size="xl" />
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
       </Center>
     );
   }
@@ -115,7 +212,7 @@ const ErrorDetails = ({ selectedProject }) => {
         >
           {resolved ? "Mark As Unresolved" : "Mark As Resolved"}
         </Button>
-        <Button colorScheme="pink" size="lg" onClick={/* To be implemented */}>
+        <Button colorScheme="pink" size="lg" onClick={handleDeleteClick}>
           Delete Error
         </Button>
       </Flex>
@@ -128,11 +225,15 @@ const ErrorDetails = ({ selectedProject }) => {
       >
         <Table variant="simple">
           <Tbody>
-            {existingProperties.map(([key, value]) => (
-              <Tr key={key}>
-                <Td fontWeight="bold">{key}</Td>
-                <Td>{value}</Td>
-              </Tr>
+            {existingProperties.map(([key, value], index) => (
+              <Tr key={key} bg={index % 2 === 0 ? "gray.50" : "white"}>
+              <Td fontWeight="bold" paddingY={2}>
+                {key}
+              </Td>
+              <Td p="5px 50px" whiteSpace="normal">
+                {value}
+              </Td>
+            </Tr>
             ))}
           </Tbody>
         </Table>
