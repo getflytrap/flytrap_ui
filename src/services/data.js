@@ -123,3 +123,14 @@ export const deleteErrors = async (projectId) => {
     console.error("Error deleting errors:", error);
   }
 };
+
+export const getError = async (projectId, errorId) => {
+  try {
+    const { data } = await apiClient.get(
+      `/api/projects/${projectId}/errors/${errorId}`
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching error:", error);
+  }
+};
