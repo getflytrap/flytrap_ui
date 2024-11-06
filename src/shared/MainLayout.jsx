@@ -1,15 +1,20 @@
 import { useContext } from "react";
-import { Outlet, useNavigate, Link } from "react-router-dom";
+import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/auth-context";
 
 const MainLayout = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignOut = () => {
     auth.logout();
     navigate("/login");
+  };
+
+  const getButtonColor = (path) => {
+    return location.pathname === path ? "purple" : "gray"; // Set color based on the current path
   };
 
   return (
@@ -20,12 +25,12 @@ const MainLayout = () => {
         </Heading>
         <Flex width="100%" justifyContent="flex-end" marginTop="1rem">
           <Link to="/">
-            <Button colorScheme="gray" mx="10px">
+            <Button colorScheme={getButtonColor("/")} mx="10px">
               Projects
             </Button>
           </Link>
           <Link to="/root-console">
-            <Button colorScheme="gray" mr="10px">
+            <Button colorScheme={getButtonColor("/root-console")} mr="10px">
               Admin Console
             </Button>
           </Link>
