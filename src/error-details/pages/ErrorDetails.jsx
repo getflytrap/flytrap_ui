@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
+  Button,
   Heading,
   Table,
   Tbody,
   Tr,
   Td,
+  Flex,
   Center,
   Spinner,
+  useToast
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
-const ErrorDetails = () => {
+const ErrorDetails = ({ selectedProject }) => {
   const [fetchedError, setFetchedError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [resolved, setResolved] = useState(false);
+
   const { id } = useParams();
+
+  const navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchData() {
@@ -32,6 +41,23 @@ const ErrorDetails = () => {
     }
     fetchData();
   }, [id]);
+
+  async function handleToggleResolved() {
+    let resolvedPayload = resolved ? false : true;
+
+    try {
+      const data = await toggleError(
+        selectedProject.project_id,
+        id,
+        resolvedPayload
+      );
+
+      // so that 'resolved' is only updated in state if API call was successful
+      setResolved(resolvedPayload);
+    } catch (e) {
+      alert("Could not toggle resolved state of error");
+    }
+  }
 
   function renameAndFilterProperties() {
     const result = [];
@@ -57,6 +83,16 @@ const ErrorDetails = () => {
 
   const existingProperties = renameAndFilterProperties();
 
+  const handleReturnToErrors = () => {
+    navigate("/errors", {
+      state: {
+        project_id: fetchedError.project_id,
+        handled: location.state?.handled,
+        time: location.state?.time,
+      },
+    });
+  };
+
   if (isLoading) {
     return (
       <Center height="100vh">
@@ -67,8 +103,29 @@ const ErrorDetails = () => {
 
   return (
     <Box>
-      <Heading as="h2">Error Details</Heading>
-      <Box borderWidth={1} borderRadius="md">
+      <Flex justify="space-between" align="center" mb={4}>
+        <Button colorScheme="purple" size="lg" onClick={handleReturnToErrors}>
+          <ArrowBackIcon mr={2} />
+          Return to Errors
+        </Button>
+        <Button
+          colorScheme={resolved ? "pink" : "green"}
+          size="lg"
+          onClick={handleToggleResolved}
+        >
+          {resolved ? "Mark As Unresolved" : "Mark As Resolved"}
+        </Button>
+        <Button colorScheme="pink" size="lg" onClick={/* To be implemented */}>
+          Delete Error
+        </Button>
+      </Flex>
+
+      <Box
+        borderWidth={1}
+        borderRadius="md"
+        overflow="hidden"
+        margin="30px 20px"
+      >
         <Table variant="simple">
           <Tbody>
             {existingProperties.map(([key, value]) => (
