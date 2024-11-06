@@ -157,3 +157,13 @@ export const deleteError = async (projectId, errorId) => {
     console.error("Error deleting error:", error);
   }
 };
+
+// Users
+export const getUsers = async () => {
+  try {
+    const { data } = await apiClient.get("/api/users");
+    return data;
+  } catch (e) {
+    console.error("Error fetching users:", e);
+  }
+};
