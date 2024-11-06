@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/auth-context";
 
@@ -16,9 +16,19 @@ const MainLayout = () => {
     <Box>
       <Flex as="header" direction="row" padding="1rem" whiteSpace="nowrap">
         <Heading size="2xl" textAlign="center">
-          Fly Trap
+          Flytrap
         </Heading>
         <Flex width="100%" justifyContent="flex-end" marginTop="1rem">
+          <Link to="/">
+            <Button colorScheme="gray" mx="10px">
+              Projects
+            </Button>
+          </Link>
+          <Link to="/root-console">
+            <Button colorScheme="gray" mr="10px">
+              Admin Console
+            </Button>
+          </Link>
           <Button onClick={handleSignOut} colorScheme="gray">
             Sign Out
           </Button>
