@@ -197,3 +197,14 @@ export const deleteAccount = async (id) => {
     console.error("Error deleting account:", e);
   }
 };
+
+export const updatePassword = async (id, password) => {
+  try {
+    const { data } = await apiClient.patch(`/api/users/${id}`, {
+      password,
+    });
+    return data;
+  } catch (e) {
+    console.error("Error updating password:", e);
+  }
+};
