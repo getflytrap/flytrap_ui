@@ -238,6 +238,20 @@ const ErrorDetails = ({
           </Tbody>
         </Table>
       </Box>
+      <Box mt={4}>
+        <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
+          Stack Trace
+        </Text>
+        <Box
+          padding={10}
+          borderWidth={1}
+          borderRadius="md"
+          backgroundColor="gray.100"
+          whiteSpace="pre-wrap"
+        >
+          {fetchedError.stack_trace ? fetchedError.stack_trace : "No Data"}
+        </Box>
+      </Box>
     </Box>
   );
 }
