@@ -64,3 +64,12 @@ export const createProject = async (projectName) => {
     console.error("Error creating project:", e);
   }
 };
+
+export const deleteProject = async (projectId) => {
+  try {
+    await apiClient.delete(`/api/projects/${projectId}`);
+    return { success: true, message: "Project deleted successfully." };
+  } catch (e) {
+    console.error("Error deleting project:", e);
+  }
+};
