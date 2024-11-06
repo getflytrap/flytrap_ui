@@ -1,17 +1,8 @@
 import React, { useState, useContext } from "react";
-import {
-  Box,
-  Select,
-  Button,
-  Flex,
-  Spacer,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Select, Flex, Stack, Text } from "@chakra-ui/react";
 
 const FilterBar = ({
   selectedHandled,
-  selectedTime,
   setSelectedHandled,
   setSelectedTime,
 }) => {
