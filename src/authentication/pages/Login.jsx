@@ -63,6 +63,10 @@ const Login = () => {
     }
   };
 
+  const handleChangePassword = () => {
+    alert("This will be replaced with a 'Change Password' modal");
+  };
+
   return (
     <>
       <Heading as="h1" size="xl">
