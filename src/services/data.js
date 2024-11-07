@@ -9,7 +9,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const access_token = JSON.parse(localStorage.getItem("userData"))?.token; // localStorage is used for now
+    const access_token = JSON.parse(localStorage.getItem("userData"))?.access_token; // localStorage is used for now
     if (access_token) {
       config.headers["Authorization"] = `Bearer ${access_token}`;
       config.headers["Content-Type"] = "application/json";
@@ -24,7 +24,6 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => {
     const newAccessToken = response.headers["new-access-token"];
-
     if (newAccessToken) {
       const userData = JSON.parse(localStorage.getItem("userData")) || {};
       userData.access_token = newAccessToken;
