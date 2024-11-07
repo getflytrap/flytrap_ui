@@ -100,13 +100,13 @@ export const getErrors = async (
       page: currentPage,
       limit: limit,
     };
-    console.log('from getErrors, projectid', projectId);
+    console.log("from getErrors, projectid", projectId);
 
     const { data } = await apiClient.get(`/api/projects/${projectId}/errors`, {
       params,
     });
 
-    console.log('from getErrors', data);
+    console.log("from getErrors", data);
 
     return {
       errors: data.errors,
@@ -226,12 +226,9 @@ export const postLoginData = async (email, password) => {
 
 export const addUserToProject = async (projectId, userId) => {
   try {
-    const { data } = await apiClient.post(
-      `/api/projects/${projectId}/users/`,
-      {
-        user_uuid: userId,
-      }
-    );
+    const { data } = await apiClient.post(`/api/projects/${projectId}/users/`, {
+      user_uuid: userId,
+    });
     return data;
   } catch (e) {
     console.error("Error adding user to project:", e);
@@ -241,7 +238,7 @@ export const addUserToProject = async (projectId, userId) => {
 export const removeUserFromProject = async (projectId, userId) => {
   try {
     const { data } = await apiClient.delete(
-      `/api/projects/${projectId}/users/${userId}`,
+      `/api/projects/${projectId}/users/${userId}`
       // {
       //   data: {
       //     project_id: projectId,
@@ -261,5 +258,14 @@ export const getUsersForProject = async (projectId) => {
     return data;
   } catch (e) {
     console.error("Error fetching users for project:", e);
+  }
+};
+
+export const getProjectsForUser = async (user_uuid) => {
+  try {
+    const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
+    return data;
+  } catch (e) {
+    console.error("Error fetching projects for user:", e);
   }
 };

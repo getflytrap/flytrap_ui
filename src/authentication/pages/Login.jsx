@@ -154,6 +154,6 @@ const Login = () => {
       </Box>
     </>
   );
-}
+};
 
-export default Login
+export default Login;
