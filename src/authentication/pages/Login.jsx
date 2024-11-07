@@ -45,7 +45,7 @@ const Login = () => {
         });
 
         if (userIsRootUser) {
-          navigate("/admin-console");
+          navigate("/root-console");
         } else {
           navigate("/");
         }
