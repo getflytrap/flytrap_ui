@@ -82,7 +82,8 @@ export default function Projects({ setSelectedProject }) {
     try {
       setLoadingError(false);
       setIsLoading(true);
-      const data = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
+      const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
+      console.log('projects data:', data);
       setLoadedProjects(data.projects);
       setSelectedProject(data[0]);
       setCurrentPage(data.current_page);
@@ -114,34 +115,33 @@ export default function Projects({ setSelectedProject }) {
 
   const handleEditClick = (project, event) => {
     event.stopPropagation();
-    setSelectedProjectId(project.project_id);
-    setProjectName(project.project_name);
+    setSelectedProjectId(project.uuid);
+    setProjectName(project.name);
     onEditOpen();
   };
 
   const handleDeleteClick = (project, event) => {
     event.stopPropagation();
-    setSelectedProjectId(project.project_id);
+    setSelectedProjectId(project.uuid);
     onDeleteOpen();
   };
 
   const handleEditSubmit = async () => {
     try {
-      const data = await renameProject(selectedProjectId, projectName);
-
+      const { data } = await renameProject(selectedProjectId, projectName);
       setLoadedProjects((prevProjects) => {
         const otherProjects = [];
         let projectToEdit;
 
         prevProjects.forEach((project) => {
-          if (project.project_id === data.project_id) {
+          if (project.uuid === data.uuid) {
             projectToEdit = project;
           } else {
             otherProjects.push(project);
           }
         });
 
-        projectToEdit.project_name = data.project_name;
+        projectToEdit.name = data.name;
         return [projectToEdit, ...otherProjects];
       });
       toast({
@@ -169,7 +169,7 @@ export default function Projects({ setSelectedProject }) {
 
       setLoadedProjects((prevProjects) =>
         prevProjects.filter(
-          (project) => project.project_id !== selectedProjectId
+          (project) => project.uuid !== selectedProjectId
         )
       );
       toast({
@@ -209,8 +209,10 @@ export default function Projects({ setSelectedProject }) {
 
   async function createNewProject() {
     try {
-      const data = await createProject(newProjectName);
-      const newProject = { project_id: data.project_id, project_name: data.project_name, issue_count: 0 };
+      const { data } = await createProject(newProjectName);
+      console.log(data);
+      const newProject = { uuid: data.uuid, name: data.name, issue_count: 0 };
+      console.log('new project: ', newProject);
 
       setLoadedProjects((prevProjects) => [...prevProjects, newProject]);
       toast({ title: "Project Created", description: "Successfully created a new project.", status: "success" });
@@ -295,7 +297,7 @@ export default function Projects({ setSelectedProject }) {
       <VStack spacing={4} width="100%">
         {loadedProjects.map((project) => (
           <Card
-            key={project.project_id}
+            key={project.uuid}
             borderTop="8px"
             borderColor="purple.400"
             bg="gray.100"
@@ -305,7 +307,7 @@ export default function Projects({ setSelectedProject }) {
           >
             <CardHeader color="gray.900">
               <Heading as="h2" size="lg">
-                {project.project_name}
+                {project.name}
               </Heading>
             </CardHeader>
 
