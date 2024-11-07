@@ -51,7 +51,7 @@ const AssignUsers = ({ users }) => {
     try {
       console.log("project selection", uuid);
       const { data } = await getUsersForProject(uuid);
-      console.log('users for project:', data)
+      console.log("users for project:", data);
       // const usersForProject = users.filter((user) => data.includes(user.id));
       setCurrentUsers(data);
       setSelectedProject(uuid);
@@ -83,13 +83,10 @@ const AssignUsers = ({ users }) => {
 
   const addNewUserToProject = async () => {
     try {
-      const data = await addUserToProject(
-        selectedProject,
-        selectedUser
-      );
+      const data = await addUserToProject(selectedProject, selectedUser);
 
       setCurrentUsers((prevUsers) => {
-        const newUser = users.find(user => user.uuid === selectedUser)
+        const newUser = users.find((user) => user.uuid === selectedUser);
         return [...prevUsers, newUser];
       });
 
@@ -107,7 +104,8 @@ const AssignUsers = ({ users }) => {
   };
 
   const availableUsers = users.filter(
-    (user) => !currentUsers.some((currentUser) => currentUser.uuid === user.uuid)
+    (user) =>
+      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid)
   );
 
   return (

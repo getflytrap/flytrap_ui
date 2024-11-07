@@ -4,8 +4,8 @@ import { Center, Spinner } from "@chakra-ui/react";
 
 import { AuthContext } from "./contexts/auth-context";
 import { useAuth } from "./hooks/auth-hook";
-import ErrorDashboardLayout from "./errors/pages/ErrorDashboardLayout";
 import ErrorDashboard from "./errors/pages/ErrorDashboard";
+import ErrorDisplay from "./errors/pages/ErrorDisplay";
 import ErrorDetails from "./error-details/pages/ErrorDetails";
 import Login from "./authentication/pages/Login";
 import WarningModal from "./shared/WarningModal";
@@ -19,8 +19,6 @@ import "./App.css";
 const App = () => {
   const { token, login, logout } = useAuth();
 
-  const [selectedProject, setSelectedProject] = useState();
-
   return (
     <AuthContext.Provider value={{ isLoggedIn: !!token, token, login, logout }}>
       <BrowserRouter>
@@ -29,29 +27,15 @@ const App = () => {
 
           <Route element={<AuthRequired token={token} />} />
           <Route element={<MainLayout />}>
-            <Route
-              path="/"
-              element={<Projects setSelectedProject={setSelectedProject} />}
-            />
-            <Route
-              path="/errors"
-              element={
-                <ErrorDashboardLayout
-                  selectedProject={selectedProject}
-                  setSelectedProject={setSelectedProject}
-                />
-              }
-            >
-              <Route
-                index
-                element={<ErrorDashboard selectedProject={selectedProject} setSelectedProject={setSelectedProject} />}
-              />
+            <Route path="/" element={<Projects />} />
+            <Route path="/errors" element={<ErrorDashboard />}>
+              <Route index element={<ErrorDisplay />} />
               <Route
                 path=":id"
                 element={
                   <ErrorDetails
-                    selectedProject={selectedProject}
-                    setSelectedProject={setSelectedProject}
+                  // selectedProject={selectedProject}
+                  // setSelectedProject={setSelectedProject}
                   />
                 }
               />

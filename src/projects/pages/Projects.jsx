@@ -68,10 +68,10 @@ export default function Projects({ setSelectedProject }) {
     onClose: onDeleteClose,
   } = useDisclosure();
 
-  const { 
-    isOpen: isNewProjectOpen, 
-    onOpen: onNewProjectOpen, 
-    onClose: onNewProjectClose
+  const {
+    isOpen: isNewProjectOpen,
+    onOpen: onNewProjectOpen,
+    onClose: onNewProjectClose,
   } = useDisclosure();
 
   useEffect(() => {
@@ -83,9 +83,8 @@ export default function Projects({ setSelectedProject }) {
       setLoadingError(false);
       setIsLoading(true);
       const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
-      console.log('projects data:', data);
+      console.log("projects data:", data);
       setLoadedProjects(data.projects);
-      setSelectedProject(data[0]);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
 
@@ -109,8 +108,7 @@ export default function Projects({ setSelectedProject }) {
   };
 
   const handleProjectClick = (project) => {
-    setSelectedProject(project);
-    navigate("/errors");
+    navigate("/errors", { state: { selection: project } });
   };
 
   const handleEditClick = (project, event) => {
@@ -168,9 +166,7 @@ export default function Projects({ setSelectedProject }) {
       const data = await deleteProject(selectedProjectId);
 
       setLoadedProjects((prevProjects) =>
-        prevProjects.filter(
-          (project) => project.uuid !== selectedProjectId
-        )
+        prevProjects.filter((project) => project.uuid !== selectedProjectId)
       );
       toast({
         title: "Successful Deleting of Project",
@@ -212,12 +208,20 @@ export default function Projects({ setSelectedProject }) {
       const { data } = await createProject(newProjectName);
       console.log(data);
       const newProject = { uuid: data.uuid, name: data.name, issue_count: 0 };
-      console.log('new project: ', newProject);
+      console.log("new project: ", newProject);
 
       setLoadedProjects((prevProjects) => [...prevProjects, newProject]);
-      toast({ title: "Project Created", description: "Successfully created a new project.", status: "success" });
+      toast({
+        title: "Project Created",
+        description: "Successfully created a new project.",
+        status: "success",
+      });
     } catch {
-      toast({ title: "Creation Error", description: "Could not create project.", status: "error" });
+      toast({
+        title: "Creation Error",
+        description: "Could not create project.",
+        status: "error",
+      });
     }
   }
 
@@ -367,16 +371,20 @@ export default function Projects({ setSelectedProject }) {
           <ModalBody>
             <FormControl>
               <FormLabel>Project Name</FormLabel>
-              <Input 
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)} 
-              placeholder="Enter project name"
+              <Input
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+                placeholder="Enter project name"
               />
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>Submit</Button>
-            <Button variant="ghost" onClick={onNewProjectClose}>Cancel</Button>
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Button variant="ghost" onClick={onNewProjectClose}>
+              Cancel
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

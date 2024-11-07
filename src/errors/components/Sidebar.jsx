@@ -3,37 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack, Text, Button, HStack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-import { getAllProjects } from "../../services/data";
-
 const PROJECT_LIMIT_PER_PAGE = 10;
 
-export default function Sidebar({ selectedProject, setSelectedProject }) {
+export default function Sidebar({
+  selectedProject,
+  setSelectedProject,
+  projects,
+}) {
   const navigate = useNavigate();
 
-  const [loadedProjects, setLoadedProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  //   useEffect(() => {
+  //     fetchProjects();
+  //   }, []);
 
-  async function fetchProjects(pageToRequest = 1) {
-    try {
-      const { data } = await getAllProjects(pageToRequest, PROJECT_LIMIT_PER_PAGE);
-      console.log('projects:', data);
+  //   async function fetchProjects(pageToRequest = 1) {
+  //     try {
+  //       const { data } = await getAllProjects(pageToRequest, PROJECT_LIMIT_PER_PAGE);
+  //       console.log('projects:', data);
 
-      if (!selectedProject) {
-        setSelectedProject(data.projects[0])
-      }
+  //       if (!selectedProject) {
+  //         setSelectedProject(data.projects[0])
+  //       }
 
-      setLoadedProjects(data.projects);
-      setCurrentPage(data.current_page);
-      setTotalPages(data.total_pages);
-    } catch (e) {
-      alert("Couldn't fetch project data");
-    }
-  }
+  //       setLoadedProjects(data.projects);
+  //       setCurrentPage(data.current_page);
+  //       setTotalPages(data.total_pages);
+  //     } catch (e) {
+  //       alert("Couldn't fetch project data");
+  //     }
+  //   }
 
   function prevPage() {
     fetchProjects(currentPage - 1);
@@ -51,39 +52,27 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
   return (
     <>
       <Stack spacing={3} color="whiteAlpha.900">
-        {console.log('loaded projects: ', loadedProjects)}
-        {loadedProjects.map((project) => (
+        {console.log("loaded projects: ", projects)}
+        {projects.map((project) => (
           <Box
             onClick={() => handleClick(project)}
             key={project.uuid}
             borderRadius="20px"
             bg={
-              selectedProject.uuid === project.uuid
-                ? "blue.100"
-                : "transparent"
+              selectedProject.uuid === project.uuid ? "blue.100" : "transparent"
             }
-            border={
-              selectedProject.uuid === project.uuid ? "2px" : "1px"
-            }
+            border={selectedProject.uuid === project.uuid ? "2px" : "1px"}
             borderColor={
-              selectedProject.uuid === project.uuid
-                ? "blue.500"
-                : "transparent"
+              selectedProject.uuid === project.uuid ? "blue.500" : "transparent"
             }
             p={2}
             _hover={{
               borderColor: "gray.300",
             }}
             cursor="pointer"
-            color={
-              selectedProject.uuid === project.uuid
-                ? "black"
-                : "inherit"
-            }
+            color={selectedProject.uuid === project.uuid ? "black" : "inherit"}
             fontWeight={
-              selectedProject.uuid === project.uuid
-                ? "bold"
-                : "normal"
+              selectedProject.uuid === project.uuid ? "bold" : "normal"
             }
           >
             <Text textAlign="left">{`${project.name} (${project.issue_count})`}</Text>

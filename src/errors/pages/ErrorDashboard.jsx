@@ -1,118 +1,99 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
-import { getErrors, getAllProjects } from "../../services/data";
+import React, { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { Grid, GridItem } from "@chakra-ui/react";
 
-import ErrorsTable from "../components/ErrorsTable";
-import FilterBar from "../components/FilterBar";
+import Sidebar from "../components/Sidebar";
 
-const ERROR_LIMIT_PER_PAGE = 10;
+// Sidebar: selectedProject, setSelectedProject, projects
+// ED: selectedProject, setSelectedProject
 
-export default function ErrorDashboard({ selectedProject, setSelectedProject }) {
+export default function ErrorDashboard(props) {
   const location = useLocation();
 
-  const [currentErrors, setCurrentErrors] = useState([]);
-  const [selectedHandled, setSelectedHandled] = useState(
-    location.state?.handled || "All"
-  );
-  const [selectedTime, setSelectedTime] = useState(
-    location.state?.time || "Forever"
-  );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  let selection;
+  if (location.state) {
+    selection = location.state.selection;
+  }
+  const [loadedProjects, setLoadedProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(selection);
 
   useEffect(() => {
-    fetchErrors();
-  }, [selectedProject, selectedHandled, selectedTime]); // currentPage cannot be in here or it causes an infinite loop
+    fetchProjects();
+  }, []);
 
-  async function prevPage() {
-    fetchErrors(currentPage - 1);
-  }
-
-  async function nextPage() {
-    fetchErrors(currentPage + 1);
-  }
-
-  async function fetchErrors(pageToRequest = 1) {
-    console.log(convertToTimeStamp(selectedTime));
-
-    if (!selectedProject) {
-      const { data } = await getAllProjects(1, 1);
-      setSelectedProject(data.projects[0])
-    }
-
+  async function fetchProjects(pageToRequest = 1) {
     try {
-      console.log('selected Project:', selectedProject)
-      const { data } = await getErrors(
-        selectedProject?.uuid,
-        convertHandledToBoolean(selectedHandled),
-        convertToTimeStamp(selectedTime),
-        pageToRequest,
-        ERROR_LIMIT_PER_PAGE
-      );
+      // const { data } = await getAllProjects(
+      //   pageToRequest,
+      //   PROJECT_LIMIT_PER_PAGE
+      // );
+      // console.log("projects:", data);
 
-      console.log('from error dashboard', data);
-      setCurrentErrors(data.errors);
+      // dummy data
+      let data = {
+        status: "success",
+        data: {
+          projects: [
+            {
+              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5c53e87bcd1",
+              name: "React Shopping Cart App",
+              issue_count: 3,
+            },
+            {
+              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5c53e87234",
+              name: "Express Shopping Cart App",
+              issue_count: 5,
+            },
+            {
+              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5444447bcd1",
+              name: "Flask App",
+              issue_count: 2,
+            },
+          ],
+          total_pages: 1,
+          current_page: 1,
+        },
+      };
+
+      if (!selectedProject) {
+        setSelectedProject(data.projects[0]);
+      }
+
+      setLoadedProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
-    } catch (err) {
-      // alert(err.message);
+    } catch (e) {
+      alert("Couldn't fetch project data");
     }
-  }
-
-  function convertHandledToBoolean(handled) {
-    if (handled === "Handled") {
-      return true;
-    } else if (handled === "Unhandled") {
-      return false;
-    } else {
-      return null;
-    }
-  }
-
-  function convertToTimeStamp(period) {
-    const now = new Date();
-    let pastDate;
-
-    switch (period) {
-      case "Last 7 days":
-        pastDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        break;
-      case "Last 14 days":
-        pastDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-        break;
-      case "Last 30 days":
-        pastDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        break;
-      case "Last 90 days":
-        pastDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
-        break;
-      case "Forever":
-        pastDate = new Date(0);
-        break;
-      default:
-        throw new Error("Invalid period provided.");
-    }
-
-    return pastDate.toISOString();
   }
 
   return (
-    <>
-      <FilterBar
-        selectedHandled={selectedHandled}
-        setSelectedHandled={setSelectedHandled}
-        selectedTime={selectedTime}
-        setSelectedTime={setSelectedTime}
-      />
-      <ErrorsTable
-        errors={currentErrors}
-        selectedHandled={selectedHandled}
-        selectedTime={selectedTime}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
-    </>
+    <div className="site-wrapper">
+      <Grid templateColumns="repeat(6, 1fr)" bg="gray.50">
+        <GridItem
+          as="aside"
+          colSpan={{ base: 6, lg: 2, xl: 1 }}
+          bg="purple.400"
+          minHeight={{ lg: "100vh" }}
+          p={{ base: "20px", lg: "30px" }}
+        >
+          <Sidebar
+            selectedProject={selectedProject}
+            setSelectedProject={setSelectedProject}
+            projects={loadedProjects}
+          />
+        </GridItem>
+
+        <GridItem as="main" colSpan={{ base: 6, lg: 4, xl: 5 }} p="40px">
+          <Outlet
+            context={{
+              selectedProject,
+              setSelectedProject,
+              projects: loadedProjects,
+            }}
+          />
+        </GridItem>
+      </Grid>
+    </div>
   );
 }
