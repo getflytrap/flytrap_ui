@@ -67,6 +67,8 @@ const AssignUsers = ({ users }) => {
         prevUsers.filter((user) => user.id !== user_id)
       );
 
+      // TODO: update state
+
       toast({
         title: "User removed.",
         description: "User has been removed from the project.",
@@ -105,7 +107,7 @@ const AssignUsers = ({ users }) => {
   };
 
   const availableUsers = users.filter(
-    (user) => !currentUsers.some((currentUser) => currentUser.id === user.id)
+    (user) => !currentUsers.some((currentUser) => currentUser.uuid === user.uuid)
   );
 
   return (
@@ -155,7 +157,7 @@ const AssignUsers = ({ users }) => {
                   aria-label="Remove User"
                   size="sm"
                   onClick={() =>
-                    deleteUserFromProject(selectedProject.project_id, user.id)
+                    deleteUserFromProject(selectedProject, user.uuid)
                   }
                 />
               </HStack>

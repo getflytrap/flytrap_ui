@@ -239,12 +239,12 @@ export const removeUserFromProject = async (projectId, userId) => {
   try {
     const { data } = await apiClient.delete(
       `/api/projects/${projectId}/users/${userId}`,
-      {
-        data: {
-          project_id: projectId,
-          user_id: userId,
-        },
-      }
+      // {
+      //   data: {
+      //     project_id: projectId,
+      //     user_id: userId,
+      //   },
+      // }
     );
     return data;
   } catch (e) {
