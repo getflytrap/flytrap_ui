@@ -84,7 +84,7 @@ const DeleteUser = ({ users, setUsers }) => {
         mb={4}
       >
         {users.map((user) => (
-          <option key={user.id} value={`${user.first_name} ${user.last_name}`}>
+          <option key={user.uuid} value={`${user.first_name} ${user.last_name}`}>
             {`${user.first_name} ${user.last_name}`}
           </option>
         ))}

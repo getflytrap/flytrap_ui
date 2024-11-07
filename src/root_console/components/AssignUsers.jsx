@@ -22,12 +22,12 @@ const AssignUsers = ({ users }) => {
   const [projects, setProjects] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
   const toast = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const data = await getAllProjects();
+      const { data } = await getAllProjects();
       setProjects(data.projects);
     };
     try {
@@ -37,18 +37,24 @@ const AssignUsers = ({ users }) => {
     }
   }, []);
 
-  function handleProjectSelection(name) {
-    const selection = projects.find((project) => project.project_name === name);
-    fetchUsersForProject(selection);
+  function handleProjectSelection(uuid) {
+    // const selection = projects.find((project) => project.name === name);
+    fetchUsersForProject(uuid);
   }
 
-  async function fetchUsersForProject(selection) {
+  function handleUserSelection(uuid) {
+    setSelectedUser(uuid);
+    // const selection = users.find((user) => user.name )
+  }
+
+  async function fetchUsersForProject(uuid) {
     try {
-      console.log("project selection", selection);
-      const data = await getUsersForProject(selection.project_id);
-      const usersForProject = users.filter((user) => data.includes(user.id));
-      setCurrentUsers(usersForProject);
-      setSelectedProject(selection);
+      console.log("project selection", uuid);
+      const { data } = await getUsersForProject(uuid);
+      console.log('users for project:', data)
+      // const usersForProject = users.filter((user) => data.includes(user.id));
+      setCurrentUsers(data);
+      setSelectedProject(uuid);
     } catch {
       alert("Could not fetch users for selected project");
     }
@@ -76,21 +82,16 @@ const AssignUsers = ({ users }) => {
   const addNewUserToProject = async () => {
     try {
       const data = await addUserToProject(
-        selectedProject.project_id,
-        selectedUsers
+        selectedProject,
+        selectedUser
       );
 
       setCurrentUsers((prevUsers) => {
-        const newUsers = selectedUsers.map((id) =>
-          users.find((user) => user.id === Number(id))
-        );
-
-        console.log(users);
-
-        return [...prevUsers, ...newUsers];
+        const newUser = users.find(user => user.uuid === selectedUser)
+        return [...prevUsers, newUser];
       });
 
-      setSelectedUsers([]);
+      setSelectedUser("");
       toast({
         title: "Users added.",
         description: "Users have been added to the project.",
@@ -133,8 +134,8 @@ const AssignUsers = ({ users }) => {
             }}
           >
             {projects.map((project) => (
-              <option key={project.project_id} value={project.project_name}>
-                {project.project_name}
+              <option key={project.uuid} value={project.uuid}>
+                {project.name}
               </option>
             ))}
           </Select>
@@ -147,7 +148,7 @@ const AssignUsers = ({ users }) => {
           </Text>
           <VStack spacing={2}>
             {currentUsers.map((user) => (
-              <HStack key={user.id} justify="space-between" width="full">
+              <HStack key={user.uuid} justify="space-between" width="full">
                 <Text>{`${user.first_name} ${user.last_name}`}</Text>
                 <IconButton
                   icon={<FaTrash />}
@@ -173,15 +174,11 @@ const AssignUsers = ({ users }) => {
             size="lg"
             height="200px"
             onChange={(e) => {
-              const valueArray = Array.from(
-                e.target.selectedOptions,
-                (option) => option.value
-              );
-              setSelectedUsers(valueArray);
+              handleUserSelection(e.target.value);
             }}
           >
             {availableUsers.map((user) => (
-              <option key={user.id} value={user.id}>
+              <option key={user.uuid} value={user.uuid}>
                 {`${user.first_name} ${user.last_name}`}
               </option>
             ))}
