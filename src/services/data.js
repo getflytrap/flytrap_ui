@@ -211,7 +211,7 @@ export const updatePassword = async (id, password) => {
 
 export const postLoginData = async (email, password) => {
   try {
-    const { data } = await apiClient.post("/api/login", {
+    const { data } = await apiClient.post("/api/auth/login", {
       email,
       password,
     });
