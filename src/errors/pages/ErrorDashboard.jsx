@@ -3,9 +3,9 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import Sidebar from "../components/Sidebar";
+import { getAllProjects } from "../../services/data";
 
-// Sidebar: selectedProject, setSelectedProject, projects
-// ED: selectedProject, setSelectedProject
+const PROJECT_LIMIT_PER_PAGE = 10;
 
 export default function ErrorDashboard(props) {
   const location = useLocation();
