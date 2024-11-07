@@ -35,10 +35,10 @@ const DeleteUser = ({ users, setUsers }) => {
         (user) =>
           user.first_name === selectedFirstName &&
           user.last_name === selectedLastName
-      ).id;
+      ).uuid;
       await deleteAccount(id);
 
-      setUsers(users.filter((user) => user.id !== Number(id)));
+      setUsers(users.filter((user) => user.uuid !== Number(id)));
       toast({
         title: "Successful Deletion",
         description: "User Successfully Deleted",
