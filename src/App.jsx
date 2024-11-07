@@ -17,17 +17,17 @@ import Projects from "./projects/pages/Projects";
 import "./App.css";
 
 const App = () => {
-  const { token, login, logout } = useAuth();
+  const { access_token, login, logout } = useAuth();
 
   const [selectedProject, setSelectedProject] = useState();
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: !!token, token, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn: !!access_token, access_token, login, logout }}>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          <Route element={<AuthRequired token={token} />} />
+          <Route element={<AuthRequired access_token={access_token} />} />
           <Route element={<MainLayout />}>
             <Route
               path="/"
