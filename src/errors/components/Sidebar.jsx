@@ -9,32 +9,12 @@ export default function Sidebar({
   selectedProject,
   setSelectedProject,
   projects,
+  fetchProjects,
+  currentPage,
+  setCurrentPage,
+  totalPages,
 }) {
   const navigate = useNavigate();
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3);
-
-  //   useEffect(() => {
-  //     fetchProjects();
-  //   }, []);
-
-  //   async function fetchProjects(pageToRequest = 1) {
-  //     try {
-  //       const { data } = await getAllProjects(pageToRequest, PROJECT_LIMIT_PER_PAGE);
-  //       console.log('projects:', data);
-
-  //       if (!selectedProject) {
-  //         setSelectedProject(data.projects[0])
-  //       }
-
-  //       setLoadedProjects(data.projects);
-  //       setCurrentPage(data.current_page);
-  //       setTotalPages(data.total_pages);
-  //     } catch (e) {
-  //       alert("Couldn't fetch project data");
-  //     }
-  //   }
 
   function prevPage() {
     fetchProjects(currentPage - 1);

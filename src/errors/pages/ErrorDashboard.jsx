@@ -16,6 +16,8 @@ export default function ErrorDashboard(props) {
   }
   const [loadedProjects, setLoadedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(selection);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(3);
 
   useEffect(() => {
     fetchProjects();
@@ -30,22 +32,22 @@ export default function ErrorDashboard(props) {
       // console.log("projects:", data);
 
       // dummy data
-      let data = {
+      let dummy = {
         status: "success",
         data: {
           projects: [
             {
-              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5c53e87bcd1",
+              uuid: "e61d40f6-04c5-46a6-b24f-8f9abfa7cc2a",
               name: "React Shopping Cart App",
               issue_count: 3,
             },
             {
-              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5c53e87234",
+              uuid: "0b9c13ed-8b72-42a4-b4b0-35f15c13be33",
               name: "Express Shopping Cart App",
               issue_count: 5,
             },
             {
-              uuid: "6f4c2c48-bf42-4f8e-ae1c-f5444447bcd1",
+              uuid: "c8d95fbf-63a7-479f-988d-f3fdf3a63489",
               name: "Flask App",
               issue_count: 2,
             },
@@ -56,14 +58,14 @@ export default function ErrorDashboard(props) {
       };
 
       if (!selectedProject) {
-        setSelectedProject(data.projects[0]);
+        setSelectedProject(dummy.data.projects[0]);
       }
 
-      setLoadedProjects(data.projects);
-      setCurrentPage(data.current_page);
-      setTotalPages(data.total_pages);
+      setLoadedProjects(dummy.data.projects);
+      setCurrentPage(dummy.data.current_page);
+      setTotalPages(dummy.data.total_pages);
     } catch (e) {
-      alert("Couldn't fetch project data");
+      alert(e.message);
     }
   }
 
@@ -81,6 +83,10 @@ export default function ErrorDashboard(props) {
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
             projects={loadedProjects}
+            fetchProjects={fetchProjects}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
           />
         </GridItem>
 
@@ -88,8 +94,6 @@ export default function ErrorDashboard(props) {
           <Outlet
             context={{
               selectedProject,
-              setSelectedProject,
-              projects: loadedProjects,
             }}
           />
         </GridItem>

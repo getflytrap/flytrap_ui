@@ -7,9 +7,9 @@ import FilterBar from "../components/FilterBar";
 
 const ERROR_LIMIT_PER_PAGE = 10;
 
-export default function ErrorDisplay({ selectedProject, setSelectedProject }) {
+export default function ErrorDisplay() {
   const location = useLocation();
-  const { projects } = useOutletContext();
+  const { selectedProject } = useOutletContext();
 
   const [currentErrors, setCurrentErrors] = useState([]);
   const [selectedHandled, setSelectedHandled] = useState(
@@ -34,7 +34,9 @@ export default function ErrorDisplay({ selectedProject, setSelectedProject }) {
   }
 
   async function fetchErrors(pageToRequest = 1) {
-    console.log(convertToTimeStamp(selectedTime));
+    if (!selectedProject) {
+      return;
+    }
 
     try {
       console.log("selected Project:", selectedProject);
