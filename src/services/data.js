@@ -102,7 +102,7 @@ export const getErrors = async (
     };
     console.log("from getErrors, projectid", projectId);
 
-    const { data } = await apiClient.get(`/api/projects/${projectId}/errors`, {
+    const { data } = await apiClient.get(`/api/projects/${projectId}/issues`, {
       params,
     });
 
