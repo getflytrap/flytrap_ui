@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { getErrors } from "../../services/data";
+import { getErrors, getAllProjects } from "../../services/data";
 
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
 
 const ERROR_LIMIT_PER_PAGE = 10;
 
-export default function ErrorDashboard({ selectedProject }) {
+export default function ErrorDashboard({ selectedProject, setSelectedProject }) {
   const location = useLocation();
 
   const [currentErrors, setCurrentErrors] = useState([]);
@@ -35,20 +35,27 @@ export default function ErrorDashboard({ selectedProject }) {
   async function fetchErrors(pageToRequest = 1) {
     console.log(convertToTimeStamp(selectedTime));
 
+    if (!selectedProject) {
+      const { data } = await getAllProjects(1, 1);
+      setSelectedProject(data.projects[0])
+    }
+
     try {
-      const data = await getErrors(
-        selectedProject?.project_id,
+      console.log('selected Project:', selectedProject)
+      const { data } = await getErrors(
+        selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled),
         convertToTimeStamp(selectedTime),
         pageToRequest,
         ERROR_LIMIT_PER_PAGE
       );
 
+      console.log('from error dashboard', data);
       setCurrentErrors(data.errors);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
     } catch (err) {
-      alert(err.message);
+      // alert(err.message);
     }
   }
 

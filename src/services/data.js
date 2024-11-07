@@ -100,10 +100,13 @@ export const getErrors = async (
       page: currentPage,
       limit: limit,
     };
+    console.log('from getErrors, projectid', projectId);
 
     const { data } = await apiClient.get(`/api/projects/${projectId}/errors`, {
       params,
     });
+
+    console.log('from getErrors', data);
 
     return {
       errors: data.errors,
