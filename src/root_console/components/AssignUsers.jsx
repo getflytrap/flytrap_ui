@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { 
-  Box, 
-  Select, 
-  VStack, 
-  Text, 
+import {
+  Box,
+  Select,
+  VStack,
+  Text,
   HStack,
   IconButton,
   Button,
@@ -11,11 +11,11 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
-import { 
-  getAllProjects, 
-  getUsersForProject, 
+import {
+  getAllProjects,
+  getUsersForProject,
   addUserToProject,
-  removeUserFromProject 
+  removeUserFromProject,
 } from "../../services/data";
 
 const AssignUsers = ({ users }) => {
