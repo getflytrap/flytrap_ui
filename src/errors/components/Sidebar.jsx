@@ -20,8 +20,12 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
 
   async function fetchProjects(pageToRequest = 1) {
     try {
-      const data = await getAllProjects(pageToRequest, PROJECT_LIMIT_PER_PAGE);
-      console.log(data.projects);
+      const { data } = await getAllProjects(pageToRequest, PROJECT_LIMIT_PER_PAGE);
+      console.log('projects:', data);
+
+      if (!selectedProject) {
+        setSelectedProject(data.projects[0])
+      }
 
       setLoadedProjects(data.projects);
       setCurrentPage(data.current_page);
@@ -47,21 +51,22 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
   return (
     <>
       <Stack spacing={3} color="whiteAlpha.900">
+        {console.log('loaded projects: ', loadedProjects)}
         {loadedProjects.map((project) => (
           <Box
             onClick={() => handleClick(project)}
-            key={project.project_id}
+            key={project.uuid}
             borderRadius="20px"
             bg={
-              selectedProject.project_id === project.project_id
+              selectedProject.uuid === project.uuid
                 ? "blue.100"
                 : "transparent"
             }
             border={
-              selectedProject.project_id === project.project_id ? "2px" : "1px"
+              selectedProject.uuid === project.uuid ? "2px" : "1px"
             }
             borderColor={
-              selectedProject.project_id === project.project_id
+              selectedProject.uuid === project.uuid
                 ? "blue.500"
                 : "transparent"
             }
@@ -71,17 +76,17 @@ export default function Sidebar({ selectedProject, setSelectedProject }) {
             }}
             cursor="pointer"
             color={
-              selectedProject.project_id === project.project_id
+              selectedProject.uuid === project.uuid
                 ? "black"
                 : "inherit"
             }
             fontWeight={
-              selectedProject.project_id === project.project_id
+              selectedProject.uuid === project.uuid
                 ? "bold"
                 : "normal"
             }
           >
-            <Text textAlign="left">{`${project.project_name} (${project.issue_count})`}</Text>
+            <Text textAlign="left">{`${project.name} (${project.issue_count})`}</Text>
           </Box>
         ))}
       </Stack>

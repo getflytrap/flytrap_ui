@@ -44,7 +44,7 @@ const App = () => {
             >
               <Route
                 index
-                element={<ErrorDashboard selectedProject={selectedProject} />}
+                element={<ErrorDashboard selectedProject={selectedProject} setSelectedProject={setSelectedProject} />}
               />
               <Route
                 path=":id"
