@@ -19,6 +19,7 @@ const ErrorsTable = ({
   errors,
   selectedHandled,
   selectedTime,
+  selectedProject,
   prevPage,
   nextPage,
   currentPage,
@@ -60,7 +61,7 @@ const ErrorsTable = ({
               <Td>
                 <Link
                   as={RouterLink}
-                  to={`/errors/${error.uuid}`}
+                  to={`${selectedProject.uuid}/error/${error.uuid}`}
                   _hover={{ color: "blue.500", cursor: "pointer" }}
                   state={{ time: selectedTime, handled: selectedHandled }}
                 >

@@ -20,7 +20,9 @@ const App = () => {
   const { access_token, login, logout } = useAuth();
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: !!access_token, access_token, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!access_token, access_token, login, logout }}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -31,7 +33,7 @@ const App = () => {
             <Route path="/errors" element={<ErrorDashboard />}>
               <Route index element={<ErrorDisplay />} />
               <Route
-                path=":id"
+                path=":pid/error/:eid"
                 element={
                   <ErrorDetails
                   // selectedProject={selectedProject}
