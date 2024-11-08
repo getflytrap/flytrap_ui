@@ -12,25 +12,23 @@ import {
   Flex,
   Center,
   Spinner,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import WarningModal from "../../shared/WarningModal";
-import { deleteError } from "../../services/data";
+import { deleteError, getError } from "../../services/data";
 
-const ErrorDetails = ({
-  selectedProject,
-  setSelectedProject,
-  projects,
-}) => {
+const ErrorDetails = () => {
   const [fetchedError, setFetchedError] = useState({});
   const [loadingError, setLoadingError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [resolved, setResolved] = useState(false);
   const location = useLocation();
 
-  const { id } = useParams();
+  const { pid, eid } = useParams();
+  const projectId = pid;
+  const errorId = eid;
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -41,22 +39,24 @@ const ErrorDetails = ({
       setIsLoading(true);
 
       async function fetchData() {
-        // const data = await getError(selectedProject.project_id, id);
+        console.log("ids", projectId, errorId);
 
-        // dummy data
-        const data = {
-          error_id: 1,
-          name: "Database Connection Error",
-          message: "Unable to connect to the database.",
-          created_at: "2024-10-03T09:20:00Z",
-          line_number: 45,
-          col_number: 15,
-          project_id: "123e4567-e89b-12d3-a456-426614174000",
-          stack_trace:
-            'Traceback (most recent call last):\n  File "app.py", line 23, in connect_db\n    connection = psycopg2.connect(...)\n  File "psycopg2/__init__.py", line 164, in connect\n    raise OperationalError(...)\nOperationalError: could not connect to server: Connection refused\n\tIs the server running on host \'localhost\' (127.0.0.1) and accepting\n\tTCP/IP connections on port 5432?',
-          handled: false,
-          resolved: false,
-        };
+        const { data } = await getError(projectId, errorId);
+        console.log("data in error details", data);
+
+        // const data = {
+        //   error_id: 1,
+        //   name: "Database Connection Error",
+        //   message: "Unable to connect to the database.",
+        //   created_at: "2024-10-03T09:20:00Z",
+        //   line_number: 45,
+        //   col_number: 15,
+        //   project_id: "123e4567-e89b-12d3-a456-426614174000",
+        //   stack_trace:
+        //     'Traceback (most recent call last):\n  File "app.py", line 23, in connect_db\n    connection = psycopg2.connect(...)\n  File "psycopg2/__init__.py", line 164, in connect\n    raise OperationalError(...)\nOperationalError: could not connect to server: Connection refused\n\tIs the server running on host \'localhost\' (127.0.0.1) and accepting\n\tTCP/IP connections on port 5432?',
+        //   handled: false,
+        //   resolved: false,
+        // };
         setFetchedError(data);
         setResolved(data.resolved);
 
@@ -81,11 +81,7 @@ const ErrorDetails = ({
     let resolvedPayload = resolved ? false : true;
 
     try {
-      const data = await toggleError(
-        selectedProject.project_id,
-        id,
-        resolvedPayload
-      );
+      const data = await toggleError(projectId, errorId, resolvedPayload);
 
       // so that 'resolved' is only updated in state if API call was successful
       setResolved(resolvedPayload);
@@ -96,7 +92,7 @@ const ErrorDetails = ({
 
   async function removeError() {
     try {
-      const data = await deleteError(selectedProject.project_id, id);
+      const data = await deleteError(projectId, errorId);
       toast({
         title: "Successful Deletion",
         description: "Error successfully deleted",
@@ -163,7 +159,7 @@ const ErrorDetails = ({
   const handleReturnToErrors = () => {
     navigate("/errors", {
       state: {
-        project_id: fetchedError.project_id,
+        project_id: fetchedError.uuid,
         handled: location.state?.handled,
         time: location.state?.time,
       },
@@ -227,13 +223,13 @@ const ErrorDetails = ({
           <Tbody>
             {existingProperties.map(([key, value], index) => (
               <Tr key={key} bg={index % 2 === 0 ? "gray.50" : "white"}>
-              <Td fontWeight="bold" paddingY={2}>
-                {key}
-              </Td>
-              <Td p="5px 50px" whiteSpace="normal">
-                {value}
-              </Td>
-            </Tr>
+                <Td fontWeight="bold" paddingY={2}>
+                  {key}
+                </Td>
+                <Td p="5px 50px" whiteSpace="normal">
+                  {value}
+                </Td>
+              </Tr>
             ))}
           </Tbody>
         </Table>
@@ -254,6 +250,6 @@ const ErrorDetails = ({
       </Box>
     </Box>
   );
-}
+};
 
-export default ErrorDetails
+export default ErrorDetails;

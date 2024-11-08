@@ -126,6 +126,7 @@ export const deleteErrors = async (projectId) => {
 };
 
 export const getError = async (projectId, errorId) => {
+  console.log("ids in getError", projectId, errorId);
   try {
     const { data } = await apiClient.get(
       `/api/projects/${projectId}/errors/${errorId}`

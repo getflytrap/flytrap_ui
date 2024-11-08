@@ -109,6 +109,7 @@ export default function ErrorDisplay() {
         errors={currentErrors}
         selectedHandled={selectedHandled}
         selectedTime={selectedTime}
+        selectedProject={selectedProject}
         prevPage={prevPage}
         nextPage={nextPage}
         currentPage={currentPage}

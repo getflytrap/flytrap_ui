@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack, Text, Button, HStack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-const PROJECT_LIMIT_PER_PAGE = 10;
-
 export default function Sidebar({
   selectedProject,
   setSelectedProject,
