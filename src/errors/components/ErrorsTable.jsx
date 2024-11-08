@@ -24,7 +24,7 @@ const ErrorsTable = ({
   currentPage,
   totalPages,
 }) => {
-  console.log("errors in errors table", errors);
+  console.log("pages", currentPage, totalPages);
   if (!errors?.length) {
     return (
       <Center>
@@ -64,7 +64,7 @@ const ErrorsTable = ({
                   _hover={{ color: "blue.500", cursor: "pointer" }}
                   state={{ time: selectedTime, handled: selectedHandled }}
                 >
-                  {error.name}
+                  {error.name || "Un-named Error"}
                 </Link>
               </Td>
               {/* <Td>{error.type}</Td> */}

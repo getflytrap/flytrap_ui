@@ -50,8 +50,8 @@ export default function ErrorDisplay() {
 
       console.log("from error dashboard", data);
       setCurrentErrors(data.errors);
-      setCurrentPage(data.current_page);
-      setTotalPages(data.total_pages);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
     } catch (err) {
       // alert(err.message);
     }
