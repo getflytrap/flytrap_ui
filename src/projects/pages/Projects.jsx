@@ -83,22 +83,22 @@ export default function Projects({ setSelectedProject }) {
   //   fetchProjects();
   // }, []);
 
-  async function fetchProjects(page = 1) {
-    try {
-      setLoadingError(false);
-      setIsLoading(true);
-      const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
-      console.log("projects data:", data);
-      setLoadedProjects(data.projects);
-      setCurrentPage(data.current_page);
-      setTotalPages(data.total_pages);
+  // async function fetchProjects(page = 1) {
+  //   try {
+  //     setLoadingError(false);
+  //     setIsLoading(true);
+  //     const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
+  //     console.log("projects data:", data);
+  //     setLoadedProjects(data.projects);
+  //     setCurrentPage(data.current_page);
+  //     setTotalPages(data.total_pages);
 
-      setIsLoading(false);
-    } catch (e) {
-      setLoadingError(e.message);
-      setIsLoading(false);
-    }
-  }
+  //     setIsLoading(false);
+  //   } catch (e) {
+  //     setLoadingError(e.message);
+  //     setIsLoading(false);
+  //   }
+  // }
 
   async function fetchProjectsForUser(page = 1) {
     try {
@@ -107,8 +107,8 @@ export default function Projects({ setSelectedProject }) {
       const { data } = await getProjectsForUser();
       console.log("projects for user data:", data);
       setLoadedProjects(data.projects);
-      // setCurrentPage(data.current_page);
-      // setTotalPages(data.total_pages);
+      setCurrentPage(data.current_page);
+      setTotalPages(data.total_pages);
 
       setIsLoading(false);
     } catch (e) {

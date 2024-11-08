@@ -7,7 +7,7 @@ export default function Sidebar({
   selectedProject,
   setSelectedProject,
   projects,
-  fetchProjects,
+  fetchProjectsForUser,
   currentPage,
   setCurrentPage,
   totalPages,
@@ -15,11 +15,11 @@ export default function Sidebar({
   const navigate = useNavigate();
 
   function prevPage() {
-    fetchProjects(currentPage - 1);
+    fetchProjectsForUser(currentPage - 1);
   }
 
   function nextPage() {
-    fetchProjects(currentPage + 1);
+    fetchProjectsForUser(currentPage + 1);
   }
 
   const handleClick = (project) => {
