@@ -14,10 +14,6 @@ const FilterBar = ({
     setSelectedHandled(value);
   };
 
-  const handleSignOut = () => {
-    // Handle sign out logic here
-  };
-
   return (
     <Box p={4} bg="gray.100">
       <Flex alignItems="center">

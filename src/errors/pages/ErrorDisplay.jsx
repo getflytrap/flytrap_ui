@@ -42,7 +42,7 @@ export default function ErrorDisplay() {
       console.log("selected Project:", selectedProject);
       const { data } = await getErrors(
         selectedProject?.uuid,
-        convertHandledToBoolean(selectedHandled),
+        convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime),
         pageToRequest,
         ERROR_LIMIT_PER_PAGE
@@ -72,6 +72,9 @@ export default function ErrorDisplay() {
     let pastDate;
 
     switch (period) {
+      case "Today":
+        pastDate = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000);
+        break;
       case "Last 7 days":
         pastDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
@@ -85,7 +88,7 @@ export default function ErrorDisplay() {
         pastDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
         break;
       case "Forever":
-        pastDate = new Date(0);
+        pastDate = new Date(now.getTime() - 10000 * 24 * 60 * 60 * 1000);
         break;
       default:
         throw new Error("Invalid period provided.");
