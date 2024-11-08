@@ -24,6 +24,7 @@ const ErrorsTable = ({
   currentPage,
   totalPages,
 }) => {
+  console.log("pages", currentPage, totalPages);
   if (!errors?.length) {
     return (
       <Center>
@@ -47,7 +48,7 @@ const ErrorsTable = ({
         <Thead>
           <Tr>
             <Th>Error Title</Th>
-            <Th>Type</Th>
+            {/* <Th>Type</Th> */}
             <Th>Handled</Th>
             <Th>Time</Th>
             <Th>Status</Th>
@@ -59,14 +60,14 @@ const ErrorsTable = ({
               <Td>
                 <Link
                   as={RouterLink}
-                  to={`/errors/${error.error_id}`}
+                  to={`/errors/${error.uuid}`}
                   _hover={{ color: "blue.500", cursor: "pointer" }}
                   state={{ time: selectedTime, handled: selectedHandled }}
                 >
-                  {error.name}
+                  {error.name || "Un-named Error"}
                 </Link>
               </Td>
-              <Td>{error.type}</Td>
+              {/* <Td>{error.type}</Td> */}
               <Td>
                 <Box
                   as="span"
