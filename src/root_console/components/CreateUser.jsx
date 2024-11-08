@@ -6,7 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { createAccount } from "../../services/data";
 
@@ -16,6 +16,14 @@ const CreateUser = ({ setUsers }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+
+  const resetForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setConfirmedPassword("");
+  };
 
   const toast = useToast();
   // TODO: clear form after successful creation
@@ -38,6 +46,9 @@ const CreateUser = ({ setUsers }) => {
       };
 
       setUsers((prevUsers) => [...prevUsers, newUser]);
+
+      resetForm();
+
       toast({
         title: "Successful Creation",
         description: "User Successfully Created",
@@ -114,7 +125,7 @@ const CreateUser = ({ setUsers }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-    
+
     postNewUserData();
   };
 

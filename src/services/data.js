@@ -280,7 +280,7 @@ export const getProjectsForUser = async () => {
   console.log("users own uuid:", user_uuid);
 
   try {
-    const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
+    const { data } = await apiClient.get(`/api/users/${user_uuid}/projects`);
     return data;
   } catch (e) {
     console.error("Error fetching projects for user:", e);

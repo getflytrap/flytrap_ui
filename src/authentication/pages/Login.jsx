@@ -24,7 +24,6 @@ const Login = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [userIsRootUser, setUserIsRootUser] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,12 +42,7 @@ const Login = () => {
           duration: 4000,
           isClosable: true,
         });
-
-        if (userIsRootUser) {
-          navigate("/root-console");
-        } else {
-          navigate("/");
-        }
+        navigate("/");
       }
 
       postData();
@@ -106,21 +100,6 @@ const Login = () => {
         <Heading as="h3" size="md" mb={4} textAlign="center">
           Sign in as:
         </Heading>
-        <RadioGroup
-          onChange={(value) => {
-            setUserIsRootUser(value === "root");
-          }}
-          value={userIsRootUser ? "root" : "account"}
-        >
-          <Stack spacing={4}>
-            <HStack justify="center">
-              <Radio value="root">Root User</Radio>
-              <Radio value="account" selected>
-                Account User
-              </Radio>
-            </HStack>
-          </Stack>
-        </RadioGroup>
 
         <FormControl isRequired mt={4}>
           <FormLabel>Email</FormLabel>
