@@ -9,7 +9,9 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const access_token = JSON.parse(localStorage.getItem("userData"))?.access_token; // localStorage is used for now
+    const access_token = JSON.parse(
+      localStorage.getItem("userData")
+    )?.access_token; // localStorage is used for now
     if (access_token) {
       config.headers["Authorization"] = `Bearer ${access_token}`;
       config.headers["Content-Type"] = "application/json";
@@ -99,18 +101,15 @@ export const getErrors = async (
       page: currentPage,
       limit: limit,
     };
-    console.log("from getErrors, projectid", projectId);
 
     const { data } = await apiClient.get(`/api/projects/${projectId}/issues`, {
       params,
     });
 
-    console.log("from getErrors", data);
-
     return {
-      errors: data.errors,
-      totalPages: data.total_pages,
-      currentPage: data.current_page,
+      errors: data.data.issues,
+      totalPages: data.data.total_pages,
+      currentPage: data.data.current_page,
     };
   } catch (e) {
     console.error("Error fetching errors:", e);

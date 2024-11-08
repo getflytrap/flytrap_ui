@@ -40,7 +40,7 @@ export default function ErrorDisplay() {
 
     try {
       console.log("selected Project:", selectedProject);
-      const { data } = await getErrors(
+      const data = await getErrors(
         selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime),
