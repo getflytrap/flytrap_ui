@@ -41,10 +41,9 @@ const ErrorDetails = () => {
       async function fetchData() {
         console.log("ids", projectId, errorId);
 
-        const data = await getError(projectId, errorId);
+        const { data } = await getError(projectId, errorId);
         console.log("data in error details", data);
 
-        // dummy data
         // const data = {
         //   error_id: 1,
         //   name: "Database Connection Error",
