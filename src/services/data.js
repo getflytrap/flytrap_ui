@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const baseUrl = import.meta.env.VITE_BASEURL;
 
@@ -260,15 +261,24 @@ export const getUsersForProject = async (projectId) => {
   }
 };
 
-// export const getProjectsForUser = async () => {
-//   try {
-//     const access_token = JSON.parse(
-//       localStorage.getItem("userData")
-//     )?.access_token;
-//     const user_uuid = access_token["user_uuid"];
-//     const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
-//     return data;
-//   } catch (e) {
-//     console.error("Error fetching projects for user:", e);
-//   }
-// };
+export const getProjectsForUser = async () => {
+  let user_uuid;
+
+  try {
+    const access_token = JSON.parse(
+      localStorage.getItem("userData")
+    )?.access_token;
+    const decodedToken = jwt_decode(access_token);
+    console.log(decodedToken);
+    user_uuid = access_token["user_uuid"];
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }
+
+  try {
+    const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
+    return data;
+  } catch (e) {
+    console.error("Error fetching projects for user:", e);
+  }
+};
