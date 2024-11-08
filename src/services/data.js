@@ -46,7 +46,7 @@ apiClient.interceptors.response.use(
 // Projects
 export const getAllProjects = async () => {
   try {
-    const { data } = await apiClient.get("/api/projects/");
+    const { data } = await apiClient.get("/api/projects");
     return data;
   } catch (e) {
     console.error("Error fetching projects:", e);
@@ -55,7 +55,7 @@ export const getAllProjects = async () => {
 
 export const createProject = async (projectName) => {
   try {
-    const { data } = await apiClient.post("/api/projects/", {
+    const { data } = await apiClient.post("/api/projects", {
       name: projectName,
     });
     return data;
@@ -163,7 +163,7 @@ export const deleteError = async (projectId, errorId) => {
 // Users
 export const getUsers = async () => {
   try {
-    const { data } = await apiClient.get("/api/users/");
+    const { data } = await apiClient.get("/api/users");
     return data;
   } catch (e) {
     console.error("Error fetching users:", e);
@@ -178,7 +178,7 @@ export const createAccount = async (
   confirmed_password
 ) => {
   try {
-    const { data } = await apiClient.post("/api/users/", {
+    const { data } = await apiClient.post("/api/users", {
       first_name,
       last_name,
       email,
@@ -225,7 +225,7 @@ export const postLoginData = async (email, password) => {
 
 export const addUserToProject = async (projectId, userId) => {
   try {
-    const { data } = await apiClient.post(`/api/projects/${projectId}/users/`, {
+    const { data } = await apiClient.post(`/api/projects/${projectId}/users`, {
       user_uuid: userId,
     });
     return data;
@@ -253,7 +253,7 @@ export const removeUserFromProject = async (projectId, userId) => {
 
 export const getUsersForProject = async (projectId) => {
   try {
-    const { data } = await apiClient.get(`/api/projects/${projectId}/users/`);
+    const { data } = await apiClient.get(`/api/projects/${projectId}/users`);
     return data;
   } catch (e) {
     console.error("Error fetching users for project:", e);
