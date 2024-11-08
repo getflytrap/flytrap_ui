@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import Sidebar from "../components/Sidebar";
-import { getAllProjects } from "../../services/data";
+import { getAllProjects, getProjectsForUser } from "../../services/data";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -20,42 +20,61 @@ export default function ErrorDashboard(props) {
   const [totalPages, setTotalPages] = useState(3);
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjectsForUser();
   }, []);
 
-  async function fetchProjects(pageToRequest = 1) {
+  // async function fetchProjects(pageToRequest = 1) {
+  //   try {
+  //     const { data } = await getAllProjects(
+  //       pageToRequest,
+  //       PROJECT_LIMIT_PER_PAGE
+  //     );
+  //     // console.log("projects:", data);
+
+  //     // dummy data
+  //     // let dummy = {
+  //     //   status: "success",
+  //     //   data: {
+  //     //     projects: [
+  //     //       {
+  //     //         uuid: "e61d40f6-04c5-46a6-b24f-8f9abfa7cc2a",
+  //     //         name: "React Shopping Cart App",
+  //     //         issue_count: 3,
+  //     //       },
+  //     //       {
+  //     //         uuid: "0b9c13ed-8b72-42a4-b4b0-35f15c13be33",
+  //     //         name: "Express Shopping Cart App",
+  //     //         issue_count: 5,
+  //     //       },
+  //     //       {
+  //     //         uuid: "c8d95fbf-63a7-479f-988d-f3fdf3a63489",
+  //     //         name: "Flask App",
+  //     //         issue_count: 2,
+  //     //       },
+  //     //     ],
+  //     //     total_pages: 1,
+  //     //     current_page: 1,
+  //     //   },
+  //     // };
+
+  //     if (!selectedProject) {
+  //       setSelectedProject(data.projects[0]);
+  //     }
+
+  //     setLoadedProjects(data.projects);
+  //     setCurrentPage(data.current_page);
+  //     setTotalPages(data.total_pages);
+  //   } catch (e) {
+  //     alert(e.message);
+  //   }
+  // }
+
+  async function fetchProjectsForUser(pageToRequest = 1) {
     try {
-      const { data } = await getAllProjects(
+      const { data } = await getProjectsForUser(
         pageToRequest,
         PROJECT_LIMIT_PER_PAGE
       );
-      // console.log("projects:", data);
-
-      // dummy data
-      // let dummy = {
-      //   status: "success",
-      //   data: {
-      //     projects: [
-      //       {
-      //         uuid: "e61d40f6-04c5-46a6-b24f-8f9abfa7cc2a",
-      //         name: "React Shopping Cart App",
-      //         issue_count: 3,
-      //       },
-      //       {
-      //         uuid: "0b9c13ed-8b72-42a4-b4b0-35f15c13be33",
-      //         name: "Express Shopping Cart App",
-      //         issue_count: 5,
-      //       },
-      //       {
-      //         uuid: "c8d95fbf-63a7-479f-988d-f3fdf3a63489",
-      //         name: "Flask App",
-      //         issue_count: 2,
-      //       },
-      //     ],
-      //     total_pages: 1,
-      //     current_page: 1,
-      //   },
-      // };
 
       if (!selectedProject) {
         setSelectedProject(data.projects[0]);
@@ -83,7 +102,7 @@ export default function ErrorDashboard(props) {
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
             projects={loadedProjects}
-            fetchProjects={fetchProjects}
+            fetchProjectsForUser={fetchProjectsForUser}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}

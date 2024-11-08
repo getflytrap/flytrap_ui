@@ -37,7 +37,8 @@ import {
   renameProject,
   deleteProject,
   createProject,
-  getAllProjects,
+  // getAllProjects,
+  getProjectsForUser,
 } from "../../services/data";
 import WarningModal from "../../shared/WarningModal";
 
@@ -75,15 +76,36 @@ export default function Projects({ setSelectedProject }) {
   } = useDisclosure();
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjectsForUser();
   }, []);
 
-  async function fetchProjects(page = 1) {
+  // useEffect(() => {
+  //   fetchProjects();
+  // }, []);
+
+  // async function fetchProjects(page = 1) {
+  //   try {
+  //     setLoadingError(false);
+  //     setIsLoading(true);
+  //     const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
+  //     console.log("projects data:", data);
+  //     setLoadedProjects(data.projects);
+  //     setCurrentPage(data.current_page);
+  //     setTotalPages(data.total_pages);
+
+  //     setIsLoading(false);
+  //   } catch (e) {
+  //     setLoadingError(e.message);
+  //     setIsLoading(false);
+  //   }
+  // }
+
+  async function fetchProjectsForUser(page = 1) {
     try {
       setLoadingError(false);
       setIsLoading(true);
-      const { data } = await getAllProjects(page, PROJECT_LIMIT_PER_PAGE);
-      console.log("projects data:", data);
+      const { data } = await getProjectsForUser();
+      console.log("projects for user data:", data);
       setLoadedProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
@@ -96,11 +118,11 @@ export default function Projects({ setSelectedProject }) {
   }
 
   function prevPage() {
-    fetchProjects(currentPage - 1);
+    fetchProjectsForUser(currentPage - 1);
   }
 
   function nextPage() {
-    fetchProjects(currentPage + 1);
+    fetchProjectsForUser(currentPage + 1);
   }
 
   const handleNewProjectClick = () => {

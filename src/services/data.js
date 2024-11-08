@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const baseUrl = import.meta.env.VITE_BASEURL;
 
@@ -260,7 +261,24 @@ export const getUsersForProject = async (projectId) => {
   }
 };
 
-export const getProjectsForUser = async (user_uuid) => {
+export const getProjectsForUser = async () => {
+  let user_uuid;
+
+  try {
+    const access_token = JSON.parse(
+      localStorage.getItem("userData")
+    )?.access_token;
+    console.log("access_token", access_token);
+
+    const decodedToken = jwtDecode(access_token);
+    console.log("decoded_token", decodedToken);
+    user_uuid = decodedToken["user_uuid"];
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }
+
+  console.log("users own uuid:", user_uuid);
+
   try {
     const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
     return data;
