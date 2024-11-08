@@ -260,11 +260,15 @@ export const getUsersForProject = async (projectId) => {
   }
 };
 
-export const getProjectsForUser = async (user_uuid) => {
-  try {
-    const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
-    return data;
-  } catch (e) {
-    console.error("Error fetching projects for user:", e);
-  }
-};
+// export const getProjectsForUser = async () => {
+//   try {
+//     const access_token = JSON.parse(
+//       localStorage.getItem("userData")
+//     )?.access_token;
+//     const user_uuid = access_token["user_uuid"];
+//     const { data } = await apiClient.get(`/api/${user_uuid}/projects`);
+//     return data;
+//   } catch (e) {
+//     console.error("Error fetching projects for user:", e);
+//   }
+// };

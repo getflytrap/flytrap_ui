@@ -37,7 +37,8 @@ import {
   renameProject,
   deleteProject,
   createProject,
-  getAllProjects,
+  // getAllProjects,
+  getProjectsForUser,
 } from "../../services/data";
 import WarningModal from "../../shared/WarningModal";
 
@@ -75,8 +76,12 @@ export default function Projects({ setSelectedProject }) {
   } = useDisclosure();
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjectsForUser();
   }, []);
+
+  // useEffect(() => {
+  //   fetchProjects();
+  // }, []);
 
   async function fetchProjects(page = 1) {
     try {
@@ -95,13 +100,38 @@ export default function Projects({ setSelectedProject }) {
     }
   }
 
+  async function fetchProjectsForUser(page = 1) {
+    try {
+      setLoadingError(false);
+      setIsLoading(true);
+      const { data } = await getProjectsForUser();
+      console.log("projects for user data:", data);
+      setLoadedProjects(data.projects);
+      // setCurrentPage(data.current_page);
+      // setTotalPages(data.total_pages);
+
+      setIsLoading(false);
+    } catch (e) {
+      setLoadingError(e.message);
+      setIsLoading(false);
+    }
+  }
+
   function prevPage() {
-    fetchProjects(currentPage - 1);
+    fetchProjectsForUser(currentPage - 1);
   }
 
   function nextPage() {
-    fetchProjects(currentPage + 1);
+    fetchProjectsForUser(currentPage + 1);
   }
+
+  // function prevPage() {
+  //   fetchProjects(currentPage - 1);
+  // }
+
+  // function nextPage() {
+  //   fetchProjects(currentPage + 1);
+  // }
 
   const handleNewProjectClick = () => {
     onNewProjectOpen();
