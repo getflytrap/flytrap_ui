@@ -67,7 +67,12 @@ const AssignUsers = ({ users }) => {
         prevUsers.filter((user) => user.id !== user_id)
       );
 
-      // TODO: update state
+      console.log("projects", projects, project_id, user_id);
+      console.log("cu", currentUsers);
+
+      setCurrentUsers((prevUsers) =>
+        prevUsers.filter((user) => user.uuid !== user_id)
+      );
 
       toast({
         title: "User removed.",
