@@ -125,14 +125,6 @@ export default function Projects({ setSelectedProject }) {
     fetchProjectsForUser(currentPage + 1);
   }
 
-  // function prevPage() {
-  //   fetchProjects(currentPage - 1);
-  // }
-
-  // function nextPage() {
-  //   fetchProjects(currentPage + 1);
-  // }
-
   const handleNewProjectClick = () => {
     onNewProjectOpen();
   };
