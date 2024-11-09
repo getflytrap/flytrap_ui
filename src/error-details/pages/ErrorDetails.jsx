@@ -40,20 +40,20 @@ const ErrorDetails = () => {
       async function fetchData() {
         console.log("ids", projectId, errorId);
 
-        // const { data } = await getError(projectId, errorId);
+        const { data } = await getError(projectId, errorId);
 
-        const data = {
-          uuid: "sample-uuid-1234-5678",
-          name: "Database Connection Error",
-          message: "Unable to connect to the database.",
-          created_at: "2024-10-03T09:20:00Z",
-          line_number: 45,
-          col_number: 15,
-          project_uuid: "123e4567-e89b-12d3-a456-426614174000",
-          stack_trace: "Traceback (most recent call last):...",
-          handled: false,
-          resolved: false,
-        };
+        // const data = {
+        //   uuid: "sample-uuid-1234-5678",
+        //   name: "DUMMY Database Connection Error",
+        //   message: "Unable to connect to the database.",
+        //   created_at: "2024-10-03T09:20:00Z",
+        //   line_number: 45,
+        //   col_number: 15,
+        //   project_uuid: "123e4567-e89b-12d3-a456-426614174000",
+        //   stack_trace: "Traceback (most recent call last):...",
+        //   handled: false,
+        //   resolved: false,
+        // };
 
         setFetchedError(data);
         setResolved(data.resolved);
