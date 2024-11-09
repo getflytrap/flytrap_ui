@@ -13,6 +13,7 @@ import ManageUsers from "./root_console/pages/ManageUsers";
 import AuthRequired from "./authentication/components/AuthRequired";
 import MainLayout from "./shared/MainLayout";
 import Projects from "./projects/pages/Projects";
+import ChangePassword from "./authentication/pages/ChangePassword";
 import "./App.css";
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
           {/* <Route element={<AuthRequired/>} /> */}
           <Route element={<MainLayout />}>

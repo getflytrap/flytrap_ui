@@ -13,6 +13,7 @@ import {
   Text,
   Divider,
   useToast,
+  Link,
 } from "@chakra-ui/react";
 import {jwtDecode } from "jwt-decode";
 
@@ -56,7 +57,7 @@ const Login = () => {
   };
 
   const handleChangePassword = () => {
-    alert("This will be replaced with a 'Change Password' modal");
+    navigate("/change-password");
   };
 
   return (

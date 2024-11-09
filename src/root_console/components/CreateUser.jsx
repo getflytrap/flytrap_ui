@@ -17,6 +17,8 @@ const CreateUser = ({ setUsers }) => {
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
 
+  const toast = useToast();
+
   const resetForm = () => {
     setFirstName("");
     setLastName("");
@@ -25,8 +27,6 @@ const CreateUser = ({ setUsers }) => {
     setConfirmedPassword("");
   };
 
-  const toast = useToast();
-  // TODO: clear form after successful creation
   async function postNewUserData() {
     try {
       const data = await createAccount(
