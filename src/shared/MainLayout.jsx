@@ -14,16 +14,31 @@ const MainLayout = () => {
   };
 
   const getButtonColor = (path) => {
-    return location.pathname === path ? "purple" : "gray"; // Set color based on the current path
+    return location.pathname === path ? "purple" : "gray";
   };
 
   return (
-    <Box>
-      <Flex as="header" direction="row" padding="1rem" whiteSpace="nowrap">
+    <Box
+      width="100vw"
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      maxWidth={1280}
+      padding="0 2rem"
+    >
+      <Flex
+        as="header"
+        direction="row"
+        width="100%"
+        justify="space-between"
+        padding="1rem"
+        whiteSpace="nowrap"
+        alignItems="center"
+      >
         <Heading size="2xl" textAlign="center">
           Flytrap
         </Heading>
-        <Flex width="100%" justifyContent="flex-end" marginTop="1rem">
+        <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/">
             <Button colorScheme={getButtonColor("/")} mx="10px">
               Projects
@@ -39,7 +54,14 @@ const MainLayout = () => {
           </Button>
         </Flex>
       </Flex>
-      <Box padding="1rem">
+      <Box
+        padding="1rem"
+        width="100%"
+        flex="1"
+        overflowY="auto"
+        display="flex"
+        flexDirection="column"
+      >
         <Outlet />
       </Box>
     </Box>
