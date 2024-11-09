@@ -71,10 +71,33 @@ export default function ErrorDashboard(props) {
 
   async function fetchProjectsForUser(pageToRequest = 1) {
     try {
-      const { data } = await getProjectsForUser(
-        pageToRequest,
-        PROJECT_LIMIT_PER_PAGE
-      );
+      // const { data } = await getProjectsForUser(
+      //   pageToRequest,
+      //   PROJECT_LIMIT_PER_PAGE
+      // );
+
+      // dummy data
+      let data = {
+        projects: [
+          {
+            uuid: "e61d40f6-04c5-46a6-b24f-8f9abfa7cc2a",
+            name: "DUMMY React Shopping Cart App",
+            issue_count: 3,
+          },
+          {
+            uuid: "0b9c13ed-8b72-42a4-b4b0-35f15c13be33",
+            name: "DUMMY Express Shopping Cart App",
+            issue_count: 5,
+          },
+          {
+            uuid: "c8d95fbf-63a7-479f-988d-f3fdf3a63489",
+            name: "DUMMY Flask App",
+            issue_count: 2,
+          },
+        ],
+        total_pages: 1,
+        current_page: 1,
+      };
 
       if (!selectedProject) {
         setSelectedProject(data.projects[0]);
