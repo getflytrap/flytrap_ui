@@ -20,7 +20,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 
-import { deleteAccount } from "../../services/data";
+import { deleteAccount } from "../../services/index";
 
 const DeleteUser = ({ users, setUsers }) => {
   const [selectedUserName, setSelectedUserName] = useState("");

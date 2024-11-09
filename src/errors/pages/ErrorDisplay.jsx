@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
-import { getErrors } from "../../services/data";
+import { getErrors } from "../../services/index";
 
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";

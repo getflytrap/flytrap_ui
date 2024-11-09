@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Center, Spinner } from "@chakra-ui/react";
 
 import { AuthContext } from "./contexts/auth-context";
-import { useAuth } from "./hooks/auth-hook";
 import ErrorDashboard from "./errors/pages/ErrorDashboard";
 import ErrorDisplay from "./errors/pages/ErrorDisplay";
 import ErrorDetails from "./error-details/pages/ErrorDetails";
@@ -18,18 +17,26 @@ import ChangePassword from "./authentication/pages/ChangePassword";
 import "./App.css";
 
 const App = () => {
-  const { access_token, login, logout } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userUuid, setUserUuid] = useState(null);
+
+
+  const login = (uuid) => {
+    setUserUuid(uuid);
+    setIsLoggedIn(true);
+  }
+  const logout = () => setIsLoggedIn(false);
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: !!access_token, access_token, login, logout }}
+      value={{ isLoggedIn, userUuid, login, logout }}
     >
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
-          <Route element={<AuthRequired access_token={access_token} />} />
+          {/* <Route element={<AuthRequired/>} /> */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<Projects />} />
             <Route path="/errors" element={<ErrorDashboard />}>

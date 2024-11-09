@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/auth-context";
-import { postLoginData } from "../../services/data";
+import { login as postLoginData } from "../../services/index";
+import { AuthContext } from '../../contexts/auth-context';
 
 import {
   Box,
@@ -9,45 +9,43 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Input,
-  Radio,
-  RadioGroup,
-  Stack,
   Text,
   Divider,
   useToast,
   Link,
 } from "@chakra-ui/react";
+import {jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const auth = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const toast = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      async function postData() {
-        const data = await postLoginData(email, password);
-        console.log("login data", data);
-        auth.login(data.access_token);
+      const data = await postLoginData(email, password);
+      console.log("login data", data);
+      
+      const decodedToken = jwtDecode(data);
+      const userUuid = decodedToken.user_uuid;
 
-        toast({
-          title: "Successful Login",
-          description: "You are successfully logged in",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-        });
-        navigate("/");
-      }
+      login(userUuid);
+      toast({
+        title: "Successful Login",
+        description: "You are successfully logged in",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
 
-      postData();
-    } catch {
+      navigate("/");
+    } catch (e) {
+      console.log('error logging in: ', e);
       toast({
         title: "Login error",
         description: "User could not be logged in - check your inputs",
@@ -57,14 +55,6 @@ const Login = () => {
       });
     }
   };
-
-  async function prevPage() {
-    fetchProjects(currentPage - 1);
-  }
-
-  async function nextPage() {
-    fetchProjects(currentPage + 1);
-  }
 
   const handleChangePassword = () => {
     navigate("/change-password");
