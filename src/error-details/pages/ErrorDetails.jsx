@@ -17,7 +17,7 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import WarningModal from "../../shared/WarningModal";
-import { deleteError, getError } from "../../services/data";
+import { deleteError, getError, toggleError } from "../../services/data";
 
 const ErrorDetails = () => {
   const [fetchedError, setFetchedError] = useState({});
@@ -35,28 +35,26 @@ const ErrorDetails = () => {
 
   useEffect(() => {
     try {
-      setLoadingError(false);
       setIsLoading(true);
 
       async function fetchData() {
         console.log("ids", projectId, errorId);
 
-        const { data } = await getError(projectId, errorId);
-        console.log("data in error details", data);
+        // const { data } = await getError(projectId, errorId);
 
-        // const data = {
-        //   error_id: 1,
-        //   name: "Database Connection Error",
-        //   message: "Unable to connect to the database.",
-        //   created_at: "2024-10-03T09:20:00Z",
-        //   line_number: 45,
-        //   col_number: 15,
-        //   project_id: "123e4567-e89b-12d3-a456-426614174000",
-        //   stack_trace:
-        //     'Traceback (most recent call last):\n  File "app.py", line 23, in connect_db\n    connection = psycopg2.connect(...)\n  File "psycopg2/__init__.py", line 164, in connect\n    raise OperationalError(...)\nOperationalError: could not connect to server: Connection refused\n\tIs the server running on host \'localhost\' (127.0.0.1) and accepting\n\tTCP/IP connections on port 5432?',
-        //   handled: false,
-        //   resolved: false,
-        // };
+        const data = {
+          uuid: "sample-uuid-1234-5678",
+          name: "Database Connection Error",
+          message: "Unable to connect to the database.",
+          created_at: "2024-10-03T09:20:00Z",
+          line_number: 45,
+          col_number: 15,
+          project_uuid: "123e4567-e89b-12d3-a456-426614174000",
+          stack_trace: "Traceback (most recent call last):...",
+          handled: false,
+          resolved: false,
+        };
+
         setFetchedError(data);
         setResolved(data.resolved);
 
@@ -68,11 +66,12 @@ const ErrorDetails = () => {
         //   );
         //   setSelectedProject(currentProject);
         // }
-        setIsLoading(false);
       }
       fetchData();
     } catch (e) {
       setLoadingError(e.message);
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   }, []);
