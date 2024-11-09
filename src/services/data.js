@@ -201,11 +201,28 @@ export const deleteAccount = async (id) => {
   }
 };
 
-export const updatePassword = async (id, password) => {
+export const updatePassword = async (password) => {
+  let user_uuid;
+
   try {
-    const { data } = await apiClient.patch(`/api/users/${id}`, {
+    const access_token = JSON.parse(
+      localStorage.getItem("userData")
+    )?.access_token;
+    console.log("access_token", access_token);
+
+    const decodedToken = jwtDecode(access_token);
+    console.log("decoded_token", decodedToken);
+    user_uuid = decodedToken["user_uuid"];
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }
+
+  try {
+    const { data } = await apiClient.patch(`/api/users/${user_uuid}`, {
       password,
     });
+    alert(data);
+
     return data;
   } catch (e) {
     console.error("Error updating password:", e);
