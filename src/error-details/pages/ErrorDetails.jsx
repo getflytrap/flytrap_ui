@@ -44,7 +44,7 @@ const ErrorDetails = () => {
 
         const data = {
           uuid: "sample-uuid-1234-5678",
-          name: "Database Connection Error",
+          name: "DUMMY Database Connection Error",
           message: "Unable to connect to the database.",
           created_at: "2024-10-03T09:20:00Z",
           line_number: 45,

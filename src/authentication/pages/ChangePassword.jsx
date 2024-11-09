@@ -17,10 +17,9 @@ import {
   Text,
   Divider,
   useToast,
-  Link,
 } from "@chakra-ui/react";
 
-const Login = () => {
+const ChangePassword = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const toast = useToast();
@@ -67,7 +66,7 @@ const Login = () => {
   }
 
   const handleChangePassword = () => {
-    navigate("/change-password");
+    alert("This will be replaced with a 'Change Password' modal");
   };
 
   return (
@@ -136,4 +135,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ChangePassword;
