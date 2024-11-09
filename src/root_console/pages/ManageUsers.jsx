@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Stack } from "@chakra-ui/react";
-import { getUsers } from "../../services/data";
+import { getUsers } from "../../services/index";
 
 import CreateUser from "../components/CreateUser";
 import DeleteUser from "../components/DeleteUser";

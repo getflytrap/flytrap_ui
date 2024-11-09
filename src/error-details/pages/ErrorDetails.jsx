@@ -17,7 +17,8 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import WarningModal from "../../shared/WarningModal";
-import { deleteError, getError } from "../../services/data";
+import { deleteError, getError } from "../../services";
+
 
 const ErrorDetails = () => {
   const [fetchedError, setFetchedError] = useState({});

@@ -16,7 +16,7 @@ import {
   getUsersForProject,
   addUserToProject,
   removeUserFromProject,
-} from "../../services/data";
+} from "../../services/index";
 
 const AssignUsers = ({ users }) => {
   const [projects, setProjects] = useState([]);

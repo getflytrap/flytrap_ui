@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -39,8 +39,9 @@ import {
   createProject,
   // getAllProjects,
   getProjectsForUser,
-} from "../../services/data";
+} from "../../services/index";
 import WarningModal from "../../shared/WarningModal";
+import { AuthContext } from "../../contexts/auth-context";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -56,6 +57,8 @@ export default function Projects({ setSelectedProject }) {
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState();
+
+  const { userUuid } = useContext(AuthContext);
 
   const {
     isOpen: isEditOpen,
@@ -104,7 +107,8 @@ export default function Projects({ setSelectedProject }) {
     try {
       setLoadingError(false);
       setIsLoading(true);
-      const { data } = await getProjectsForUser();
+      console.log('from projects - user uuid: ', userUuid);
+      const { data } = await getProjectsForUser(userUuid);
       console.log("projects for user data:", data);
       setLoadedProjects(data.projects);
       setCurrentPage(data.current_page);

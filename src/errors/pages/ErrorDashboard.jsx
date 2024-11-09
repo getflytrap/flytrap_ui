@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import Sidebar from "../components/Sidebar";
-import { getAllProjects, getProjectsForUser } from "../../services/data";
+import { getAllProjects, getProjectsForUser } from "../../services";
+import { AuthContext } from "../../contexts/auth-context";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -18,6 +19,7 @@ export default function ErrorDashboard(props) {
   const [selectedProject, setSelectedProject] = useState(selection);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
+  const { userUuid } = useContext(AuthContext);
 
   useEffect(() => {
     fetchProjectsForUser();
@@ -72,6 +74,7 @@ export default function ErrorDashboard(props) {
   async function fetchProjectsForUser(pageToRequest = 1) {
     try {
       const { data } = await getProjectsForUser(
+        userUuid,
         pageToRequest,
         PROJECT_LIMIT_PER_PAGE
       );

@@ -8,7 +8,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { createAccount } from "../../services/data";
+import { createAccount } from "../../services/index";
 
 const CreateUser = ({ setUsers }) => {
   const [firstName, setFirstName] = useState("");
