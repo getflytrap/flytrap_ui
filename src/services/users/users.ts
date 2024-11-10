@@ -1,6 +1,13 @@
-import apiClient from './apiClient';
+import { 
+  CreateAccountRequest,
+  CreateAccountResponse,
+  User,
+  UserProjectsResponse
+} from './usersTypes';
 
-export const getUsers = async () => {
+import apiClient from '../apiClient';
+
+export const getUsers = async (): Promise<User[]> => {
   try {
     const { data } = await apiClient.get("/api/users");
     return data;
@@ -10,27 +17,17 @@ export const getUsers = async () => {
 };
 
 export const createAccount = async (
-  first_name,
-  last_name,
-  email,
-  password,
-  confirmed_password
-) => {
+  account_data: CreateAccountRequest
+): Promise<CreateAccountResponse> => {
   try {
-    const { data } = await apiClient.post("/api/users", {
-      first_name,
-      last_name,
-      email,
-      password,
-      confirmed_password,
-    });
+    const { data } = await apiClient.post("/api/users", account_data);
     return data;
   } catch (e) {
     console.error("Error creating account:", e);
   }
 };
 
-export const deleteAccount = async (id) => {
+export const deleteAccount = async (id: string): Promise<void> => {
   try {
     await apiClient.delete(`/api/users/${id}`);
     return { success: true, message: "User deleted successfully." };
@@ -39,18 +36,21 @@ export const deleteAccount = async (id) => {
   }
 };
 
-export const updatePassword = async (id, password) => {
+export const updatePassword = async (id: string, password: string): Promise<void> => {
   try {
-    const { data } = await apiClient.patch(`/api/users/${id}`, {
+    await apiClient.patch(`/api/users/${id}`, {
       password,
     });
-    return data;
   } catch (e) {
     console.error("Error updating password:", e);
   }
 };
 
-export const getProjectsForUser = async (user_uuid, currentPage, limit) => {
+export const getProjectsForUser = async (
+  user_uuid: string,
+  currentPage: number, 
+  limit: number
+): Promise<UserProjectsResponse> => {
   try {
     const params = {
       page: currentPage,
