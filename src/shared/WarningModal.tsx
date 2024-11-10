@@ -10,7 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const WarningModal = ({ isOpen, onClose, errorMessage }) => {
+type WarningModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  errorMessage: string;
+};
+
+const WarningModal = ({ isOpen, onClose, errorMessage }: WarningModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
+import { useProjects } from "../../hooks/useProjects";
 
 type ProjectCardProps = {
   project: Project;
@@ -21,8 +22,10 @@ type ProjectCardProps = {
 
 const ProjectCard = ({ project, onEditOpen, onDeleteOpen }: ProjectCardProps) => {
   const navigate = useNavigate();
+  const { selectProject } = useProjects();
 
   const handleProjectClick = () => {
+    selectProject(project.uuid);
     navigate(`/projects/${project.uuid}/errors`);
   }
 

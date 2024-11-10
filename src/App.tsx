@@ -8,7 +8,6 @@ import RootConsole from "./root_console/pages/RootConsole.tsx";
 import ManageUsers from "./root_console/pages/ManageUsers.tsx";
 import AuthRequired from "./authentication/components/AuthRequired.tsx";
 import MainLayout from "./shared/MainLayout.tsx";
-// import Projects from "./projects/pages/Projects_old.tsx";
 import { ProjectsProvider } from "./contexts/ProjectsContext";
 import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
@@ -29,12 +28,9 @@ const App = () => {
             <Route path="/projects/:project_uuid/errors" element={<ErrorDashboard />}>
               <Route index element={<ErrorDisplay />} />
               <Route
-                path=":project_uuid/errors/:error_uuid"
+                path=":error_uuid"
                 element={
-                  <ErrorDetails
-                  // selectedProject={selectedProject}
-                  // setSelectedProject={setSelectedProject}
-                  />
+                  <ErrorDetails />
                 }
               />
             </Route>

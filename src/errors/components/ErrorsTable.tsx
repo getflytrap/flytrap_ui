@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Box,
   Table,
@@ -5,27 +6,85 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
-  Link,
   Text,
   Center,
-  Button,
-  HStack,
+  useToast
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useParams } from "react-router-dom";
+import LoadingSpinner from "../../shared/LoadingSpinner";
+import PaginationControls from "../../shared/Pagination";
+import { useProjects } from "../../hooks/useProjects";
+import { ErrorData } from "../../types";
+import { getErrors } from "../../services";
+import { convertHandledToBoolean, convertToTimeStamp } from "../../helpers";
+import ErrorRow from "./ErrorRow";
 
-const ErrorsTable = ({
-  errors,
-  selectedHandled,
-  selectedTime,
-  selectedProject,
-  prevPage,
-  nextPage,
-  currentPage,
-  totalPages,
-}) => {
-  console.log("pages", currentPage, totalPages);
+const ERROR_LIMIT_PER_PAGE = 10;
+
+interface ErrorsTableProps {
+  selectedHandled: string;
+  selectedTime: string;
+}
+
+const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
+  const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
+  const { projects, selectedProject, selectProject, fetchProjectsForUser } = useProjects();
+
+  const [errors, setErrors] = useState<ErrorData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (selectedProject) {
+      fetchErrors(currentPage);
+    }
+  }, [selectedProject, currentPage]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      fetchErrors(1); // Reset to page 1 when filters change
+    }
+  }, [selectedHandled, selectedTime]);
+
+  useEffect(() => {
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjectsForUser();
+      }
+
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
+      }
+    }
+
+    loadProject();
+  }, [projects, projectUuid, selectedProject]);
+
+  const fetchErrors = async (page: number = 1) => {
+    setIsLoading(true);
+    try {
+      const data = await getErrors(
+        selectedProject?.uuid,
+        convertHandledToBoolean(selectedHandled), // null for "All"
+        convertToTimeStamp(selectedTime), // null for "Forever"
+        page,
+        ERROR_LIMIT_PER_PAGE
+      );
+      setErrors(data.errors);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      console.error(e);
+      toast({ title: "Failed to load error data.", status: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) return <LoadingSpinner />;
+
   if (!errors?.length) {
     return (
       <Center>
@@ -57,59 +116,22 @@ const ErrorsTable = ({
         </Thead>
         <Tbody>
           {errors.map((error) => (
-            <Box as="tr" key={error.error_id} mb={2}>
-              <Td>
-                <Link
-                  as={RouterLink}
-                  to={`${selectedProject.uuid}/error/${error.uuid}`}
-                  _hover={{ color: "blue.500", cursor: "pointer" }}
-                  state={{ time: selectedTime, handled: selectedHandled }}
-                >
-                  {error.name || "Un-named Error"}
-                </Link>
-              </Td>
-              {/* <Td>{error.type}</Td> */}
-              <Td>
-                <Box
-                  as="span"
-                  borderRadius="20px"
-                  bg={error.handled ? "green.50" : "red.50"}
-                  border={`1px solid ${
-                    error.handled ? "green.800" : "red.800"
-                  }`}
-                  color={error.handled ? "green.800" : "red.800"}
-                  px={2}
-                  py={1}
-                  display="inline-block"
-                >
-                  {error.handled ? "Handled" : "Unhandled"}
-                </Box>
-              </Td>
-              <Td>{new Date(error.created_at).toLocaleString()}</Td>
-              <Td>{error.resolved ? "Resolved" : "Unresolved"}</Td>
-            </Box>
+            <ErrorRow
+              key={error.uuid}
+              error={error}
+              selectedProject={selectedProject}
+              selectedHandled={selectedHandled}
+              selectedTime={selectedTime}
+            />
           ))}
         </Tbody>
       </Table>
-      <HStack justify="space-between" mt={4}>
-        <Button
-          leftIcon={<ChevronLeftIcon />}
-          onClick={prevPage}
-          isDisabled={currentPage === 1}
-        >
-          Previous Page
-        </Button>
-        <Text>
-          Page {currentPage} of {totalPages}
-        </Text>
-        <Button
-          rightIcon={<ChevronRightIcon />}
-          onClick={nextPage}
-          isDisabled={currentPage === totalPages}
-        >
-          Next Page
-        </Button>
-      </HStack>
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPrevPage={() => setCurrentPage(currentPage - 1)}
+        onNextPage={() => setCurrentPage(currentPage + 1)}
+      />
     </Box>
   );
 };
