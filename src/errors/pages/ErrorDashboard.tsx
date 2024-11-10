@@ -4,7 +4,7 @@ import { Grid, GridItem } from "@chakra-ui/react";
 
 import Sidebar from "../components/Sidebar";
 import { getAllProjects, getProjectsForUser } from "../../services";
-import { AuthContext } from "../../contexts/auth-context";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 

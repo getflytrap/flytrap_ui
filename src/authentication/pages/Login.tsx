@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { login as postLoginData } from "../../services/index";
-import { AuthContext } from '../../contexts/auth-context';
+import { login as postLoginData } from "../../services";
+import { AuthContext } from '../../contexts/AuthContext';
 
 import {
   Box,
@@ -43,7 +43,7 @@ const Login = () => {
         isClosable: true,
       });
 
-      navigate("/");
+      navigate("/projects");
     } catch (e) {
       console.log('error logging in: ', e);
       toast({
