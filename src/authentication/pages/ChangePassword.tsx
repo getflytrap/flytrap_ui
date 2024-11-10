@@ -1,7 +1,8 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { login as postLoginData, updatePassword } from "../../services";
+import { login as postLoginData } from "../../services/auth/auth";
+import { updatePassword } from "../../services/users/users";
 
 import {
   Box,
@@ -37,7 +38,7 @@ const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       async function postData() {
@@ -73,30 +74,32 @@ const ChangePassword = () => {
   };
 
   async function handleSubmitNewPassword() {
-    try {
-      alert(newPassword);
-      await updatePassword(newPassword);
-      console.log("New password submitted:", newPassword);
-
-      toast({
-        title: "Successfully Changed Password",
-        description: "You have successfully changed your password",
-        status: "success",
-        duration: 4000,
-        isClosable: true,
-      });
-
-      onClose();
-      auth.logout();
-      navigate("/login");
-    } catch {
-      toast({
-        title: "Error Changing Password",
-        description: "Could not change password",
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-      });
+    if (auth.userUuid) {
+      try {
+          alert(newPassword);
+          await updatePassword(auth.userUuid, newPassword);
+          console.log("New password submitted:", newPassword);
+    
+          toast({
+            title: "Successfully Changed Password",
+            description: "You have successfully changed your password",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+    
+          onClose();
+          auth.logout();
+          navigate("/login");
+      } catch {
+        toast({
+          title: "Error Changing Password",
+          description: "Could not change password",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
     }
   }
 

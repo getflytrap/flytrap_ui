@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
-import { getErrors } from "../../services/index";
+import { getIssues } from "../../services/index";
 
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
@@ -40,7 +40,7 @@ export default function ErrorDisplay() {
 
     try {
       console.log("selected Project:", selectedProject);
-      const data = await getErrors(
+      const data = await getIssues(
         selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime),
