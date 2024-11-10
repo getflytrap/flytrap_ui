@@ -25,7 +25,6 @@ type ProjectModalsProps = {
   onEditClose: () => void;
   isDeleteOpen: boolean;
   onDeleteClose: () => void;
-  selectedProjectUuid: string | null;
 };
 
 const ProjectModals = ({
@@ -35,9 +34,8 @@ const ProjectModals = ({
   onEditClose,
   isDeleteOpen,
   onDeleteClose,
-  selectedProjectUuid
 }: ProjectModalsProps) => {
-  const { setProjects } = useProjects(); 
+  const { setProjects, selectProject, selectedProject } = useProjects(); 
 
   const [newProjectName, setNewProjectName] = useState("");
   const [editedProjectName, setEditedProjectName] = useState("");
@@ -61,9 +59,10 @@ const ProjectModals = ({
 
   const handleEditSubmit = async () => {
     try {
-      await renameProject(selectedProjectUuid, editedProjectName);
-      setProjects((prev) => prev.map((p) => (p.uuid === selectedProjectUuid ? { ...p, name: editedProjectName } : p)));
+      await renameProject(selectedProject?.uuid, editedProjectName);
+      setProjects((prev) => prev.map((p) => (p.uuid === selectedProject?.uuid ? { ...p, name: editedProjectName } : p)));
       onEditClose();
+      selectProject(null);
       toast({ title: "Project renamed", status: "success" });
     } catch {
       toast({ title: "Error renaming project", status: "error" });
@@ -72,9 +71,10 @@ const ProjectModals = ({
 
   const handleConfirmDeletion = async () => {
     try {
-      await deleteProject(selectedProjectUuid);
-      setProjects((prev) => prev.filter((p) => p.uuid !== selectedProjectUuid));
+      await deleteProject(selectedProject?.uuid);
+      setProjects((prev) => prev.filter((p) => p.uuid !== selectedProject?.uuid));
       onDeleteClose();
+      selectProject(null);
       toast({ title: "Project deleted", status: "success" });
     } catch {
       toast({ title: "Error deleting project", status: "error" });

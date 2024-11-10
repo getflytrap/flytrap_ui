@@ -4,13 +4,17 @@ import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
 import { useToast} from "@chakra-ui/react";
 
-type ProjectsContextType = {
+const PROJECT_LIMIT_PER_PAGE = 10;
+
+interface ProjectsContextType {
   projects: Project[];
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
   fetchProjectsForUser: (page?: number) => Promise<void>;
+  selectProject: (uuid: string | null) => void;
+  selectedProject: Project | null;
 };
 
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(undefined);
@@ -21,6 +25,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   // const [loadingError, setLoadingError] = useState<string | null>(null);
   const toast = useToast();
 
@@ -28,7 +33,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     // setLoadingError(null);
     try {
-      const { data } = await getProjectsForUser(userUuid, page, 10);
+      const { data } = await getProjectsForUser(userUuid, page, PROJECT_LIMIT_PER_PAGE);
       setProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
@@ -39,6 +44,11 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
     }
   };
+
+  const selectProject = (projectUuid: string | null) => {
+    const project = projects.find(p => p.uuid === projectUuid) || null;
+    setSelectedProject(project);
+  }
 
   useEffect(() => {
     fetchProjectsForUser();
@@ -52,7 +62,9 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
         currentPage,
         totalPages,
         isLoading,
-        fetchProjectsForUser
+        fetchProjectsForUser,
+        selectProject,
+        selectedProject
       }}
     >
       {children}
