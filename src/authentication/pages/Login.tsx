@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services";
-import { AuthContext } from '../../contexts/auth-context';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import {
   Box,

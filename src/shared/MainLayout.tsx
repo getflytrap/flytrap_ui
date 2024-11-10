@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { AuthContext } from "../contexts/auth-context";
+import { AuthContext } from "../contexts/AuthContext";
 
 const MainLayout = () => {
   const auth = useContext(AuthContext);
