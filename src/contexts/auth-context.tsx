@@ -1,24 +1,37 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+import { checkAuthStatus } from "../services";
 
 type AuthContextType = {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | null;
   userUuid: string | null;
   login: (uuid: string) => void;
   logout: () => void;
 };
 
-// export const AuthContext = createContext({
-//   isLoggedIn: false,
-//   userUuid: "",
-//   login: () => {},
-//   logout: () => {},
-// });
-
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [userUuid, setUserUuid] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const data = await checkAuthStatus();
+        if (data.status === "success") {
+          setIsLoggedIn(true);
+          setUserUuid(data.user_uuid);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (e) {
+        console.error("Error checking session:", e);
+        setIsLoggedIn(false);
+      }
+    }
+
+    checkSession();
+  }, [])
 
   const login = (uuid: string) => {
     setUserUuid(uuid);

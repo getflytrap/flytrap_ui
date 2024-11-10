@@ -4,8 +4,6 @@ export const login = async (email, password) => {
   const { data } = await apiClient.post('/api/auth/login', { email, password });
   const accessToken = data.access_token;
 
-  console.log('from login - access token: ', accessToken)
-
   // Set Authorization header for future requests
   apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
@@ -18,11 +16,11 @@ export const logout = async () => {
 };
 
 export const checkAuthStatus = async () => {
-  const { data } = apiClient.get('/api/auth/status');
-  if (data.status === 'success') {
-    return true;
-  } else {
-    console.log('Not authenticated.')
+  try {
+    const { data } = await apiClient.get('/api/auth/status');
+    return data;
+  } catch (error) {
+    console.error('Error checking authentication status:', error);
     return false;
   }
 }
