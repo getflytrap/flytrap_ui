@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useAuth } from "../hooks/useAuth";
@@ -13,7 +12,7 @@ const MainLayout = () => {
     navigate("/login");
   };
 
-  const getButtonColor = (path) => {
+  const getButtonColor = (path: string) => {
     return location.pathname === path ? "purple" : "gray";
   };
 
