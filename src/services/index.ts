@@ -4,9 +4,6 @@ import {
   createProject,
   deleteProject,
   renameProject,
-  addUserToProject,
-  removeUserFromProject,
-  getUsersForProject
 } from './projects/projects';
 import {
   getUsers,
@@ -16,12 +13,17 @@ import {
   getProjectsForUser
 } from './users/users';
 import {
-  getErrors,
-  deleteErrors,
+  addUserToProject,
+  removeUserFromProject,
+  getUsersForProject
+} from './projectsUsers/projectsUsers';
+import {
+  getIssues,
+  deleteIssues,
   getError,
   toggleError,
   deleteError,
-} from './projectsIssues/projectsIssues'
+} from './projectsIssues/projectsIssues';
 export {
   login,
   logout,
@@ -30,8 +32,8 @@ export {
   createProject,
   deleteProject,
   renameProject,
-  getErrors,
-  deleteErrors,
+  getIssues,
+  deleteIssues,
   getError,
   toggleError,
   deleteError,

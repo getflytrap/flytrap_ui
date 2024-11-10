@@ -1,4 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 const apiClient: AxiosInstance = axios.create({
   withCredentials: true,
@@ -13,7 +17,7 @@ const refreshClient: AxiosInstance = axios.create({
 
 // Request interceptor to set headers for API requests
 apiClient.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: CustomAxiosRequestConfig) => {
     config.headers['Content-Type'] = 'application/json'; // Ensure the Content-Type is always application/json
     return config;
   },
@@ -29,7 +33,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config; // Keep track of the original request
 
     // Handle token refresh if unauthorized (401 error)
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true; // Mark the request as retried to avoid infinite loops
 
       try {
@@ -52,8 +56,9 @@ apiClient.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-
-    return Promise.reject(error);
+    (error: AxiosError) => {
+      return Promise.reject(error); // Return the error for further handling
+    }
   }
 );
 

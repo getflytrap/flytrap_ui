@@ -24,7 +24,7 @@ export interface PaginationInfo {
   currentPage: number;
 }
 
-export interface GetErrorsRequest {
+export interface GetIssuesRequest {
   projectId: string;
   selectedHandled: boolean | null;
   selectedTime: string | never;

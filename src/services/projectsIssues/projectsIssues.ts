@@ -1,77 +1,82 @@
 import { 
-  GetErrorsRequest,
+  GetIssuesRequest,
   GetIssuesResponse,
-  Error, 
+  Error,
+  Rejection
 } from './projectsIssuesTypes'; // Import types here
 import apiClient from '../apiClient';
 
-export const getErrors = async (
-  requestData: GetErrorsRequest
+export const getIssues = async (
+  requestData: GetIssuesRequest
 ): Promise<GetIssuesResponse> => {
-  try {
-    const params = {
-      handled: requestData.selectedHandled,
-      time: requestData.selectedTime,
-      page: requestData.currentPage,
-      limit: requestData.limit,
-    };
+  const params = {
+    handled: requestData.selectedHandled,
+    time: requestData.selectedTime,
+    page: requestData.currentPage,
+    limit: requestData.limit,
+  };
 
-    const { data } = await apiClient.get(`/api/projects/${requestData.projectId}/issues`, { params });
+  const { data } = await apiClient.get(`/api/projects/${requestData.projectId}/issues`, { params });
 
-    return {
-      errors: data.data.issues, // `issues` includes both errors and rejections
-      totalPages: data.data.total_pages,
-      currentPage: data.data.current_page,
-    };
-  } catch (e) {
-    console.error("Error fetching errors:", e);
-  }
+  return {
+    errors: data.data.issues, // `issues` includes both errors and rejections
+    totalPages: data.data.total_pages,
+    currentPage: data.data.current_page,
+  };
 };
 
-// Define deleteErrors with a type for the return value
-export const deleteErrors = async (
+export const deleteIssues = async (
   projectId: string
 ): Promise<void> => {
-  try {
-    await apiClient.delete(`/api/projects/${projectId}/errors`);
-  } catch (error) {
-    console.error("Error deleting errors:", error);
-  }
+  await apiClient.delete(`/api/projects/${projectId}/issues`);
 };
 
 export const getError = async (
   projectId: string, 
   errorId: string
 ): Promise<Error> => {
-  try {
-    const { data } = await apiClient.get(`/api/projects/${projectId}/errors/${errorId}`);
-    return data;
-  } catch (error) {
-    console.error("Error fetching error:", error);
-  }
+  const { data } = await apiClient.get(`/api/projects/${projectId}/issues/errors/${errorId}`);
+  return data;
 };
+
+export const getRejection = async (
+  projectId: string,
+  rejectionId: string
+): Promise<Rejection> => {
+  const { data } = await apiClient.get(`/api/projects/${projectId}/issues/rejections/${rejectionId}`);
+  return data
+}
 
 export const toggleError = async (
   projectId: string,
   errorId: string,
   newResolvedState: boolean
 ): Promise<void> => {
-  try {
-    await apiClient.patch(`/api/projects/${projectId}/errors/${errorId}`, {
-      resolved: newResolvedState,
-    });
-  } catch (error) {
-    console.error("Error updating error state:", error);
-  }
+  await apiClient.patch(`/api/projects/${projectId}/issues/errors/${errorId}`, {
+    resolved: newResolvedState,
+  });
+};
+
+export const toggleRejection = async (
+  projectId: string,
+  rejectionId: string,
+  newResolvedState: boolean
+): Promise<void> => {
+  await apiClient.patch(`/api/projects/${projectId}/issues/rejections/${rejectionId}`, {
+    resolved: newResolvedState,
+  });
 };
 
 export const deleteError = async (
   projectId: string, 
   errorId: string
 ): Promise<void> => {
-  try {
-    await apiClient.delete(`/api/projects/${projectId}/errors/${errorId}`);
-  } catch (error) {
-    console.error("Error deleting error:", error);
-  }
+  await apiClient.delete(`/api/projects/${projectId}/issues/errors/${errorId}`);
+};
+
+export const deleteRejection = async (
+  projectId: string, 
+  rejectionId: string
+): Promise<void> => {
+  await apiClient.delete(`/api/projects/${projectId}/issues/rejections/${rejectionId}`);
 };

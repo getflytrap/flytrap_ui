@@ -1,15 +1,19 @@
 // To-do add generic response type with a status attr in a general types file?
 
+export interface Project {
+  uuid: string;
+  name: string;
+  issue_count: number;
+}
+
 export interface getAllProjectsResponse {
-  status: string;
-  data:  { [key: string]: { [key: string]: number | string }[] } | number;
+  projects:  Project[];
+  total_pages: number;
+  number: number;
 }
 
 export interface createProjectResponse {
-  status: string;
-  data: {
-    'uuid': string;
-    'name': string;
-  } | number;
+  'uuid': string;
+  'name': string;
 }
 
