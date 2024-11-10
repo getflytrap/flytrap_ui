@@ -9,6 +9,6 @@ export interface logoutResponse {
 }
 
 export interface checkStatusResponse {
-  message: string;
   status: string;
+  user_uuid: string;
 }

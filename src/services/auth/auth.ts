@@ -24,11 +24,7 @@ export const logout = async (): Promise<void> => {
   delete apiClient.defaults.headers.common['Authorization']; 
 };
 
-export const checkAuthStatus = async (): Promise<boolean> => {
-  const { data } = await apiClient.get<checkStatusResponse>('/api/auth/status');
-  if (data && data.status === 'success') {
-    return true;
-  }
-  console.log('Not authenticated.')
-  return false;
+export const checkAuthStatus = async (): Promise<checkStatusResponse> => {
+  const { data } = await apiClient.get('/api/auth/status');
+  return data;
 }
