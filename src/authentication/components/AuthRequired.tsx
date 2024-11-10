@@ -1,16 +1,15 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "../../contexts/auth-context";
+import { useAuth } from "../../hooks/useAuth";
 
 const AuthRequired = () => {
-  const auth = useContext(AuthContext);
+  const { isLoggedIn } = useAuth();
 
-  if (auth?.isLoggedIn === null) {
-    return <p>Loading...</p>; // Optionally replace with a spinner
+  if (isLoggedIn === null) {
+    // TODO: replace with a spinner?
+    return <p>Loading...</p>;
   }
-  console.log('is logged in: ', auth?.isLoggedIn)
   
-  if (!auth?.isLoggedIn) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
