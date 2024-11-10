@@ -1,17 +1,16 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getProjectsForUser, renameProject, deleteProject, createProject } from "../services";
+import { getProjectsForUser } from "../services";
 import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
-import { useToast } from "@chakra-ui/react";
+import { useToast} from "@chakra-ui/react";
 
 type ProjectsContextType = {
   projects: Project[];
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   currentPage: number;
   totalPages: number;
+  isLoading: boolean;
   fetchProjectsForUser: (page?: number) => Promise<void>;
-  handleEditSubmit: (id: string, name: string) => Promise<void>;
-  handleConfirmDeletion: (id: string) => Promise<void>;
-  handleNewProjectSubmit: (name: string) => Promise<void>;
 };
 
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(undefined);
@@ -21,50 +20,23 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [loadingError, setLoadingError] = useState<string | null>(null);
   const toast = useToast();
 
   const fetchProjectsForUser = async (page: number = 1) => {
+    setIsLoading(true);
+    // setLoadingError(null);
     try {
       const { data } = await getProjectsForUser(userUuid, page, 10);
       setProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
     } catch {
+      // setLoadingError("Failed to load projects");
       toast({ title: "Failed to load projects", status: "error" });
-    }
-  };
-
-  const handleEditSubmit = async (id: string, newName: string) => {
-    try {
-      await renameProject(id, newName);
-      setProjects((prev) => prev.map((p) => (p.uuid === id ? { ...p, name: newName } : p)));
-      toast({ title: "Project renamed", status: "success" });
-    } catch {
-      toast({ title: "Error renaming project", status: "error" });
-    }
-  };
-
-  const handleConfirmDeletion = async (id: string) => {
-    try {
-      await deleteProject(id);
-      setProjects((prev) => prev.filter((p) => p.uuid !== id));
-      toast({ title: "Project deleted", status: "success" });
-    } catch {
-      toast({ title: "Error deleting project", status: "error" });
-    }
-  };
-
-  const handleNewProjectSubmit = async (name: string) => {
-    if (name.length < 8) {
-      toast({ title: "Project name must be at least 8 characters", status: "error" });
-      return;
-    }
-    try {
-      const { data } = await createProject(name);
-      setProjects((prev) => [...prev, { uuid: data.uuid, name: data.name, issue_count: 0 }]);
-      toast({ title: "Project created", status: "success" });
-    } catch {
-      toast({ title: "Error creating project", status: "error" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,12 +48,11 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     <ProjectsContext.Provider
       value={{
         projects,
+        setProjects,
         currentPage,
         totalPages,
-        fetchProjectsForUser,
-        handleEditSubmit,
-        handleConfirmDeletion,
-        handleNewProjectSubmit,
+        isLoading,
+        fetchProjectsForUser
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import ErrorDashboard from "./errors/pages/ErrorDashboard.tsx";
 import ErrorDisplay from "./errors/pages/ErrorDisplay.tsx";
 import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
@@ -8,7 +8,9 @@ import RootConsole from "./root_console/pages/RootConsole.tsx";
 import ManageUsers from "./root_console/pages/ManageUsers.tsx";
 import AuthRequired from "./authentication/components/AuthRequired.tsx";
 import MainLayout from "./shared/MainLayout.tsx";
-import Projects from "./projects/pages/Projects.tsx";
+// import Projects from "./projects/pages/Projects_old.tsx";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
+import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import "./App.css";
 
@@ -22,22 +24,24 @@ const App = () => {
       <Route element={<AuthRequired/>}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Navigate to="/projects" replace />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/errors" element={<ErrorDashboard />}>
-            <Route index element={<ErrorDisplay />} />
-            <Route
-              path=":pid/error/:eid"
-              element={
-                <ErrorDetails
-                // selectedProject={selectedProject}
-                // setSelectedProject={setSelectedProject}
-                />
-              }
-            />
+          <Route element={<ProjectsProvider><Outlet /></ProjectsProvider>}>
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:project_uuid/errors" element={<ErrorDashboard />}>
+              <Route index element={<ErrorDisplay />} />
+              <Route
+                path=":project_uuid/errors/:error_uuid"
+                element={
+                  <ErrorDetails
+                  // selectedProject={selectedProject}
+                  // setSelectedProject={setSelectedProject}
+                  />
+                }
+              />
+            </Route>
           </Route>
           <Route path="/root-console" element={<RootConsole />} />
           <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Route>
     </Routes>
