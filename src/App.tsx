@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-// import { Center, Spinner } from "@chakra-ui/react";
-
-// import { AuthContext } from "./contexts/auth-context";
 import ErrorDashboard from "./errors/pages/ErrorDashboard";
 import ErrorDisplay from "./errors/pages/ErrorDisplay";
 import ErrorDetails from "./error-details/pages/ErrorDetails";
@@ -17,43 +14,31 @@ import ChangePassword from "./authentication/pages/ChangePassword";
 import "./App.css";
 
 const App = () => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [userUuid, setUserUuid] = useState(null);
-
-  // const login = (uuid) => {
-  //   setUserUuid(uuid);
-  //   setIsLoggedIn(true);
-  // }
-  // const logout = () => setIsLoggedIn(false);
-
   return (
-    // <AuthContext.Provider
-    //   value={{ isLoggedIn, userUuid, login, logout }}
-    // >
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/change-password" element={<ChangePassword />} />
 
-      {/* <Route element={<AuthRequired/>} /> */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Projects />} />
-        <Route path="/errors" element={<ErrorDashboard />}>
-          <Route index element={<ErrorDisplay />} />
-          <Route
-            path=":pid/error/:eid"
-            element={
-              <ErrorDetails
-              // selectedProject={selectedProject}
-              // setSelectedProject={setSelectedProject}
-              />
-            }
-          />
+      <Route element={<AuthRequired/>}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Projects />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/errors" element={<ErrorDashboard />}>
+            <Route index element={<ErrorDisplay />} />
+            <Route
+              path=":pid/error/:eid"
+              element={
+                <ErrorDetails
+                // selectedProject={selectedProject}
+                // setSelectedProject={setSelectedProject}
+                />
+              }
+            />
+          </Route>
+          <Route path="/root-console" element={<RootConsole />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
         </Route>
-        <Route path="/root-console" element={<RootConsole />} />
-        <Route path="/manage-users" element={<ManageUsers />} />
       </Route>
     </Routes>
-    // </AuthContext.Provider>
   );
 };
 
