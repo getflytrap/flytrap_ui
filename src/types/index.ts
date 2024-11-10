@@ -16,11 +16,6 @@ export interface ErrorData {
   resolved: boolean;
 }
 
-// export interface ErrorResponse {
-//   errors: any[]; // You may want to replace `any[]` with a proper type for the error data
-//   currentPage: number;
-//   totalPages: number;
-// }
-
 export type HandledFilter = "All" | "Handled" | "Unhandled";
 export type TimeFilter = "Today" | "Last 7 days" | "Last 14 days" | "Last 30 days" | "Last 90 days" | "Forever";
+export type FilteredProperty = [string, string | number | boolean];
