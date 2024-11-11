@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { getUsers } from "../../services/index";
+import { User } from "../../types";
 
 import CreateUser from "../components/CreateUser";
 import DeleteUser from "../components/DeleteUser";
 import AssignUsers from "../components/AssignUsers";
 
 const ManageUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchUsers() {
