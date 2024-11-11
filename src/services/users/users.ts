@@ -1,5 +1,4 @@
 import {
-  CreateAccountRequest,
   CreateAccountResponse,
   UserProjectsResponse,
 } from "./usersTypes";
@@ -12,9 +11,21 @@ export const getUsers = async (): Promise<{status: string, data: User[]}> => {
 };
 
 export const createAccount = async (
-  account_data: CreateAccountRequest,
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  confirmedPassword: string,
 ): Promise<CreateAccountResponse> => {
-  const { data } = await apiClient.post("/api/users", account_data);
+  const accountData = {
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    password,
+    confirmed_password: confirmedPassword
+  }
+
+  const { data } = await apiClient.post("/api/users", accountData);
   return data;
 };
 
