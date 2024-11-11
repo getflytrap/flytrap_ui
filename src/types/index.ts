@@ -10,7 +10,7 @@ export interface User {
   last_name: string;
   email: string;
   is_root: boolean;
-  created_at: string; // ISO Date string
+  created_at?: string; // ISO Date string
 }
 
 export interface ErrorData {
