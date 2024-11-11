@@ -30,6 +30,10 @@ const App = () => {
           >
             <Route path="/projects" element={<Projects />} />
             <Route
+              path="/projects/:project_uuid/setup"
+              element={<ProjectSetup>}
+            ></Route>
+            <Route
               path="/projects/:project_uuid/errors"
               element={<ErrorDashboard />}
             >
