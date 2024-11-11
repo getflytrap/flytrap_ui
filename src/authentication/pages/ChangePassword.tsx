@@ -1,8 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import { login as postLoginData } from "../../services/auth/auth";
 import { updatePassword } from "../../services/users/users";
+import { jwtDecode } from "jwt-decode";
+import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -10,11 +12,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Input,
-  Radio,
-  RadioGroup,
-  Stack,
   Text,
   Divider,
   useToast,
@@ -29,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 
 const ChangePassword = () => {
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,9 +40,10 @@ const ChangePassword = () => {
     e.preventDefault();
     try {
       async function postData() {
-        const data = await postLoginData(email, password);
-        console.log("login data", data);
-        auth.login(data.access_token);
+        const accessToken = await postLoginData(email, password);
+        console.log("accessToken", accessToken);
+        const tokenPayload: AccessTokenPayload = jwtDecode(accessToken);
+        auth.login(tokenPayload.user_uuid);
 
         toast({
           title: "Successful Login",

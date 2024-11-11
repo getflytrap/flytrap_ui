@@ -1,7 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
+import { jwtDecode } from "jwt-decode";
+import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -14,11 +16,9 @@ import {
   Divider,
   useToast,
 } from "@chakra-ui/react";
-import { jwtDecode } from "jwt-decode";
-import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
