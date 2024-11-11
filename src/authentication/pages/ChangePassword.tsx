@@ -1,7 +1,10 @@
-import { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
-import { login as postLoginData, updatePassword } from "../../services";
+import { useAuth } from "../../hooks/useAuth";
+import { login as postLoginData } from "../../services/auth/auth";
+import { updatePassword } from "../../services/users/users";
+import { jwtDecode } from "jwt-decode";
+import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -9,11 +12,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Input,
-  Radio,
-  RadioGroup,
-  Stack,
   Text,
   Divider,
   useToast,
@@ -28,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 
 const ChangePassword = () => {
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,13 +36,14 @@ const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       async function postData() {
-        const data = await postLoginData(email, password);
-        console.log("login data", data);
-        auth.login(data.access_token);
+        const accessToken = await postLoginData(email, password);
+        console.log("accessToken", accessToken);
+        const tokenPayload: AccessTokenPayload = jwtDecode(accessToken);
+        auth.login(tokenPayload.user_uuid);
 
         toast({
           title: "Successful Login",
@@ -73,30 +73,32 @@ const ChangePassword = () => {
   };
 
   async function handleSubmitNewPassword() {
-    try {
-      alert(newPassword);
-      await updatePassword(newPassword);
-      console.log("New password submitted:", newPassword);
-
-      toast({
-        title: "Successfully Changed Password",
-        description: "You have successfully changed your password",
-        status: "success",
-        duration: 4000,
-        isClosable: true,
-      });
-
-      onClose();
-      auth.logout();
-      navigate("/login");
-    } catch {
-      toast({
-        title: "Error Changing Password",
-        description: "Could not change password",
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-      });
+    if (auth.userUuid) {
+      try {
+          alert(newPassword);
+          await updatePassword(auth.userUuid, newPassword);
+          console.log("New password submitted:", newPassword);
+    
+          toast({
+            title: "Successfully Changed Password",
+            description: "You have successfully changed your password",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+    
+          onClose();
+          auth.logout();
+          navigate("/login");
+      } catch {
+        toast({
+          title: "Error Changing Password",
+          description: "Could not change password",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
     }
   }
 

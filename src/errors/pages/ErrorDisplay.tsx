@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { getIssues } from "../../services/index";
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
 import { HandledFilter, TimeFilter } from "../../types";

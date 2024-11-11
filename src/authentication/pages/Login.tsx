@@ -1,7 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login as postLoginData } from "../../services";
-import { useAuth } from "../../hooks/useAuth";
+import { login as postLoginData } from "../../services/auth/auth";
+import { useAuth } from '../../hooks/useAuth';
+import { jwtDecode } from "jwt-decode";
+import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -13,9 +15,7 @@ import {
   Text,
   Divider,
   useToast,
-  Link,
 } from "@chakra-ui/react";
-import {jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const { login } = useAuth();
@@ -25,13 +25,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       const data = await postLoginData(email, password);
       console.log("login data", data);
       
-      const decodedToken = jwtDecode(data);
+      const decodedToken: AccessTokenPayload = jwtDecode(data);
       const userUuid = decodedToken.user_uuid;
 
       login(userUuid);

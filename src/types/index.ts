@@ -4,6 +4,15 @@ export interface Project {
   issue_count: number;
 };
 
+export interface User {
+  uuid: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  is_root: boolean;
+  created_at: string; // ISO Date string
+}
+
 export interface ErrorData {
   uuid: string;
   name: string;
@@ -11,7 +20,17 @@ export interface ErrorData {
   created_at: string;
   line_number: number;
   col_number: number;
+  project_uuid: string;
   stack_trace?: string;
+  handled: boolean;
+  resolved: boolean;
+}
+
+export interface Rejection {
+  uuid: string;
+  value: string;
+  created_at: string;
+  project_uuid: string;
   handled: boolean;
   resolved: boolean;
 }
@@ -19,3 +38,4 @@ export interface ErrorData {
 export type HandledFilter = "All" | "Handled" | "Unhandled";
 export type TimeFilter = "Today" | "Last 7 days" | "Last 14 days" | "Last 30 days" | "Last 90 days" | "Forever";
 export type FilteredProperty = [string, string | number | boolean];
+
