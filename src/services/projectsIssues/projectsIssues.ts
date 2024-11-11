@@ -5,12 +5,14 @@ import apiClient from "../apiClient";
 export const getIssues = async (
   projectUuid: string | undefined,
   selectedHandled: boolean | null,
+  selectedResolved: boolean | null,
   selectedTime: string | null,
   currentPage: number,
   limit: number,
 ): Promise<GetIssuesResponse> => {
   const params = {
     handled: selectedHandled,
+    resolved: selectedResolved,
     time: selectedTime,
     page: currentPage,
     limit: limit,

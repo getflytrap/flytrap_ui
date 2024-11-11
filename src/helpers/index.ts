@@ -6,6 +6,13 @@ export const convertHandledToBoolean = (handled: string): boolean | null => {
   return null;
 };
 
+export const convertResolvedToBoolean = (resolved: string): boolean | null => {
+  if (resolved === "Resolved") return true;
+  if (resolved === "Unresolved") return false;
+  return null;
+};
+
+
 export const convertToTimeStamp = (period: string): string | null => {
   const now = new Date();
   let pastDate: Date;

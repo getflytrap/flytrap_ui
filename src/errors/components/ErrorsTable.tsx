@@ -16,7 +16,7 @@ import PaginationControls from "../../shared/Pagination";
 import { useProjects } from "../../hooks/useProjects";
 import { ErrorData, Rejection } from "../../types";
 import { getIssues } from "../../services";
-import { convertHandledToBoolean, convertToTimeStamp } from "../../helpers";
+import { convertHandledToBoolean, convertToTimeStamp, convertResolvedToBoolean } from "../../helpers";
 import ErrorRow from "./ErrorRow";
 
 const ERROR_LIMIT_PER_PAGE = 10;
@@ -24,9 +24,10 @@ const ERROR_LIMIT_PER_PAGE = 10;
 interface ErrorsTableProps {
   selectedHandled: string;
   selectedTime: string;
+  selectedResolved: string;
 }
 
-const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
+const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: ErrorsTableProps) => {
   const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
   const { projects, selectedProject, selectProject, fetchProjectsForUser } =
     useProjects();
@@ -47,7 +48,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
     if (selectedProject) {
       fetchErrors(1); // Reset to page 1 when filters change
     }
-  }, [selectedHandled, selectedTime]);
+  }, [selectedHandled, selectedTime, selectedResolved]);
 
   useEffect(() => {
     const loadProject = async () => {
@@ -69,6 +70,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
       const { data } = await getIssues(
         selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled), // null for "All"
+        convertResolvedToBoolean(selectedResolved), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
         ERROR_LIMIT_PER_PAGE,
