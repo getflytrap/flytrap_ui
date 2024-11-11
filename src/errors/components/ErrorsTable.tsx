@@ -15,7 +15,7 @@ import LoadingSpinner from "../../shared/LoadingSpinner";
 import PaginationControls from "../../shared/Pagination";
 import { useProjects } from "../../hooks/useProjects";
 import { ErrorData } from "../../types";
-import { getErrors } from "../../services";
+import { getIssues } from "../../services";
 import { convertHandledToBoolean, convertToTimeStamp } from "../../helpers";
 import ErrorRow from "./ErrorRow";
 
