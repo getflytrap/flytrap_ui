@@ -9,13 +9,18 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { createAccount } from "../../services/index";
+import { User } from "../../types";
 
-const CreateUser = ({ setUsers }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
+interface CreateUserProps {
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+}
+
+const CreateUser = ({ setUsers }: CreateUserProps) => {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 
   const toast = useToast();
 
@@ -38,7 +43,7 @@ const CreateUser = ({ setUsers }) => {
       );
 
       const newUser = {
-        id: data.user_id,
+        uuid: data.uuid,
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -122,7 +127,7 @@ const CreateUser = ({ setUsers }) => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateInputs()) return;
 
