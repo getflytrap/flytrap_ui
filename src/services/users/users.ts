@@ -6,7 +6,7 @@ import {
 import { User } from "../../types";
 import apiClient from "../apiClient";
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<{status: string, data: User[]}> => {
   const { data } = await apiClient.get("/api/users");
   return data;
 };
