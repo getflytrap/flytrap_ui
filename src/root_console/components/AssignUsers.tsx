@@ -17,12 +17,17 @@ import {
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
+import { User, Project } from "../../types";
 
-const AssignUsers = ({ users }) => {
-  const [projects, setProjects] = useState([]);
-  const [currentUsers, setCurrentUsers] = useState([]);
-  const [selectedProject, setSelectedProject] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
+interface AssignUsersProps {
+  users: User[];
+}
+
+const AssignUsers = ({ users }: AssignUsersProps) => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [currentUsers, setCurrentUsers] = useState<User[]>([]);
+  const [selectedProject, setSelectedProject] = useState<string>("");
+  const [selectedUser, setSelectedUser] = useState<string>("");
   const toast = useToast();
 
   useEffect(() => {
@@ -37,17 +42,17 @@ const AssignUsers = ({ users }) => {
     }
   }, []);
 
-  function handleProjectSelection(uuid) {
+  const handleProjectSelection = (uuid: string) => {
     // const selection = projects.find((project) => project.name === name);
     fetchUsersForProject(uuid);
   }
 
-  function handleUserSelection(uuid) {
+  const handleUserSelection = (uuid: string) => {
     setSelectedUser(uuid);
     // const selection = users.find((user) => user.name )
   }
 
-  async function fetchUsersForProject(uuid) {
+  const fetchUsersForProject = async (uuid: string) => {
     try {
       console.log("project selection", uuid);
       const { data } = await getUsersForProject(uuid);
@@ -60,18 +65,18 @@ const AssignUsers = ({ users }) => {
     }
   }
 
-  async function deleteUserFromProject(project_id, user_id) {
+  const deleteUserFromProject = async (projectUuid: string, userUuid: string) => {
     try {
-      await removeUserFromProject(project_id, user_id);
+      await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.id !== user_id),
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
-      console.log("projects", projects, project_id, user_id);
+      console.log("projects", projects, projectUuid, userUuid);
       console.log("cu", currentUsers);
 
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== user_id),
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
       toast({
@@ -88,11 +93,11 @@ const AssignUsers = ({ users }) => {
 
   const addNewUserToProject = async () => {
     try {
-      const data = await addUserToProject(selectedProject, selectedUser);
+      await addUserToProject(selectedProject, selectedUser);
 
       setCurrentUsers((prevUsers) => {
         const newUser = users.find((user) => user.uuid === selectedUser);
-        return [...prevUsers, newUser];
+        return newUser ? [...prevUsers, newUser] : prevUsers;
       });
 
       setSelectedUser("");
