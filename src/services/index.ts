@@ -1,29 +1,29 @@
-import { login, logout, checkAuthStatus } from './auth/auth';
+import { login, logout, checkAuthStatus } from "./auth/auth";
 import {
   getAllProjects,
   createProject,
   deleteProject,
   renameProject,
-} from './projects/projects';
+} from "./projects/projects";
 import {
   getUsers,
   createAccount,
   deleteAccount,
   updatePassword,
-  getProjectsForUser
-} from './users/users';
+  getProjectsForUser,
+} from "./users/users";
 import {
   addUserToProject,
   removeUserFromProject,
-  getUsersForProject
-} from './projectsUsers/projectsUsers';
+  getUsersForProject,
+} from "./projectsUsers/projectsUsers";
 import {
   getIssues,
   deleteIssues,
   getError,
   toggleError,
   deleteError,
-} from './projectsIssues/projectsIssues';
+} from "./projectsIssues/projectsIssues";
 export {
   login,
   logout,
@@ -44,5 +44,5 @@ export {
   createAccount,
   deleteAccount,
   updatePassword,
-  getProjectsForUser
-}
+  getProjectsForUser,
+};

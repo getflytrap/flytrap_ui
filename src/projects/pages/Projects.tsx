@@ -12,7 +12,7 @@ const Projects = () => {
     totalPages,
     isLoading,
     fetchProjectsForUser,
-    selectProject
+    selectProject,
   } = useProjects();
 
   // Modal controls
@@ -50,7 +50,7 @@ const Projects = () => {
     <Box>
       <Button onClick={onNewProjectOpen}>Start A New Project</Button>
       <Heading mb="40px">Active Projects:</Heading>
-      <ProjectList 
+      <ProjectList
         projects={projects}
         onEditOpen={onEditOpen}
         onDeleteOpen={onDeleteOpen}
@@ -72,6 +72,6 @@ const Projects = () => {
       />
     </Box>
   );
-}
+};
 
 export default Projects;

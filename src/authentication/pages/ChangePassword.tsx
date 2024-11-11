@@ -75,21 +75,21 @@ const ChangePassword = () => {
   async function handleSubmitNewPassword() {
     if (auth.userUuid) {
       try {
-          alert(newPassword);
-          await updatePassword(auth.userUuid, newPassword);
-          console.log("New password submitted:", newPassword);
-    
-          toast({
-            title: "Successfully Changed Password",
-            description: "You have successfully changed your password",
-            status: "success",
-            duration: 4000,
-            isClosable: true,
-          });
-    
-          onClose();
-          auth.logout();
-          navigate("/login");
+        alert(newPassword);
+        await updatePassword(auth.userUuid, newPassword);
+        console.log("New password submitted:", newPassword);
+
+        toast({
+          title: "Successfully Changed Password",
+          description: "You have successfully changed your password",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+
+        onClose();
+        auth.logout();
+        navigate("/login");
       } catch {
         toast({
           title: "Error Changing Password",

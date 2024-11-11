@@ -34,7 +34,7 @@ const CreateUser = ({ setUsers }) => {
         lastName,
         email,
         password,
-        confirmedPassword
+        confirmedPassword,
       );
 
       const newUser = {

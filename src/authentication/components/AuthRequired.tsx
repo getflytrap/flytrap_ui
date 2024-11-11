@@ -8,7 +8,7 @@ const AuthRequired = () => {
     // TODO: replace with a spinner?
     return <p>Loading...</p>;
   }
-  
+
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }

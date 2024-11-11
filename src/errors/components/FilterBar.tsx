@@ -7,12 +7,11 @@ interface FilterBarProps {
   setSelectedTime: React.Dispatch<React.SetStateAction<TimeFilter>>;
 }
 
-const FilterBar = ({ 
+const FilterBar = ({
   selectedHandled,
   setSelectedHandled,
-  setSelectedTime
+  setSelectedTime,
 }: FilterBarProps) => {
-  
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value as TimeFilter);
   };

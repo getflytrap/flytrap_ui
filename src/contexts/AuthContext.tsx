@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error("Error checking session:", e);
         setIsLoggedIn(false);
       }
-    }
+    };
 
     checkSession();
-  }, [])
+  }, []);
 
   const login = (uuid: string) => {
     setUserUuid(uuid);

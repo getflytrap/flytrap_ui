@@ -6,13 +6,13 @@ import { Project } from "../../types";
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const { 
-    projects, 
-    selectProject, 
-    selectedProject, 
-    currentPage, 
-    totalPages, 
-    fetchProjectsForUser 
+  const {
+    projects,
+    selectProject,
+    selectedProject,
+    currentPage,
+    totalPages,
+    fetchProjectsForUser,
   } = useProjects();
 
   const handleClick = (project: Project) => {
@@ -29,11 +29,15 @@ export default function Sidebar() {
             key={project.uuid}
             borderRadius="20px"
             bg={
-              selectedProject?.uuid === project.uuid ? "blue.100" : "transparent"
+              selectedProject?.uuid === project.uuid
+                ? "blue.100"
+                : "transparent"
             }
             border={selectedProject?.uuid === project.uuid ? "2px" : "1px"}
             borderColor={
-              selectedProject?.uuid === project.uuid ? "blue.500" : "transparent"
+              selectedProject?.uuid === project.uuid
+                ? "blue.500"
+                : "transparent"
             }
             p={2}
             _hover={{

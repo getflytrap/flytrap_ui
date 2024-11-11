@@ -12,7 +12,7 @@ const ErrorDisplay = () => {
   useEffect(() => {
     if (location.state) {
       const { handled, time } = location.state;
-      
+
       if (handled) {
         setSelectedHandled(handled);
       }
@@ -29,12 +29,12 @@ const ErrorDisplay = () => {
         setSelectedHandled={setSelectedHandled}
         setSelectedTime={setSelectedTime}
       />
-      <ErrorsTable 
+      <ErrorsTable
         selectedHandled={selectedHandled}
         selectedTime={selectedTime}
       />
     </>
   );
-}
+};
 
 export default ErrorDisplay;

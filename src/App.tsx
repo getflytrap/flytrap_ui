@@ -14,25 +14,27 @@ import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import "./App.css";
 
 const App = () => {
-
-
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
 
-      <Route element={<AuthRequired/>}>
+      <Route element={<AuthRequired />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Navigate to="/projects" replace />} />
-          <Route element={<ProjectsProvider><Outlet /></ProjectsProvider>}>
+          <Route
+            element={
+              <ProjectsProvider>
+                <Outlet />
+              </ProjectsProvider>
+            }
+          >
             <Route path="/projects" element={<Projects />} />
-            <Route path="/projects/:project_uuid/errors" element={<ErrorDashboard />}>
+            <Route
+              path="/projects/:project_uuid/errors"
+              element={<ErrorDashboard />}
+            >
               <Route index element={<ErrorDisplay />} />
-              <Route
-                path=":error_uuid"
-                element={
-                  <ErrorDetails />
-                }
-              />
+              <Route path=":error_uuid" element={<ErrorDetails />} />
             </Route>
           </Route>
           <Route path="/root-console" element={<RootConsole />} />

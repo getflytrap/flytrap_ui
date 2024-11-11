@@ -8,7 +8,7 @@ import {
   Th,
   Text,
   Center,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../../shared/LoadingSpinner";
@@ -28,7 +28,8 @@ interface ErrorsTableProps {
 
 const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
   const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
-  const { projects, selectedProject, selectProject, fetchProjectsForUser } = useProjects();
+  const { projects, selectedProject, selectProject, fetchProjectsForUser } =
+    useProjects();
 
   const [errors, setErrors] = useState<(ErrorData | Rejection)[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,7 +58,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
       if (!selectedProject && projectUuid && projects.length > 0) {
         selectProject(projectUuid);
       }
-    }
+    };
 
     loadProject();
   }, [projects, projectUuid, selectedProject]);
@@ -70,7 +71,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
         convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
-        ERROR_LIMIT_PER_PAGE
+        ERROR_LIMIT_PER_PAGE,
       );
       setErrors(data.issues);
       setCurrentPage(data.currentPage);

@@ -39,7 +39,6 @@ const RootConsole = () => {
             </Link>
           </Stack>
         </Box>
-
       </Stack>
     </Box>
   );

@@ -64,14 +64,14 @@ const AssignUsers = ({ users }) => {
     try {
       await removeUserFromProject(project_id, user_id);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.id !== user_id)
+        prevUsers.filter((user) => user.id !== user_id),
       );
 
       console.log("projects", projects, project_id, user_id);
       console.log("cu", currentUsers);
 
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== user_id)
+        prevUsers.filter((user) => user.uuid !== user_id),
       );
 
       toast({
@@ -110,7 +110,7 @@ const AssignUsers = ({ users }) => {
 
   const availableUsers = users.filter(
     (user) =>
-      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid)
+      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid),
   );
 
   return (
