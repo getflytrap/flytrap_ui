@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { renameProject, deleteProject, createProject } from "../../services/projects/projects";
+import { useProjects } from "../../hooks/useProjects";
 import {
   Modal,
   ModalOverlay,
@@ -14,9 +16,6 @@ import {
   Text,
   useToast
 } from "@chakra-ui/react";
-import { renameProject, deleteProject, createProject } from "../../services";
-import { useProjects } from "../../hooks/useProjects";
-
 
 type ProjectModalsProps = {
   isNewProjectOpen: boolean;
@@ -50,8 +49,8 @@ const ProjectModals = ({
       return;
     }
     try {
-      const { data } = await createProject(newProjectName);
-      setProjects((prev) => [...prev, { uuid: data.uuid, name: data.name, issue_count: 0 }]);
+      const { uuid, name } = await createProject(newProjectName);
+      setProjects((prev) => [...prev, { uuid, name, issue_count: 0 }]);
       onNewProjectClose();
       toast({ title: "Project created", status: "success" });
     } catch {
