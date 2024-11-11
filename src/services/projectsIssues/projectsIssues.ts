@@ -1,21 +1,24 @@
 import { 
-  GetIssuesRequest,
   GetIssuesResponse,
 } from './projectsIssuesTypes';
 import { ErrorData, Rejection } from '../../types';
 import apiClient from '../apiClient';
 
 export const getIssues = async (
-  requestData: GetIssuesRequest
+  projectUuid: string | undefined,
+  selectedHandled: boolean | null,
+  selectedTime: string | null,
+  currentPage: number,
+  limit: number,
 ): Promise<GetIssuesResponse> => {
   const params = {
-    handled: requestData.selectedHandled,
-    time: requestData.selectedTime,
-    page: requestData.currentPage,
-    limit: requestData.limit,
+    handled: selectedHandled,
+    time: selectedTime,
+    page: currentPage,
+    limit: limit,
   };
 
-  const { data } = await apiClient.get(`/api/projects/${requestData.projectId}/issues`, { params });
+  const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues`, { params });
 
   return data;
 };
