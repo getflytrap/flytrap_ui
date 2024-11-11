@@ -1,9 +1,8 @@
 import { 
   GetIssuesRequest,
   GetIssuesResponse,
-  Error,
-  Rejection
-} from './projectsIssuesTypes'; // Import types here
+} from './projectsIssuesTypes';
+import { ErrorData, Rejection } from '../../types';
 import apiClient from '../apiClient';
 
 export const getIssues = async (
@@ -18,11 +17,7 @@ export const getIssues = async (
 
   const { data } = await apiClient.get(`/api/projects/${requestData.projectId}/issues`, { params });
 
-  return {
-    errors: data.data.issues, // `issues` includes both errors and rejections
-    totalPages: data.data.total_pages,
-    currentPage: data.data.current_page,
-  };
+  return data;
 };
 
 export const deleteIssues = async (
@@ -34,7 +29,7 @@ export const deleteIssues = async (
 export const getError = async (
   projectId: string, 
   errorId: string
-): Promise<Error> => {
+): Promise<ErrorData> => {
   const { data } = await apiClient.get(`/api/projects/${projectId}/issues/errors/${errorId}`);
   return data;
 };
