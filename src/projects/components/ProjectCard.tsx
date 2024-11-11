@@ -10,7 +10,7 @@ import {
   CardBody,
   CardFooter,
 } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons"; // Import InfoOutlineIcon for Setup button
 import { Project } from "../../types";
 import { useProjects } from "../../hooks/useProjects";
 
@@ -41,6 +41,11 @@ const ProjectCard = ({
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onDeleteOpen(project.uuid);
+  };
+
+  const handleSetupClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(`/projects/${project.uuid}/setup`);
   };
 
   return (
@@ -80,6 +85,13 @@ const ProjectCard = ({
             onClick={handleDeleteClick}
           >
             Delete
+          </Button>
+          <Button
+            variant="ghost"
+            leftIcon={<InfoOutlineIcon />} // Use InfoOutlineIcon for setup instructions
+            onClick={handleSetupClick}
+          >
+            Setup
           </Button>
         </HStack>
       </CardFooter>
