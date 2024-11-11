@@ -1,10 +1,9 @@
 import { 
   CreateAccountRequest,
   CreateAccountResponse,
-  User,
   UserProjectsResponse
 } from './usersTypes';
-
+import { User } from '../../types';
 import apiClient from '../apiClient';
 
 export const getUsers = async (): Promise<User[]> => {
@@ -35,14 +34,14 @@ export const updatePassword = async (
 };
 
 export const getProjectsForUser = async (
-  user_uuid: string,
-  currentPage: number, 
+  userUuid: string | null,
+  page: number, 
   limit: number
-): Promise<UserProjectsResponse> => {
+): Promise<{status: string, data: UserProjectsResponse}> => {
   const params = {
-    page: currentPage,
-    limit: limit,
+    page,
+    limit,
   };
-  const { data } = await apiClient.get(`/api/users/${user_uuid}/projects`, { params });
+  const { data } = await apiClient.get(`/api/users/${userUuid}/projects`, { params });
   return data;
 };
