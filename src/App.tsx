@@ -11,7 +11,8 @@ import MainLayout from "./shared/MainLayout.tsx";
 import { ProjectsProvider } from "./contexts/ProjectsContext";
 import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
-import "./App.css";
+import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
+import "./App.css"; 
 
 const App = () => {
   return (
@@ -29,6 +30,10 @@ const App = () => {
             }
           >
             <Route path="/projects" element={<Projects />} />
+            <Route
+              path="/projects/:project_uuid/setup"
+              element={<ProjectSetup />}
+            ></Route>
             <Route
               path="/projects/:project_uuid/errors"
               element={<ErrorDashboard />}

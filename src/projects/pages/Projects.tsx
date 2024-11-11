@@ -48,7 +48,7 @@ const Projects = () => {
 
   return (
     <Box>
-      <Button onClick={onNewProjectOpen}>Start A New Project</Button>
+      <Button onClick={onNewProjectOpen} size="lg" mb="30px">Start A New Project</Button>
       <Heading mb="40px">Active Projects:</Heading>
       <ProjectList
         projects={projects}
