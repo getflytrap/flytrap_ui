@@ -40,10 +40,10 @@ const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
       if (!userUuid) {
         throw new Error("User not found")
       }
-      
+
       await deleteAccount(userUuid);
 
-      setUsers(users.filter((user) => user.uuid !== userUuid));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.uuid !== userUuid));
       toast({
         title: "Successful Deletion",
         description: "User Successfully Deleted",
