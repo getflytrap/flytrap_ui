@@ -10,88 +10,78 @@ import {
   Tr,
   Td,
   Flex,
-  Center,
-  Spinner,
   useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-
 import WarningModal from "../../shared/WarningModal";
-import { deleteError, getError } from "../../services";
+import { deleteError, getError, toggleError } from "../../services";
+import { useProjects } from "../../hooks/useProjects";
+import { ErrorData } from "../../types";
+import { renameAndFilterProperties } from "../../helpers";
+import LoadingSpinner from "../../shared/LoadingSpinner";
+
 
 const ErrorDetails = () => {
-  const [fetchedError, setFetchedError] = useState({});
-  const [loadingError, setLoadingError] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [resolved, setResolved] = useState(false);
+  const { projects, selectProject, selectedProject, fetchProjectsForUser } = useProjects();
+  const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingError, setLoadingError] = useState<string | null>(null);
+  const [resolved, setResolved] = useState<boolean>(false);
   const location = useLocation();
+  const { handled, time } = location.state || {};
 
-  const { pid, eid } = useParams();
-  const projectId = pid;
-  const errorId = eid;
+  const { project_uuid: projectUuid, error_uuid: errorUuid } = useParams();
 
   const navigate = useNavigate();
   const toast = useToast();
 
   useEffect(() => {
-    try {
-      setIsLoading(true);
-
-      async function fetchData() {
-        console.log("ids", projectId, errorId);
-
-        const { data } = await getError(projectId, errorId);
-
-        // const data = {
-        //   uuid: "sample-uuid-1234-5678",
-        //   name: "DUMMY Database Connection Error",
-        //   message: "Unable to connect to the database.",
-        //   created_at: "2024-10-03T09:20:00Z",
-        //   line_number: 45,
-        //   col_number: 15,
-        //   project_uuid: "123e4567-e89b-12d3-a456-426614174000",
-        //   stack_trace: "Traceback (most recent call last):...",
-        //   handled: false,
-        //   resolved: false,
-        // };
-
-        setFetchedError(data);
+    const fetchErrorData = async () => {
+      try {
+        setIsLoading(true);
+        const { data } = await getError(projectUuid, errorUuid);
+        setErrorData(data);
         setResolved(data.resolved);
-
-        // to set selectedProject if user begins at this route - necessary?
-
-        // if (selectedProject.project_id !== data.project_id) {
-        //   const currentProject = projects.find(
-        //     (project) => project.project_id === data.project_id
-        //   );
-        //   setSelectedProject(currentProject);
-        // }
+      } catch (e) {
+        setLoadingError(e instanceof Error ? e.message : "Unknown error");
+      } finally {
+        setIsLoading(false);
       }
-      fetchData();
-    } catch (e) {
-      setLoadingError(e.message);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
     }
+
+    fetchErrorData();
   }, []);
 
-  async function handleToggleResolved() {
+  useEffect(() => {
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjectsForUser();
+      }
+
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
+      }
+    }
+
+    loadProject();
+  }, [projects, selectedProject]);
+
+  const existingProperties = renameAndFilterProperties(errorData);
+
+  const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
 
     try {
-      const data = await toggleError(projectId, errorId, resolvedPayload);
-
-      // so that 'resolved' is only updated in state if API call was successful
+      await toggleError(projectUuid, errorUuid, resolvedPayload);
       setResolved(resolvedPayload);
     } catch (e) {
       alert("Could not toggle resolved state of error");
     }
   }
 
-  async function removeError() {
+  const removeError = async () => {
     try {
-      const data = await deleteError(projectId, errorId);
+      await deleteError(projectUuid, errorUuid);
       toast({
         title: "Successful Deletion",
         description: "Error successfully deleted",
@@ -100,7 +90,7 @@ const ErrorDetails = () => {
         isClosable: true,
       });
 
-      navigate("/errors");
+      navigate(`/projects/${projectUuid}/errors`);
     } catch (e) {
       toast({
         title: "Deletion Error",
@@ -111,39 +101,6 @@ const ErrorDetails = () => {
       });
     }
   }
-
-  function renameAndFilterProperties() {
-    const result = [];
-    for (let pair of Object.entries(fetchedError)) {
-      if (!pair[1]) continue;
-      switch (pair[0]) {
-        case "error_id":
-          result.push(["Id", pair[1]]);
-          break;
-        case "name":
-          result.push(["Name", pair[1]]);
-          break;
-        case "message":
-          result.push(["Message", pair[1]]);
-          break;
-        case "created_at":
-          result.push(["Created At", pair[1]]);
-          break;
-        case "line_number":
-          result.push(["Line Number", pair[1]]);
-          break;
-        case "col_number":
-          result.push(["Column Number", pair[1]]);
-          break;
-        case "handled":
-          result.push(["Handled", pair[1]]);
-          break;
-      }
-    }
-    return result;
-  }
-
-  const existingProperties = renameAndFilterProperties();
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
@@ -156,16 +113,15 @@ const ErrorDetails = () => {
   };
 
   const handleReturnToErrors = () => {
-    navigate("/errors", {
+    navigate(`/projects/${projectUuid}/errors`, {
       state: {
-        project_id: fetchedError.uuid,
-        handled: location.state?.handled,
-        time: location.state?.time,
+        handled: handled,
+        time: time,
       },
     });
   };
 
-  if (!fetchedError) {
+  if (!errorData) {
     return <Heading>No Data</Heading>;
   }
 
@@ -173,25 +129,13 @@ const ErrorDetails = () => {
     return (
       <WarningModal
         isOpen={true}
-        onClose={() => setLoadingError(false)}
-        errorMessage={loadingError.message}
+        onClose={() => setLoadingError(null)}
+        errorMessage={loadingError}
       />
     );
   }
 
-  if (isLoading) {
-    return (
-      <Center height="100vh">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      </Center>
-    );
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <Box>
@@ -244,7 +188,7 @@ const ErrorDetails = () => {
           backgroundColor="gray.100"
           whiteSpace="pre-wrap"
         >
-          {fetchedError.stack_trace ? fetchedError.stack_trace : "No Data"}
+          {errorData.stack_trace ? errorData.stack_trace : "No Data"}
         </Box>
       </Box>
     </Box>

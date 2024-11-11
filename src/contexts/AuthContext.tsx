@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
-import { checkAuthStatus } from "../services";
+import { logout as logoutService, checkAuthStatus } from "../services";
 
 type AuthContextType = {
   isLoggedIn: boolean | null;
@@ -43,9 +43,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(true);
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUserUuid(null);
+  const logout = async () => {
+    try {
+      await logoutService();
+      setIsLoggedIn(false);
+      setUserUuid(null);
+    } catch (e) {
+      console.error("Error during logout:", e);
+    }
   };
 
   return (

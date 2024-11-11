@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { Box, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import ProjectList from "../components/ProjectList";
-import PaginationControls from "../components/Pagination";
+import PaginationControls from "../../shared/Pagination";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import ProjectModals from "../components/ProjectModals";
-// import WarningModal from "../../shared/WarningModal";
 import { useProjects } from "../../hooks/useProjects";
 
 const Projects = () => {
@@ -14,9 +12,8 @@ const Projects = () => {
     totalPages,
     isLoading,
     fetchProjectsForUser,
+    selectProject
   } = useProjects();
-
-  const [selectedProjectUuid, setSelectedProjectUuid] = useState<string | null>(null);
 
   // Modal controls
   const {
@@ -38,12 +35,12 @@ const Projects = () => {
   } = useDisclosure();
 
   const onEditOpen = (projectUuid: string) => {
-    setSelectedProjectUuid(projectUuid);
+    selectProject(projectUuid);
     openEdit();
   };
 
   const onDeleteOpen = (projectUuid: string) => {
-    setSelectedProjectUuid(projectUuid);
+    selectProject(projectUuid);
     openDelete();
   };
 
@@ -72,7 +69,6 @@ const Projects = () => {
         onEditClose={onEditClose}
         isDeleteOpen={isDeleteOpen}
         onDeleteClose={onDeleteClose}
-        selectedProjectUuid={selectedProjectUuid}
       />
     </Box>
   );
