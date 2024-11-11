@@ -36,6 +36,8 @@ export interface Rejection {
 }
 
 export type HandledFilter = "All" | "Handled" | "Unhandled";
+export type ResolvedFilter = "All" | "Resolved" | "Unresolved";
+
 export type TimeFilter =
   | "Today"
   | "Last 7 days"
