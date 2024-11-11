@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import { Text} from "@chakra-ui/react";
 import ReactSetup from "../components/ReactSetup";
 import JavaScriptSetup from "../components/JavaScriptSetup";
 import FlaskSetup from "../components/FlaskSetup";

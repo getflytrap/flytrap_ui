@@ -7,6 +7,8 @@ export interface getAllProjectsResponse {
 }
 
 export interface createProjectResponse {
-  uuid: string;
-  name: string;
+  data: {
+    uuid: string;
+    name: string;
+  }
 }

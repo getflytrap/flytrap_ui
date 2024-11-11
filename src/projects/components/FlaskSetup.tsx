@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, Box, Heading, Text, Button, Code, Divider, Container, Card, CardBody } from '@chakra-ui/react';
+import { Box, Heading, Text, Button, Code, Divider, Container, Card, CardBody } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const FlaskSetup: React.FC = () => {
