@@ -19,7 +19,7 @@ export const removeUserFromProject = async (
 
 export const getUsersForProject = async (
   projectUuid: string,
-): Promise<User[]> => {
+): Promise<{status: string, data: User[]}> => {
   const { data } = await apiClient.get(`/api/projects/${projectUuid}/users`);
   return data;
 };
