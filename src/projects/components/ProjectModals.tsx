@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   renameProject,
   deleteProject,
@@ -112,7 +112,7 @@ const ProjectModals = ({
   };
 
   const platforms = [
-    { name: "Javascript", icon: <FaJsSquare size={40} /> },
+    { name: "JavaScript", icon: <FaJsSquare size={40} /> },
     { name: "React", icon: <FaReact size={40} /> },
     { name: "Express.js", icon: <FaNodeJs size={40} /> },
     { name: "Flask", icon: <FaPython size={40} /> },

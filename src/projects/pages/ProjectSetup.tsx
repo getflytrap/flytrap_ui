@@ -1,13 +1,13 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
-
-interface LocationState {
-  platform: "React" | "JavaScript" | "Flask" | "Express";
-}
+import { Heading, Text, VStack } from "@chakra-ui/react";
+import ReactSetup from "../components/ReactSetup";
+import JavaScriptSetup from "../components/JavaScriptSetup";
+import FlaskSetup from "../components/FlaskSetup";
+import ExpressSetup from "../components/ExpressSetup";
 
 const ProjectSetup: React.FC = () => {
-  const location = useLocation<LocationState>();
+  const location = useLocation();
   const { platform } = location.state || {};
 
   let platformComponent: React.ReactNode;
@@ -22,19 +22,14 @@ const ProjectSetup: React.FC = () => {
     case "Flask":
       platformComponent = <FlaskSetup />;
       break;
-    case "Express":
+    case "Express.js":
       platformComponent = <ExpressSetup />;
       break;
     default:
       platformComponent = <Text>No platform selected</Text>;
   }
 
-  return (
-    <VStack spacing={4} align="stretch" p={6}>
-      <Heading as="h1" size="xl">Project Setup</Heading>
-      {platformComponent}
-    </VStack>
-  );
+  return platformComponent;
 };
 
 export default ProjectSetup;
