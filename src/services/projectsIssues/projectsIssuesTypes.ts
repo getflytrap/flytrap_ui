@@ -1,10 +1,5 @@
 import { ErrorData, Rejection } from "../../types/index";
 
-export interface PaginationInfo {
-  totalPages: number;
-  currentPage: number;
-}
-
 export interface GetIssuesRequest {
   projectId: string;
   selectedHandled: boolean | null;
@@ -13,7 +8,7 @@ export interface GetIssuesRequest {
   limit: number;           
 }
 
-export interface GetIssuesResponse extends PaginationInfo {
+export interface GetIssuesResponse {
   issues: ErrorData | Rejection[];
   totalPages: number;
   currentPage: number;
