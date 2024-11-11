@@ -1,23 +1,4 @@
-export interface Error {
-  uuid: string;
-  name: string;
-  message: string;
-  created_at: string;
-  line_number: number;
-  col_number: number;
-  project_uuid: string;
-  handled: boolean;
-  resolved: boolean;
-}
-
-export interface Rejection {
-  uuid: string;
-  value: string;
-  created_at: string;
-  project_uuid: string;
-  handled: boolean;
-  resolved: boolean;
-}
+import { Error, Rejection } from "../../types/index";
 
 export interface PaginationInfo {
   totalPages: number;

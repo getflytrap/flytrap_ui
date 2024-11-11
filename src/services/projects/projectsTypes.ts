@@ -1,10 +1,4 @@
-// To-do add generic response type with a status attr in a general types file?
-
-export interface Project {
-  uuid: string;
-  name: string;
-  issue_count: number;
-}
+import { Project } from "../../types/index";
 
 export interface getAllProjectsResponse {
   projects:  Project[];

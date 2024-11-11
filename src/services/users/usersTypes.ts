@@ -1,13 +1,4 @@
-// userTypes.ts
-
-export interface User {
-  uuid: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  is_root: boolean;
-  created_at: string; // ISO Date string
-}
+import { User } from "../../types/index";
 
 export interface CreateAccountRequest {
   first_name: string;
