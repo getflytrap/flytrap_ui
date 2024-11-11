@@ -1,4 +1,4 @@
-import { Error, Rejection } from "../../types/index";
+import { ErrorData, Rejection } from "../../types/index";
 
 export interface PaginationInfo {
   totalPages: number;
@@ -14,12 +14,7 @@ export interface GetIssuesRequest {
 }
 
 export interface GetIssuesResponse extends PaginationInfo {
-  errors: {
-    issues: {
-      errorLogs: Error[];
-      rejectionLogs: Rejection[];
-    }
-  };
+  issues: ErrorData | Rejection[];
   totalPages: number;
   currentPage: number;
 }
