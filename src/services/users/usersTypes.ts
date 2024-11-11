@@ -1,5 +1,3 @@
-import { User } from "../../types/index";
-
 export interface CreateAccountRequest {
   first_name: string;
   last_name: string;
