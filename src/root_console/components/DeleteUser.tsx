@@ -17,7 +17,7 @@ import {
   ModalBody,
   ModalFooter,
   VStack,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import { deleteAccount } from "../../services/index";
@@ -34,7 +34,7 @@ const DeleteUser = ({ users, setUsers }) => {
       const id = users.find(
         (user) =>
           user.first_name === selectedFirstName &&
-          user.last_name === selectedLastName
+          user.last_name === selectedLastName,
       ).uuid;
       await deleteAccount(id);
 
@@ -84,7 +84,10 @@ const DeleteUser = ({ users, setUsers }) => {
         mb={4}
       >
         {users.map((user) => (
-          <option key={user.uuid} value={`${user.first_name} ${user.last_name}`}>
+          <option
+            key={user.uuid}
+            value={`${user.first_name} ${user.last_name}`}
+          >
             {`${user.first_name} ${user.last_name}`}
           </option>
         ))}

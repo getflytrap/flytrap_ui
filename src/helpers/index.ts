@@ -4,7 +4,7 @@ export const convertHandledToBoolean = (handled: string): boolean | null => {
   if (handled === "Handled") return true;
   if (handled === "Unhandled") return false;
   return null;
-}
+};
 
 export const convertToTimeStamp = (period: string): string | null => {
   const now = new Date();
@@ -29,14 +29,16 @@ export const convertToTimeStamp = (period: string): string | null => {
     case "Forever":
       return null;
     default:
-      console.error('Invalid time period provided.');
+      console.error("Invalid time period provided.");
       return null;
   }
 
   return pastDate.toISOString();
 };
 
-export const renameAndFilterProperties = (errorData: ErrorData | null): FilteredProperty[] => {
+export const renameAndFilterProperties = (
+  errorData: ErrorData | null,
+): FilteredProperty[] => {
   if (!errorData) return []; // Handle null or undefined fetchedError by returning an empty array
 
   const result: FilteredProperty[] = [];

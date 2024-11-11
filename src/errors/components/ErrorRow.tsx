@@ -1,10 +1,10 @@
 import { Box, Td, Link } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { ErrorData } from "../../types";
+import { ErrorData, Rejection } from "../../types";
 import { Project } from "../../types";
 
 interface ErrorRowProps {
-  error: ErrorData;
+  error: ErrorData | Rejection;
   selectedProject: Project | null;
   selectedHandled: string;
   selectedTime: string;

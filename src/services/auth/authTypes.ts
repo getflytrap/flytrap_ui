@@ -16,6 +16,6 @@ export interface checkStatusResponse {
 }
 
 export interface AccessTokenPayload extends JwtPayload {
-  user_uuid: string; 
+  user_uuid: string;
   is_root: boolean;
 }

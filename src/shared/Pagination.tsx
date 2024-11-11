@@ -8,15 +8,28 @@ type PaginationControlsProps = {
   onNextPage: () => void;
 };
 
-const PaginationControls = ({ currentPage, totalPages, onPrevPage, onNextPage }: PaginationControlsProps) => (
+const PaginationControls = ({
+  currentPage,
+  totalPages,
+  onPrevPage,
+  onNextPage,
+}: PaginationControlsProps) => (
   <HStack justify="space-between" mt={4}>
-    <Button leftIcon={<ChevronLeftIcon />} onClick={onPrevPage} isDisabled={currentPage === 1}>
+    <Button
+      leftIcon={<ChevronLeftIcon />}
+      onClick={onPrevPage}
+      isDisabled={currentPage === 1}
+    >
       Previous Page
     </Button>
     <Text>
       Page {currentPage} of {totalPages}
     </Text>
-    <Button rightIcon={<ChevronRightIcon />} onClick={onNextPage} isDisabled={currentPage === totalPages}>
+    <Button
+      rightIcon={<ChevronRightIcon />}
+      onClick={onNextPage}
+      isDisabled={currentPage === totalPages}
+    >
       Next Page
     </Button>
   </HStack>

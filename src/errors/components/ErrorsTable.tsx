@@ -8,14 +8,14 @@ import {
   Th,
   Text,
   Center,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import PaginationControls from "../../shared/Pagination";
 import { useProjects } from "../../hooks/useProjects";
-import { ErrorData } from "../../types";
-import { getErrors } from "../../services";
+import { ErrorData, Rejection } from "../../types";
+import { getIssues } from "../../services";
 import { convertHandledToBoolean, convertToTimeStamp } from "../../helpers";
 import ErrorRow from "./ErrorRow";
 
@@ -28,9 +28,10 @@ interface ErrorsTableProps {
 
 const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
   const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
-  const { projects, selectedProject, selectProject, fetchProjectsForUser } = useProjects();
+  const { projects, selectedProject, selectProject, fetchProjectsForUser } =
+    useProjects();
 
-  const [errors, setErrors] = useState<ErrorData[]>([]);
+  const [errors, setErrors] = useState<(ErrorData | Rejection)[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +58,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
       if (!selectedProject && projectUuid && projects.length > 0) {
         selectProject(projectUuid);
       }
-    }
+    };
 
     loadProject();
   }, [projects, projectUuid, selectedProject]);
@@ -65,14 +66,14 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
   const fetchErrors = async (page: number = 1) => {
     setIsLoading(true);
     try {
-      const data = await getErrors(
+      const data = await getIssues(
         selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
-        ERROR_LIMIT_PER_PAGE
+        ERROR_LIMIT_PER_PAGE,
       );
-      setErrors(data.errors);
+      setErrors(data.issues);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
     } catch (e) {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getIssues } from "../../services/index";
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
 import { HandledFilter, TimeFilter } from "../../types";
@@ -13,7 +12,7 @@ const ErrorDisplay = () => {
   useEffect(() => {
     if (location.state) {
       const { handled, time } = location.state;
-      
+
       if (handled) {
         setSelectedHandled(handled);
       }
@@ -30,12 +29,12 @@ const ErrorDisplay = () => {
         setSelectedHandled={setSelectedHandled}
         setSelectedTime={setSelectedTime}
       />
-      <ErrorsTable 
+      <ErrorsTable
         selectedHandled={selectedHandled}
         selectedTime={selectedTime}
       />
     </>
   );
-}
+};
 
 export default ErrorDisplay;

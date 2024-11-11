@@ -1,11 +1,10 @@
-import { 
+import {
   CreateAccountRequest,
   CreateAccountResponse,
-  User,
-  UserProjectsResponse
-} from './usersTypes';
-
-import apiClient from '../apiClient';
+  UserProjectsResponse,
+} from "./usersTypes";
+import { User } from "../../types";
+import apiClient from "../apiClient";
 
 export const getUsers = async (): Promise<User[]> => {
   const { data } = await apiClient.get("/api/users");
@@ -13,36 +12,36 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 export const createAccount = async (
-  account_data: CreateAccountRequest
+  account_data: CreateAccountRequest,
 ): Promise<CreateAccountResponse> => {
   const { data } = await apiClient.post("/api/users", account_data);
   return data;
 };
 
-export const deleteAccount = async (
-  id: string
-): Promise<void> => {
+export const deleteAccount = async (id: string): Promise<void> => {
   await apiClient.delete(`/api/users/${id}`);
 };
 
 export const updatePassword = async (
-  id: string, 
-  password: string
+  userUuid: string,
+  password: string,
 ): Promise<void> => {
-  await apiClient.patch(`/api/users/${id}`, {
+  await apiClient.patch(`/api/users/${userUuid}`, {
     password,
   });
 };
 
 export const getProjectsForUser = async (
-  user_uuid: string,
-  currentPage: number, 
-  limit: number
-): Promise<UserProjectsResponse> => {
+  userUuid: string | null,
+  page: number,
+  limit: number,
+): Promise<{ status: string; data: UserProjectsResponse }> => {
   const params = {
-    page: currentPage,
-    limit: limit,
+    page,
+    limit,
   };
-  const { data } = await apiClient.get(`/api/users/${user_uuid}/projects`, { params });
+  const { data } = await apiClient.get(`/api/users/${userUuid}/projects`, {
+    params,
+  });
   return data;
 };

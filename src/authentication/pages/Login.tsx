@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from "../../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import { AccessTokenPayload } from "../../services/auth/authTypes";
 
@@ -30,7 +30,7 @@ const Login = () => {
     try {
       const data = await postLoginData(email, password);
       console.log("login data", data);
-      
+
       const decodedToken: AccessTokenPayload = jwtDecode(data);
       const userUuid = decodedToken.user_uuid;
 
@@ -45,7 +45,7 @@ const Login = () => {
 
       navigate("/projects");
     } catch (e) {
-      console.log('error logging in: ', e);
+      console.log("error logging in: ", e);
       toast({
         title: "Login error",
         description: "User could not be logged in - check your inputs",

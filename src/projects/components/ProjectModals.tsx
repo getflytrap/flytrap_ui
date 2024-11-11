@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { renameProject, deleteProject, createProject } from "../../services/projects/projects";
+import {
+  renameProject,
+  deleteProject,
+  createProject,
+} from "../../services/projects/projects";
 import { useProjects } from "../../hooks/useProjects";
 import {
   Modal,
@@ -14,7 +18,7 @@ import {
   FormLabel,
   Input,
   Text,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 type ProjectModalsProps = {
@@ -34,7 +38,7 @@ const ProjectModals = ({
   isDeleteOpen,
   onDeleteClose,
 }: ProjectModalsProps) => {
-  const { setProjects, selectProject, selectedProject } = useProjects(); 
+  const { setProjects, selectProject, selectedProject } = useProjects();
 
   const [newProjectName, setNewProjectName] = useState("");
   const [editedProjectName, setEditedProjectName] = useState("");
@@ -43,7 +47,10 @@ const ProjectModals = ({
 
   const handleNewProjectSubmit = async () => {
     if (newProjectName.length < 8) {
-      toast({ title: "Project name must be at least 8 characters", status: "error" });
+      toast({
+        title: "Project name must be at least 8 characters",
+        status: "error",
+      });
       return;
     }
     try {
@@ -59,7 +66,13 @@ const ProjectModals = ({
   const handleEditSubmit = async () => {
     try {
       await renameProject(selectedProject?.uuid, editedProjectName);
-      setProjects((prev) => prev.map((p) => (p.uuid === selectedProject?.uuid ? { ...p, name: editedProjectName } : p)));
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.uuid === selectedProject?.uuid
+            ? { ...p, name: editedProjectName }
+            : p,
+        ),
+      );
       onEditClose();
       selectProject(null);
       toast({ title: "Project renamed", status: "success" });
@@ -71,7 +84,9 @@ const ProjectModals = ({
   const handleConfirmDeletion = async () => {
     try {
       await deleteProject(selectedProject?.uuid);
-      setProjects((prev) => prev.filter((p) => p.uuid !== selectedProject?.uuid));
+      setProjects((prev) =>
+        prev.filter((p) => p.uuid !== selectedProject?.uuid),
+      );
       onDeleteClose();
       selectProject(null);
       toast({ title: "Project deleted", status: "success" });
@@ -144,8 +159,8 @@ const ProjectModals = ({
           <ModalCloseButton />
           <ModalBody>
             <Text>
-              Are you sure you want to delete this project? This action cannot be
-              undone.
+              Are you sure you want to delete this project? This action cannot
+              be undone.
             </Text>
           </ModalBody>
           <ModalFooter>
@@ -159,7 +174,7 @@ const ProjectModals = ({
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 };
 
 export default ProjectModals;

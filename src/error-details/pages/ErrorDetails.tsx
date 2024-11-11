@@ -20,9 +20,9 @@ import { ErrorData } from "../../types";
 import { renameAndFilterProperties } from "../../helpers";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 
-
 const ErrorDetails = () => {
-  const { projects, selectProject, selectedProject, fetchProjectsForUser } = useProjects();
+  const { projects, selectProject, selectedProject, fetchProjectsForUser } =
+    useProjects();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -47,7 +47,7 @@ const ErrorDetails = () => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
     fetchErrorData();
   }, []);
@@ -61,7 +61,7 @@ const ErrorDetails = () => {
       if (!selectedProject && projectUuid && projects.length > 0) {
         selectProject(projectUuid);
       }
-    }
+    };
 
     loadProject();
   }, [projects, selectedProject]);
@@ -77,7 +77,7 @@ const ErrorDetails = () => {
     } catch (e) {
       alert("Could not toggle resolved state of error");
     }
-  }
+  };
 
   const removeError = async () => {
     try {
@@ -100,11 +100,11 @@ const ErrorDetails = () => {
         isClosable: true,
       });
     }
-  }
+  };
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {

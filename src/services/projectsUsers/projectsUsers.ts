@@ -1,28 +1,25 @@
-import { User } from '../users/usersTypes'
-
-import apiClient from '../apiClient';
+import { User } from "../../types";
+import apiClient from "../apiClient";
 
 export const addUserToProject = async (
-  projectId: string,
-  userId: string
+  projectUuid: string,
+  userUuid: string,
 ): Promise<void> => {
-  await apiClient.post(`/api/projects/${projectId}/users`, {
-    user_uuid: userId,
+  await apiClient.post(`/api/projects/${projectUuid}/users`, {
+    user_uuid: userUuid,
   });
 };
 
 export const removeUserFromProject = async (
-  projectId: string,
-  userId: string
+  projectUuid: string,
+  userUuid: string,
 ): Promise<void> => {
-  await apiClient.delete(
-    `/api/projects/${projectId}/users/${userId}`
-  );
+  await apiClient.delete(`/api/projects/${projectUuid}/users/${userUuid}`);
 };
 
 export const getUsersForProject = async (
-  projectId: string
+  projectUuid: string,
 ): Promise<User[]> => {
-  const { data } = await apiClient.get(`/api/projects/${projectId}/users`);
+  const { data } = await apiClient.get(`/api/projects/${projectUuid}/users`);
   return data;
 };

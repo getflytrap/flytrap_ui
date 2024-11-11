@@ -13,7 +13,7 @@ const ErrorDashboard = () => {
           minHeight={{ lg: "100vh" }}
           p={{ base: "20px", lg: "30px" }}
         >
-          <Sidebar/>
+          <Sidebar />
         </GridItem>
 
         <GridItem as="main" colSpan={{ base: 6, lg: 4, xl: 5 }} p="40px">
@@ -22,6 +22,6 @@ const ErrorDashboard = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default ErrorDashboard;

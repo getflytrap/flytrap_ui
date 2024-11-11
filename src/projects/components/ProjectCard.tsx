@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { 
-  Heading, 
-  Text, 
+import {
+  Heading,
+  Text,
   Button,
-  HStack, 
-  Divider, 
-  Card, 
-  CardHeader, 
-  CardBody, 
-  CardFooter 
+  HStack,
+  Divider,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
@@ -16,18 +16,22 @@ import { useProjects } from "../../hooks/useProjects";
 
 type ProjectCardProps = {
   project: Project;
-  onEditOpen: ( projectUuid: string) => void;
-  onDeleteOpen: ( projectUuid: string) => void;
+  onEditOpen: (projectUuid: string) => void;
+  onDeleteOpen: (projectUuid: string) => void;
 };
 
-const ProjectCard = ({ project, onEditOpen, onDeleteOpen }: ProjectCardProps) => {
+const ProjectCard = ({
+  project,
+  onEditOpen,
+  onDeleteOpen,
+}: ProjectCardProps) => {
   const navigate = useNavigate();
   const { selectProject } = useProjects();
 
   const handleProjectClick = () => {
     selectProject(project.uuid);
     navigate(`/projects/${project.uuid}/errors`);
-  }
+  };
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -38,7 +42,7 @@ const ProjectCard = ({ project, onEditOpen, onDeleteOpen }: ProjectCardProps) =>
     event.stopPropagation();
     onDeleteOpen(project.uuid);
   };
-  
+
   return (
     <Card
       key={project.uuid}
@@ -63,9 +67,9 @@ const ProjectCard = ({ project, onEditOpen, onDeleteOpen }: ProjectCardProps) =>
 
       <CardFooter>
         <HStack justify="center" spacing={8} width="100%">
-          <Button 
+          <Button
             variant="ghost"
-            leftIcon={<EditIcon />} 
+            leftIcon={<EditIcon />}
             onClick={handleEditClick}
           >
             Edit
@@ -80,7 +84,7 @@ const ProjectCard = ({ project, onEditOpen, onDeleteOpen }: ProjectCardProps) =>
         </HStack>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
 export default ProjectCard;
