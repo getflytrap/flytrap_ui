@@ -4,7 +4,7 @@ import apiClient from "../apiClient";
 
 export const getAllProjects = async (): Promise<getAllProjectsResponse> => {
   const { data } = await apiClient.get("/api/projects");
-
+  console.log('get all projs data', data)
   return data;
 };
 

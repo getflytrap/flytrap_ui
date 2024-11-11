@@ -1,5 +1,5 @@
-import { User } from "../../types";
 import apiClient from "../apiClient";
+import { ProjectsUsersResponse } from "./projectsUsersTypes";
 
 export const addUserToProject = async (
   projectUuid: string,
@@ -19,7 +19,7 @@ export const removeUserFromProject = async (
 
 export const getUsersForProject = async (
   projectUuid: string,
-): Promise<User[]> => {
+): Promise<ProjectsUsersResponse> => {
   const { data } = await apiClient.get(`/api/projects/${projectUuid}/users`);
   return data;
 };
