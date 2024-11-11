@@ -1,17 +1,24 @@
-import React, { useState, useContext } from "react";
 import { Box, Select, Flex, Stack, Text } from "@chakra-ui/react";
+import { HandledFilter, TimeFilter } from "../../types";
 
-const FilterBar = ({
+interface FilterBarProps {
+  selectedHandled: HandledFilter;
+  setSelectedHandled: React.Dispatch<React.SetStateAction<HandledFilter>>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<TimeFilter>>;
+}
+
+const FilterBar = ({ 
   selectedHandled,
   setSelectedHandled,
-  setSelectedTime,
-}) => {
-  const handleTimeChange = (event) => {
-    setSelectedTime(event.target.value);
+  setSelectedTime
+}: FilterBarProps) => {
+  
+  const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTime(event.target.value as TimeFilter);
   };
 
-  const handleResolvedChange = (value) => {
-    setSelectedHandled(value);
+  const handleHandledChange = (option: HandledFilter) => {
+    setSelectedHandled(option);
   };
 
   const fixedButtonWidth = "90px";
@@ -41,7 +48,7 @@ const FilterBar = ({
               <Box
                 key={option}
                 as="button"
-                onClick={() => handleResolvedChange(option)}
+                onClick={() => handleHandledChange(option as HandledFilter)}
                 borderRadius="20px"
                 p={2}
                 width={fixedButtonWidth}

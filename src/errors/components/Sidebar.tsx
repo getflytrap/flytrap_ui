@@ -1,79 +1,60 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Stack, Text, Button, HStack } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Box, Stack, Text } from "@chakra-ui/react";
+import { useProjects } from "../../hooks/useProjects";
+import PaginationControls from "../../shared/Pagination";
+import { Project } from "../../types";
 
-export default function Sidebar({
-  selectedProject,
-  setSelectedProject,
-  projects,
-  fetchProjectsForUser,
-  currentPage,
-  setCurrentPage,
-  totalPages,
-}) {
+export default function Sidebar() {
   const navigate = useNavigate();
+  const { 
+    projects, 
+    selectProject, 
+    selectedProject, 
+    currentPage, 
+    totalPages, 
+    fetchProjectsForUser 
+  } = useProjects();
 
-  function prevPage() {
-    fetchProjectsForUser(currentPage - 1);
-  }
-
-  function nextPage() {
-    fetchProjectsForUser(currentPage + 1);
-  }
-
-  const handleClick = (project) => {
-    setSelectedProject(project);
-    navigate("/errors");
+  const handleClick = (project: Project) => {
+    selectProject(project.uuid);
+    navigate(`/projects/${project.uuid}/errors`);
   };
 
   return (
     <>
       <Stack spacing={3} color="whiteAlpha.900">
-        {console.log("loaded projects: ", projects)}
         {projects.map((project) => (
           <Box
             onClick={() => handleClick(project)}
             key={project.uuid}
             borderRadius="20px"
             bg={
-              selectedProject.uuid === project.uuid ? "blue.100" : "transparent"
+              selectedProject?.uuid === project.uuid ? "blue.100" : "transparent"
             }
-            border={selectedProject.uuid === project.uuid ? "2px" : "1px"}
+            border={selectedProject?.uuid === project.uuid ? "2px" : "1px"}
             borderColor={
-              selectedProject.uuid === project.uuid ? "blue.500" : "transparent"
+              selectedProject?.uuid === project.uuid ? "blue.500" : "transparent"
             }
             p={2}
             _hover={{
               borderColor: "gray.300",
             }}
             cursor="pointer"
-            color={selectedProject.uuid === project.uuid ? "black" : "inherit"}
+            color={selectedProject?.uuid === project.uuid ? "black" : "inherit"}
             fontWeight={
-              selectedProject.uuid === project.uuid ? "bold" : "normal"
+              selectedProject?.uuid === project.uuid ? "bold" : "normal"
             }
           >
             <Text textAlign="left">{`${project.name} (${project.issue_count})`}</Text>
           </Box>
         ))}
       </Stack>
-      <HStack justify="space-between" mt={4}>
-        <Button
-          leftIcon={<ChevronLeftIcon />}
-          onClick={prevPage}
-          isDisabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-
-        <Button
-          rightIcon={<ChevronRightIcon />}
-          onClick={nextPage}
-          isDisabled={currentPage === totalPages}
-        >
-          Next
-        </Button>
-      </HStack>
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPrevPage={() => fetchProjectsForUser(currentPage - 1)}
+        onNextPage={() => fetchProjectsForUser(currentPage + 1)}
+      />
     </>
   );
 }
