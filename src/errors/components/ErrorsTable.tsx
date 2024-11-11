@@ -66,7 +66,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime }: ErrorsTableProps) => {
   const fetchErrors = async (page: number = 1) => {
     setIsLoading(true);
     try {
-      const data = await getIssues(
+      const { data } = await getIssues(
         selectedProject?.uuid,
         convertHandledToBoolean(selectedHandled), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
