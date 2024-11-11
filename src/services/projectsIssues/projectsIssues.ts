@@ -24,57 +24,57 @@ export const getIssues = async (
 };
 
 export const deleteIssues = async (
-  projectId: string
+  projectUuid: string
 ): Promise<void> => {
-  await apiClient.delete(`/api/projects/${projectId}/issues`);
+  await apiClient.delete(`/api/projects/${projectUuid}/issues`);
 };
 
 export const getError = async (
-  projectId: string | undefined, 
-  errorId: string | undefined
+  projectUuid: string | undefined, 
+  errorUuid: string | undefined
 ): Promise<{status: string, data: ErrorData}> => {
-  const { data } = await apiClient.get(`/api/projects/${projectId}/issues/errors/${errorId}`);
+  const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues/errors/${errorUuid}`);
   return data;
 };
 
 export const getRejection = async (
-  projectId: string,
-  rejectionId: string
+  projectUuid: string,
+  rejectionUuid: string
 ): Promise<{status: string, data: Rejection}> => {
-  const { data } = await apiClient.get(`/api/projects/${projectId}/issues/rejections/${rejectionId}`);
+  const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`);
   return data
 }
 
 export const toggleError = async (
-  projectId: string | undefined,
-  errorId: string | undefined,
+  projectUuid: string | undefined,
+  errorUuid: string | undefined,
   newResolvedState: boolean
 ): Promise<void> => {
-  await apiClient.patch(`/api/projects/${projectId}/issues/errors/${errorId}`, {
+  await apiClient.patch(`/api/projects/${projectUuid}/issues/errors/${errorUuid}`, {
     resolved: newResolvedState,
   });
 };
 
 export const toggleRejection = async (
-  projectId: string | undefined,
-  rejectionId: string | undefined,
+  projectUuidd: string | undefined,
+  rejectionUuidd: string | undefined,
   newResolvedState: boolean
 ): Promise<void> => {
-  await apiClient.patch(`/api/projects/${projectId}/issues/rejections/${rejectionId}`, {
+  await apiClient.patch(`/api/projects/${projectUuidd}/issues/rejections/${rejectionUuidd}`, {
     resolved: newResolvedState,
   });
 };
 
 export const deleteError = async (
-  projectId: string | undefined, 
-  errorId: string | undefined
+  projectUuidd: string | undefined, 
+  errorUuidd: string | undefined
 ): Promise<void> => {
-  await apiClient.delete(`/api/projects/${projectId}/issues/errors/${errorId}`);
+  await apiClient.delete(`/api/projects/${projectUuidd}/issues/errors/${errorUuidd}`);
 };
 
 export const deleteRejection = async (
-  projectId: string | undefined, 
-  rejectionId: string | undefined
+  projectUuidd: string | undefined, 
+  rejectionUuidd: string | undefined
 ): Promise<void> => {
-  await apiClient.delete(`/api/projects/${projectId}/issues/rejections/${rejectionId}`);
+  await apiClient.delete(`/api/projects/${projectUuidd}/issues/rejections/${rejectionUuidd}`);
 };

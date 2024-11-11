@@ -1,8 +1,5 @@
 import { loginResponse, logoutResponse, checkStatusResponse } from './authTypes';
-
 import apiClient from '../apiClient';
-
-// To-do: Decide whether to return empty string in catch block, or throw an error and let it propagate to the caller
 
 export const login = async (
   email: string, 
@@ -11,11 +8,8 @@ export const login = async (
   const { data } = await apiClient.post<loginResponse>('/api/auth/login', { email, password });
   const accessToken = data.access_token;
 
-  console.log('from login - access token: ', accessToken)
-
   // Set Authorization header for future requests
   apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
   return accessToken;
 };
 

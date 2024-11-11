@@ -25,10 +25,10 @@ export const deleteAccount = async (
 };
 
 export const updatePassword = async (
-  id: string, 
+  userUuid: string, 
   password: string
 ): Promise<void> => {
-  await apiClient.patch(`/api/users/${id}`, {
+  await apiClient.patch(`/api/users/${userUuid}`, {
     password,
   });
 };
