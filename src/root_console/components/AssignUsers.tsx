@@ -58,7 +58,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
       const { data } = await getUsersForProject(uuid);
       console.log("users for project:", data);
       // const usersForProject = users.filter((user) => data.includes(user.id));
-      setCurrentUsers(data);
+      setCurrentUsers(data.users);
       setSelectedProjectUuid(uuid);
     } catch {
       alert("Could not fetch users for selected project");
