@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
 import { useAuth } from "../../hooks/useAuth";
-import { jwtDecode } from "jwt-decode";
-import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -29,12 +27,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await postLoginData(email, password);
-      console.log("login data", data);
 
-      const decodedToken: AccessTokenPayload = jwtDecode(data);
-      const userUuid = decodedToken.user_uuid;
-
-      login(userUuid);
+      login(data.userUuid, data.firstName, data.lastName, data.isRoot);
       toast({
         title: "Successful Login",
         description: "You are successfully logged in",

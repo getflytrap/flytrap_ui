@@ -11,7 +11,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 const apiClient: AxiosInstance = axios.create({
   withCredentials: true,
-  baseURL: import.meta.env.VITE_BASEURL, // Assuming you're using Vite for environment variables
+  baseURL: import.meta.env.VITE_BASEURL,
 });
 
 // Create a separate Axios client for refreshing the access token
@@ -23,7 +23,7 @@ const refreshClient: AxiosInstance = axios.create({
 // Request interceptor to set headers for API requests
 apiClient.interceptors.request.use(
   (config: CustomAxiosRequestConfig) => {
-    config.headers["Content-Type"] = "application/json"; // Ensure the Content-Type is always application/json
+    config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error: AxiosError) => {
@@ -33,9 +33,9 @@ apiClient.interceptors.request.use(
 
 // Response interceptor to handle errors and retry the request if unauthorized
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response, // Simply return the response if successful
+  (response: AxiosResponse) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config; // Keep track of the original request
+    const originalRequest = error.config;
 
     // Handle token refresh if unauthorized (401 error)
     if (
@@ -43,13 +43,12 @@ apiClient.interceptors.response.use(
       originalRequest &&
       !originalRequest._retry
     ) {
-      originalRequest._retry = true; // Mark the request as retried to avoid infinite loops
+      originalRequest._retry = true;
 
       try {
         const { data } = await refreshClient.post("/api/auth/refresh");
         const newAccessToken = data.access_token;
 
-        console.log("New access token: ", newAccessToken);
         // Update the Authorization header for future requests
         apiClient.defaults.headers.common["Authorization"] =
           `Bearer ${newAccessToken}`;
@@ -61,13 +60,12 @@ apiClient.interceptors.response.use(
         console.error("Error refreshing token:", refreshError);
         // Remove the Authorization header if refresh fails
         delete apiClient.defaults.headers.common["Authorization"];
-        // redirect the user to the login page or handle this as needed
         // window.location.href = '/login';
         return Promise.reject(refreshError);
       }
     }
     (error: AxiosError) => {
-      return Promise.reject(error); // Return the error for further handling
+      return Promise.reject(error);
     };
   },
 );
