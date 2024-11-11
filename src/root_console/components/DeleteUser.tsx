@@ -14,11 +14,16 @@ import {
   ModalFooter,
   useToast,
 } from "@chakra-ui/react";
-
+import { User } from "../../types";
 import { deleteAccount } from "../../services/index";
 
-const DeleteUser = ({ users, setUsers }) => {
-  const [selectedUserName, setSelectedUserName] = useState("");
+interface DeleteUserProps {
+  users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+}
+
+const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
+  const [selectedUserName, setSelectedUserName] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
@@ -26,14 +31,19 @@ const DeleteUser = ({ users, setUsers }) => {
   async function deleteUser() {
     try {
       const [selectedFirstName, selectedLastName] = selectedUserName.split(" ");
-      const id = users.find(
+      const userUuid = users.find(
         (user) =>
           user.first_name === selectedFirstName &&
           user.last_name === selectedLastName,
-      ).uuid;
-      await deleteAccount(id);
+      )?.uuid;
 
-      setUsers(users.filter((user) => user.uuid !== Number(id)));
+      if (!userUuid) {
+        throw new Error("User not found")
+      }
+      
+      await deleteAccount(userUuid);
+
+      setUsers(users.filter((user) => user.uuid !== userUuid));
       toast({
         title: "Successful Deletion",
         description: "User Successfully Deleted",
