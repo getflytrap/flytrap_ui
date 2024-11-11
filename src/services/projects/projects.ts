@@ -22,16 +22,16 @@
   };
 
   export const deleteProject = async (
-    projectId: string
+    projectUuid: string | undefined
   ): Promise<void> => {
-    await apiClient.delete(`/api/projects/${projectId}`);
+    await apiClient.delete(`/api/projects/${projectUuid}`);
   };
 
   export const renameProject = async (
-    projectId: string, 
+    projectUuid: string | undefined, 
     newProjectName: string
   ): Promise<void> => {
-    await apiClient.patch(`/api/projects/${projectId}`, {
+    await apiClient.patch(`/api/projects/${projectUuid}`, {
       new_name: newProjectName,
     });
   };
