@@ -30,7 +30,7 @@ const ProjectCard = ({
 
   const handleProjectClick = () => {
     selectProject(project.uuid);
-    navigate(`/projects/${project.uuid}/errors`);
+    navigate(`/projects/${project.uuid}/issues`);
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
