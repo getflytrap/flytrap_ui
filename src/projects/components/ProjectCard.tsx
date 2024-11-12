@@ -10,7 +10,7 @@ import {
   CardBody,
   CardFooter,
 } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons"; // Import InfoOutlineIcon for Setup button
+import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
 import { useProjects } from "../../hooks/useProjects";
 
@@ -27,8 +27,6 @@ const ProjectCard = ({
 }: ProjectCardProps) => {
   const navigate = useNavigate();
   const { selectProject } = useProjects();
-
-  console.log("project: ", project);
 
   const handleProjectClick = () => {
     selectProject(project.uuid);

@@ -14,5 +14,6 @@ export interface createProjectResponse {
   data: {
     uuid: string;
     name: string;
+    platform: string;
   }
 }

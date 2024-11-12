@@ -1,3 +1,5 @@
+import { Project } from "../../types";
+
 export interface CreateAccountRequest {
   first_name: string;
   last_name: string;
@@ -8,11 +10,7 @@ export interface CreateAccountRequest {
 
 export interface UserProjectsResponse {
   data: {
-    projects: {
-      uuid: string;
-      name: string;
-      issue_count: number;
-    }[];
+    projects: Project[];
     total_pages: number;
     current_page: number;
   };

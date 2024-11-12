@@ -8,10 +8,12 @@ export const getAllProjects = async (): Promise<getAllProjectsResponse> => {
 };
 
 export const createProject = async (
-  projectName: string
+  projectName: string, platform: string
+
 ): Promise<createProjectResponse> => {
   const { data } = await apiClient.post("/api/projects", {
     name: projectName,
+    platform
   });
 
   return data;
