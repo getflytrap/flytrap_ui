@@ -90,7 +90,7 @@ const ErrorDetails = () => {
         isClosable: true,
       });
 
-      navigate(`/projects/${projectUuid}/errors`);
+      navigate(`/projects/${projectUuid}/issues`);
     } catch (e) {
       toast({
         title: "Deletion Error",
@@ -113,7 +113,7 @@ const ErrorDetails = () => {
   };
 
   const handleReturnToErrors = () => {
-    navigate(`/projects/${projectUuid}/errors`, {
+    navigate(`/projects/${projectUuid}/issues`, {
       state: {
         handled: handled,
         time: time,
