@@ -21,8 +21,11 @@ import {
   getIssues,
   deleteIssues,
   getError,
+  getRejection,
   toggleError,
+  toggleRejection,
   deleteError,
+  deleteRejection,
 } from "./projectsIssues/projectsIssues";
 export {
   login,
@@ -35,8 +38,11 @@ export {
   getIssues,
   deleteIssues,
   getError,
+  getRejection,
   toggleError,
+  toggleRejection,
   deleteError,
+  deleteRejection,
   addUserToProject,
   removeUserFromProject,
   getUsersForProject,

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
-  Text,
   Button,
   Heading,
   Table,
@@ -14,33 +13,32 @@ import {
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import WarningModal from "../../shared/WarningModal";
-import { deleteError, getError, toggleError } from "../../services";
+import { deleteRejection, getRejection, toggleRejection } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
-import { ErrorData } from "../../types";
-import { renameAndFilterProperties } from "../../helpers";
+import { Rejection } from "../../types";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 
-const ErrorDetails = () => {
+const RejectionDetails = () => {
   const { projects, selectProject, selectedProject, fetchProjectsForUser } =
     useProjects();
-  const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const [rejectionData, setRejectionData] = useState<Rejection | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [resolved, setResolved] = useState<boolean>(false);
   const location = useLocation();
   const { handled, time } = location.state || {};
 
-  const { project_uuid: projectUuid, error_uuid: errorUuid } = useParams();
+  const { project_uuid: projectUuid, rejection_uuid: rejectionUuid } = useParams();
 
   const navigate = useNavigate();
   const toast = useToast();
 
   useEffect(() => {
-    const fetchErrorData = async () => {
+    const fetchRejectionData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getError(projectUuid, errorUuid);
-        setErrorData(data);
+        const { data } = await getRejection(projectUuid, rejectionUuid);
+        setRejectionData(data);
         setResolved(data.resolved);
       } catch (e) {
         setLoadingError(e instanceof Error ? e.message : "Unknown error");
@@ -49,7 +47,7 @@ const ErrorDetails = () => {
       }
     };
 
-    fetchErrorData();
+    fetchRejectionData();
   }, []);
 
   useEffect(() => {
@@ -66,25 +64,23 @@ const ErrorDetails = () => {
     loadProject();
   }, [projects, selectedProject]);
 
-  const existingProperties = renameAndFilterProperties(errorData);
-
   const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
 
     try {
-      await toggleError(projectUuid, errorUuid, resolvedPayload);
+      await toggleRejection(projectUuid, rejectionUuid, resolvedPayload);
       setResolved(resolvedPayload);
     } catch (e) {
-      alert("Could not toggle resolved state of error");
+      alert("Could not toggle resolved state of rejection");
     }
   };
 
-  const removeError = async () => {
+  const removeRejection = async () => {
     try {
-      await deleteError(projectUuid, errorUuid);
+      await deleteRejection(projectUuid, rejectionUuid);
       toast({
         title: "Successful Deletion",
-        description: "Error successfully deleted",
+        description: "Rejection successfully deleted",
         status: "success",
         duration: 4000,
         isClosable: true,
@@ -94,7 +90,7 @@ const ErrorDetails = () => {
     } catch (e) {
       toast({
         title: "Deletion Error",
-        description: "Error could not be created",
+        description: "Rejection could not be deleted",
         status: "error",
         duration: 4000,
         isClosable: true,
@@ -104,15 +100,15 @@ const ErrorDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
     );
 
     if (confirmAction) {
-      removeError();
+      removeRejection();
     }
   };
 
-  const handleReturnToErrors = () => {
+  const handleReturnToIssues = () => {
     navigate(`/projects/${projectUuid}/issues`, {
       state: {
         handled: handled,
@@ -121,7 +117,7 @@ const ErrorDetails = () => {
     });
   };
 
-  if (!errorData) {
+  if (!rejectionData) {
     return <Heading>No Data</Heading>;
   }
 
@@ -140,9 +136,9 @@ const ErrorDetails = () => {
   return (
     <Box>
       <Flex justify="space-between" align="center" mb={4}>
-        <Button colorScheme="purple" size="lg" onClick={handleReturnToErrors}>
+        <Button colorScheme="purple" size="lg" onClick={handleReturnToIssues}>
           <ArrowBackIcon mr={2} />
-          Return to Errors
+          Return to Issues
         </Button>
         <Button
           colorScheme={resolved ? "pink" : "green"}
@@ -152,7 +148,7 @@ const ErrorDetails = () => {
           {resolved ? "Mark As Unresolved" : "Mark As Resolved"}
         </Button>
         <Button colorScheme="pink" size="lg" onClick={handleDeleteClick}>
-          Delete Error
+          Delete Rejection
         </Button>
       </Flex>
 
@@ -164,35 +160,43 @@ const ErrorDetails = () => {
       >
         <Table variant="simple">
           <Tbody>
-            {existingProperties.map(([key, value], index) => (
-              <Tr key={key} bg={index % 2 === 0 ? "gray.50" : "white"}>
-                <Td fontWeight="bold" paddingY={2}>
-                  {key}
-                </Td>
-                <Td p="5px 50px" whiteSpace="normal">
-                  {value}
-                </Td>
-              </Tr>
-            ))}
+            <Tr bg="white">
+              <Td fontWeight="bold" paddingY={2}>
+                Value
+              </Td>
+              <Td p="5px 50px" whiteSpace="normal">
+                {rejectionData.value}
+              </Td>
+            </Tr>
+            <Tr bg="gray.50">
+              <Td fontWeight="bold" paddingY={2}>
+                Created At
+              </Td>
+              <Td p="5px 50px" whiteSpace="normal">
+                {new Date(rejectionData.created_at).toLocaleString()}
+              </Td>
+            </Tr>
+            <Tr bg="white">
+              <Td fontWeight="bold" paddingY={2}>
+                Handled
+              </Td>
+              <Td p="5px 50px" whiteSpace="normal">
+                {rejectionData.handled ? "Yes" : "No"}
+              </Td>
+            </Tr>
+            <Tr bg="gray.50">
+              <Td fontWeight="bold" paddingY={2}>
+                Resolved
+              </Td>
+              <Td p="5px 50px" whiteSpace="normal">
+                {rejectionData.resolved ? "Yes" : "No"}
+              </Td>
+            </Tr>
           </Tbody>
         </Table>
-      </Box>
-      <Box mt={4}>
-        <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
-          Stack Trace
-        </Text>
-        <Box
-          padding={10}
-          borderWidth={1}
-          borderRadius="md"
-          backgroundColor="gray.100"
-          whiteSpace="pre-wrap"
-        >
-          {errorData.stack_trace ? errorData.stack_trace : "No Data"}
-        </Box>
       </Box>
     </Box>
   );
 };
 
-export default ErrorDetails;
+export default RejectionDetails;
