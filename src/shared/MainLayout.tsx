@@ -13,21 +13,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useAuth } from "../hooks/useAuth";
 import flytrap_logo from "../assets/flytrap_logo.png";
 import { AuthContext } from "../contexts/AuthContext";
 
-// export const AuthContext = createContext<AuthContextType>({
-//   isLoggedIn: null,
-//   userUuid: null,
-//   name: null,
-//   isRoot: false,
-//   login: () => {},
-//   logout: () => {},
-// });
-
 const MainLayout = () => {
-  const { isRoot, userUuid, logout, name } = useContext(AuthContext);
+  const { isRoot, logout, name } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
