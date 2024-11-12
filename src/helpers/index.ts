@@ -62,7 +62,7 @@ export const renameAndFilterProperties = (
         result.push(["Message", value]);
         break;
       case "created_at":
-        result.push(["Created At", value]);
+        result.push(["Created At", new Date(value).toLocaleString()]);
         break;
       case "line_number":
         result.push(["Line Number", value]);
