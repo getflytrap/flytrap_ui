@@ -9,10 +9,13 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
 import { useProjects } from "../../hooks/useProjects";
+import { FaReact, FaNodeJs, FaPython, FaJsSquare } from "react-icons/fa";
 
 type ProjectCardProps = {
   project: Project;
@@ -45,10 +48,24 @@ const ProjectCard = ({
 
   const handleSetupClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    console.log("in ProjectCard", project.platform);
     navigate(`/projects/${project.uuid}/setup`, {
       state: { platform: project.platform },
     });
+  };
+
+  const getPlatformLogo = (platform: string) => {
+    switch (platform) {
+      case "React":
+        return <FaReact size={50} />;
+      case "Express.js":
+        return <FaNodeJs size={50} />;
+      case "Flask":
+        return <FaPython size={50} />;
+      case "JavaScript":
+        return <FaJsSquare size={50} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -61,10 +78,18 @@ const ProjectCard = ({
       width="50%"
       onClick={handleProjectClick}
     >
-      <CardHeader color="gray.900">
-        <Heading as="h2" size="lg">
-          {project.name}
-        </Heading>
+      <CardHeader>
+        <Flex justify="center" align="center" width="100%" position="relative">
+          <Box position="absolute" left="0">
+            {getPlatformLogo(project.platform)}
+          </Box>
+
+          <Box width="100%" textAlign="center">
+            <Heading as="h2" size="lg" color="gray.900">
+              {project.name}
+            </Heading>
+          </Box>
+        </Flex>
       </CardHeader>
 
       <CardBody color="gray.800">
