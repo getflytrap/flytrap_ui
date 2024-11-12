@@ -1,11 +1,12 @@
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { useAuth } from "../hooks/useAuth";
+import AdminRequired from "../authentication/components/AdminRequired";
 import flytrap_logo from '../assets/flytrap_logo.png'
 
 
 const MainLayout = () => {
-  const { logout } = useAuth();
+  const { logout, isRoot } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,15 +48,17 @@ const MainLayout = () => {
               Projects
             </Button>
           </Link>
-          <Link to="/root-console">
-            <Button colorScheme={getButtonColor("/root-console")} mr="10px">
-              Admin Console
-            </Button>
-          </Link>
+          { isRoot && (
+            <Link to="/root-console">
+              <Button colorScheme={getButtonColor("/root-console")} mr="10px">
+                Admin Console
+              </Button>
+            </Link>
+          )}
           <Button onClick={handleSignOut} colorScheme="gray">
             Sign Out
           </Button>
-        </Flex>
+        </Flex> 
       </Flex>
       <Box
         padding="1rem"
