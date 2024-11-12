@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   const handleClick = (project: Project) => {
     selectProject(project.uuid);
-    navigate(`/projects/${project.uuid}/errors`);
+    navigate(`/projects/${project.uuid}/issues`);
   };
 
   return (
