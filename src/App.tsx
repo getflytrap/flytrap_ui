@@ -13,6 +13,7 @@ import { ProjectsProvider } from "./contexts/ProjectsContext";
 import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
+import LandingPage from "./landing/pages/LandingPage.tsx";
 
 import AdminRequired from "./authentication/components/AdminRequired.tsx";
 import "./App.css";
@@ -21,10 +22,10 @@ const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/" element={<LandingPage />} />
 
       <Route element={<AuthRequired />}>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Navigate to="/projects" replace />} />
           <Route
             element={
               <ProjectsProvider>

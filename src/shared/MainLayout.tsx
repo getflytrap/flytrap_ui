@@ -53,7 +53,7 @@ const MainLayout = () => {
           <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
-          <Link to="/">
+          <Link to="/projects">
             <Button colorScheme={getButtonColor("/")} mx="10px">
               Projects
             </Button>
