@@ -2,6 +2,7 @@ export interface Project {
   uuid: string;
   name: string;
   issue_count: number;
+  platform: string;
 }
 
 export interface User {
