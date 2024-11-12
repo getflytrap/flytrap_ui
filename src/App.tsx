@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import ErrorDashboard from "./errors/pages/ErrorDashboard.tsx";
 import ErrorDisplay from "./errors/pages/ErrorDisplay.tsx";
 import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
+import RejectionDetails from "./error-details/pages/RejectionDetails.tsx";
 import Login from "./authentication/pages/Login.tsx";
 // import WarningModal from "./shared/WarningModal";
 import RootConsole from "./root_console/pages/RootConsole.tsx";
@@ -35,11 +36,12 @@ const App = () => {
               element={<ProjectSetup />}
             ></Route>
             <Route
-              path="/projects/:project_uuid/errors"
+              path="/projects/:project_uuid/issues"
               element={<ErrorDashboard />}
             >
               <Route index element={<ErrorDisplay />} />
-              <Route path=":error_uuid" element={<ErrorDetails />} />
+              <Route path="errors/:error_uuid" element={<ErrorDetails />} />
+              <Route path="rejections/:rejection_uuid" element={<RejectionDetails />} />
             </Route>
           </Route>
           <Route path="/root-console" element={<RootConsole />} />
