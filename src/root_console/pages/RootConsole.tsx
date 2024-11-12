@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const RootConsole = () => {
   return (
-    <Box p={5}>
+    <Box p={5} bg="white" borderRadius="20px">
       <Heading as="h1" size="2xl" textAlign="center" mb={8}>
         Admin Console
       </Heading>

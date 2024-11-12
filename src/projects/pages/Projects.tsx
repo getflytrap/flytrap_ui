@@ -47,7 +47,7 @@ const Projects = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <Box bg="white">
+    <Box bg="white" borderRadius="20px">
       <Heading my="40px">Active Projects:</Heading>
       <Button onClick={onNewProjectOpen} size="lg" mb="30px" bg="green.400" >Start A New Project</Button>
 
