@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import {
   Box,
@@ -14,9 +15,19 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useAuth } from "../hooks/useAuth";
 import flytrap_logo from "../assets/flytrap_logo.png";
+import { AuthContext } from "../contexts/AuthContext";
+
+// export const AuthContext = createContext<AuthContextType>({
+//   isLoggedIn: null,
+//   userUuid: null,
+//   name: null,
+//   isRoot: false,
+//   login: () => {},
+//   logout: () => {},
+// });
 
 const MainLayout = () => {
-  const { logout, user } = useAuth();
+  const { isRoot, userUuid, logout, name } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -72,13 +83,18 @@ const MainLayout = () => {
               boxShadow="lg"
               borderRadius="8px"
               padding="1rem"
-              width="200px"
+              width="300px"
               marginTop="10px"
             >
               <MenuItem isDisabled>
-                <Text fontSize="sm">
-                  Signed in as {user?.username || "Guest"}
-                </Text>
+                <Box
+                  width="8px"
+                  height="8px"
+                  borderRadius="full"
+                  backgroundColor="green.500"
+                  mr="8px"
+                />
+                <Text fontSize="sm">Signed in as {name?.substring(0, 40)}</Text>
               </MenuItem>
               <Link to="/change-password">
                 <MenuItem
@@ -90,23 +106,22 @@ const MainLayout = () => {
                   Change Password
                 </MenuItem>
               </Link>
-              <Link to="/root-console">
-                <MenuItem
-                  backgroundColor="transparent"
-                  _hover={{ backgroundColor: "#f0f0f0" }}
-                  padding="10px"
-                  margin="5px 0"
-                >
-                  Admin Console
-                </MenuItem>
-              </Link>
+              {isRoot && (
+                <Link to="/root-console">
+                  <MenuItem
+                    backgroundColor="transparent"
+                    _hover={{ backgroundColor: "#f0f0f0" }}
+                    padding="10px"
+                    margin="5px 0"
+                  >
+                    Admin Console
+                  </MenuItem>
+                </Link>
+              )}
+
+              <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             </MenuList>
           </Menu>
-
-          {/* Sign Out Button */}
-          <Button onClick={handleSignOut} colorScheme="gray">
-            Sign Out
-          </Button>
         </Flex>
       </Flex>
 
