@@ -69,7 +69,7 @@ const ProjectModals = ({
     }
 
     try {
-      const { data } = await createProject(newProjectName);
+      const { data } = await createProject(newProjectName, selectedPlatform);
       setProjects((prev) => [...prev, { uuid: data.uuid, name: data.name, issue_count: 0 }]);
       onNewProjectClose();
       toast({ title: "Project created", status: "success" });
