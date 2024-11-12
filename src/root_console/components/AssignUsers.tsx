@@ -11,23 +11,23 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
+import { User, Project } from "../../types/index";
 import {
   getAllProjects,
   getUsersForProject,
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
-import { User, Project } from "../../types";
 
 interface AssignUsersProps {
   users: User[];
 }
 
-const AssignUsers = ({ users }: AssignUsersProps) => {
+const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentUsers, setCurrentUsers] = useState<User[]>([]);
-  const [selectedProject, setSelectedProject] = useState<string>("");
-  const [selectedUser, setSelectedUser] = useState<string>("");
+  const [selectedProjectUuid, setSelectedProjectUuid] = useState<string>("");
+  const [selectedUserUuid, setSelectedUserUuid] = useState<string>("");
   const toast = useToast();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
   }
 
   const handleUserSelection = (uuid: string) => {
-    setSelectedUser(uuid);
+    setSelectedUserUuid(uuid);
     // const selection = users.find((user) => user.name )
   }
 
@@ -59,7 +59,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
       console.log("users for project:", data);
       // const usersForProject = users.filter((user) => data.includes(user.id));
       setCurrentUsers(data);
-      setSelectedProject(uuid);
+      setSelectedProjectUuid(uuid);
     } catch {
       alert("Could not fetch users for selected project");
     }
@@ -93,14 +93,14 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const addNewUserToProject = async () => {
     try {
-      await addUserToProject(selectedProject, selectedUser);
+      await addUserToProject(selectedProjectUuid, selectedUserUuid);
 
       setCurrentUsers((prevUsers) => {
-        const newUser = users.find((user) => user.uuid === selectedUser);
-        return newUser ? [...prevUsers, newUser] : prevUsers;
+        const newUser = users.find((user) => user.uuid === selectedUserUuid);
+        return [...prevUsers, newUser];
       });
 
-      setSelectedUser("");
+      setSelectedUserUuid("");
       toast({
         title: "Users added.",
         description: "Users have been added to the project.",
@@ -115,7 +115,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const availableUsers = users.filter(
     (user) =>
-      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid),
+      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) && !user.is_root,
   );
 
   return (
@@ -165,7 +165,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
                   aria-label="Remove User"
                   size="sm"
                   onClick={() =>
-                    deleteUserFromProject(selectedProject, user.uuid)
+                    deleteUserFromProject(selectedProjectUuid, user.uuid)
                   }
                 />
               </HStack>

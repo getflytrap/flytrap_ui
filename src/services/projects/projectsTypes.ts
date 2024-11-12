@@ -6,8 +6,9 @@ export interface getAllProjectsResponse {
     projects: Project[];
     total_pages: number;
     issue_count: number;
-  }
-}
+  };
+  message: string;  
+
 
 export interface createProjectResponse {
   data: {

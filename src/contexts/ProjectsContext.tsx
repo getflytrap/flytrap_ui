@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getProjectsForUser } from "../services";
+import { getProjectsForUser } from "../services/users/users";
 import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
 import { useToast } from "@chakra-ui/react";
@@ -35,11 +35,13 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     // setLoadingError(null);
     try {
+      console.log('user uuid for project users', userUuid)
       const { data } = await getProjectsForUser(
         userUuid,
         page,
         PROJECT_LIMIT_PER_PAGE,
       );
+      console.log('proj data hook', data)
       setProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
