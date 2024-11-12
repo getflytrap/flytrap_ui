@@ -32,7 +32,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
   const { projects, selectedProject, selectProject, fetchProjectsForUser } =
     useProjects();
 
-  const [errors, setErrors] = useState<(ErrorData | Rejection)[]>([]);
+  const [issues, setIssues] = useState<(ErrorData | Rejection)[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,13 +40,13 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
 
   useEffect(() => {
     if (selectedProject) {
-      fetchErrors(currentPage);
+      fetchIssues(currentPage);
     }
   }, [selectedProject, currentPage]);
 
   useEffect(() => {
     if (selectedProject) {
-      fetchErrors(1); // Reset to page 1 when filters change
+      fetchIssues(1); // Reset to page 1 when filters change
     }
   }, [selectedHandled, selectedTime, selectedResolved]);
 
@@ -64,7 +64,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
     loadProject();
   }, [projects, projectUuid, selectedProject]);
 
-  const fetchErrors = async (page: number = 1) => {
+  const fetchIssues = async (page: number = 1) => {
     setIsLoading(true);
     try {
       const { data } = await getIssues(
@@ -75,7 +75,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
         page,
         ERROR_LIMIT_PER_PAGE,
       );
-      setErrors(data.issues);
+      setIssues(data.issues);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
     } catch (e) {
@@ -88,7 +88,7 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (!errors?.length) {
+  if (!issues?.length) {
     return (
       <Center>
         <Text
@@ -118,10 +118,10 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
           </Tr>
         </Thead>
         <Tbody>
-          {errors.map((error) => (
+          {issues.map((issue) => (
             <ErrorRow
-              key={error.uuid}
-              error={error}
+              key={issue.uuid}
+              issue={issue}
               selectedProject={selectedProject}
               selectedHandled={selectedHandled}
               selectedTime={selectedTime}
