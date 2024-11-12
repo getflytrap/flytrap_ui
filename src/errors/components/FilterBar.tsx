@@ -24,7 +24,7 @@ const FilterBar = ({
     setSelectedHandled(option);
   };
 
-  const handleResolvedChange = (option: HandledFilter) => {
+  const handleResolvedChange = (option: ResolvedFilter) => {
     setSelectedResolved(option);
   };
 

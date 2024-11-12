@@ -7,8 +7,6 @@ import {
   Code,
   Divider,
   Container,
-  Card,
-  CardBody,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 
