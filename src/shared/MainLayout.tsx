@@ -1,12 +1,33 @@
+import { useContext } from "react";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useAuth } from "../hooks/useAuth";
-import AdminRequired from "../authentication/components/AdminRequired";
-import flytrap_logo from '../assets/flytrap_logo.png'
+import flytrap_logo from "../assets/flytrap_logo.png";
+import { AuthContext } from "../contexts/AuthContext";
 
+// export const AuthContext = createContext<AuthContextType>({
+//   isLoggedIn: null,
+//   userUuid: null,
+//   name: null,
+//   isRoot: false,
+//   login: () => {},
+//   logout: () => {},
+// });
 
 const MainLayout = () => {
-  const { logout, isRoot } = useAuth();
+  const { isRoot, userUuid, logout, name } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,11 +57,10 @@ const MainLayout = () => {
         justify="space-between"
         padding="1rem"
         whiteSpace="nowrap"
-        alignItems="center"      
+        alignItems="center"
       >
-        <Heading size="2xl" textAlign="center" >
-        <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
-
+        <Heading size="2xl" textAlign="center">
+          <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/">
@@ -48,18 +68,61 @@ const MainLayout = () => {
               Projects
             </Button>
           </Link>
-          { isRoot && (
-            <Link to="/root-console">
-              <Button colorScheme={getButtonColor("/root-console")} mr="10px">
-                Admin Console
-              </Button>
-            </Link>
-          )}
-          <Button onClick={handleSignOut} colorScheme="gray">
-            Sign Out
-          </Button>
-        </Flex> 
+          <Menu>
+            <MenuButton
+              as={Button}
+              colorScheme="gray"
+              rightIcon={<ChevronDownIcon />}
+              mx="10px"
+            >
+              Account
+            </MenuButton>
+            <MenuList
+              backgroundColor="white"
+              boxShadow="lg"
+              borderRadius="8px"
+              padding="1rem"
+              width="300px"
+              marginTop="10px"
+            >
+              <MenuItem isDisabled>
+                <Box
+                  width="8px"
+                  height="8px"
+                  borderRadius="full"
+                  backgroundColor="green.500"
+                  mr="8px"
+                />
+                <Text fontSize="sm">Signed in as {name?.substring(0, 40)}</Text>
+              </MenuItem>
+              <Link to="/change-password">
+                <MenuItem
+                  backgroundColor="transparent"
+                  _hover={{ backgroundColor: "#f0f0f0" }}
+                  padding="10px"
+                  margin="5px 0"
+                >
+                  Change Password
+                </MenuItem>
+              </Link>
+              {isRoot && (
+                <Link to="/root-console">
+                  <MenuItem
+                    backgroundColor="transparent"
+                    _hover={{ backgroundColor: "#f0f0f0" }}
+                    padding="10px"
+                    margin="5px 0"
+                  >
+                    Admin Console
+                  </MenuItem>
+                </Link>
+              )}
+              <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Flex>
+
       <Box
         padding="1rem"
         width="100%"
