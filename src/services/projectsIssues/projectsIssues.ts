@@ -40,8 +40,8 @@ export const getError = async (
 };
 
 export const getRejection = async (
-  projectUuid: string,
-  rejectionUuid: string,
+  projectUuid: string | undefined,
+  rejectionUuid: string | undefined,
 ): Promise<{ status: string; data: Rejection }> => {
   const { data } = await apiClient.get(
     `/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`,
