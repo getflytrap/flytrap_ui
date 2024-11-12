@@ -39,18 +39,6 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
   const toast = useToast();
 
   useEffect(() => {
-    if (selectedProject) {
-      fetchIssues(currentPage);
-    }
-  }, [selectedProject, currentPage]);
-
-  useEffect(() => {
-    if (selectedProject) {
-      fetchIssues(1); // Reset to page 1 when filters change
-    }
-  }, [selectedHandled, selectedTime, selectedResolved]);
-
-  useEffect(() => {
     const loadProject = async () => {
       if (projects.length === 0) {
         await fetchProjectsForUser();
@@ -61,8 +49,22 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
       }
     };
 
-    loadProject();
-  }, [projects, projectUuid, selectedProject]);
+    if (!selectedProject || projects.length === 0) {
+      loadProject();
+    }
+  }, [projects, projectUuid]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      fetchIssues(currentPage);
+    }
+  }, [selectedProject, currentPage]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      fetchIssues(1); // Reset to page 1 when filters change
+    }
+  }, [selectedHandled, selectedTime, selectedResolved]);
 
   const fetchIssues = async (page: number = 1) => {
     setIsLoading(true);
@@ -75,9 +77,12 @@ const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: Errors
         page,
         ERROR_LIMIT_PER_PAGE,
       );
+
       setIssues(data.issues);
-      setCurrentPage(data.currentPage);
-      setTotalPages(data.totalPages);
+      if (data.current_page && data.total_pages) {
+        setCurrentPage(data.current_page);
+        setTotalPages(data.total_pages);
+      }
     } catch (e) {
       console.error(e);
       toast({ title: "Failed to load error data.", status: "error" });
