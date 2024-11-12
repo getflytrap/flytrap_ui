@@ -109,12 +109,6 @@ const Login = () => {
         <Button colorScheme="green" mt={4} onClick={handleSubmit} width="full">
           Submit
         </Button>
-
-        <Divider my={4} />
-
-        <Button colorScheme="blue" onClick={handleChangePassword} width="full">
-          Change Password
-        </Button>
       </Box>
     </>
   );
