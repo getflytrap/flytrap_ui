@@ -4,7 +4,6 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { User } from "../../types/index";
 import { getUsers } from "../../services/index";
-import { User } from "../../types";
 
 import CreateUser from "../components/CreateUser";
 import DeleteUser from "../components/DeleteUser";

@@ -18,7 +18,6 @@ import {
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
-import { User, Project } from "../../types";
 
 interface AssignUsersProps {
   users: User[];
@@ -70,7 +69,6 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== user_id),
         prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
@@ -119,8 +117,6 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) && !user.is_root,
   );
-
-  console.log('available users', availableUsers)
 
   return (
     <Box

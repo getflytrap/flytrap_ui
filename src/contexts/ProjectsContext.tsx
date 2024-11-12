@@ -35,6 +35,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     // setLoadingError(null);
     try {
+      console.log('user uuid for project users', userUuid)
       const { data } = await getProjectsForUser(
         userUuid,
         page,

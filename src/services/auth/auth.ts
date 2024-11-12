@@ -15,15 +15,15 @@ export const login = async (
     password,
   });
 
-  const accessToken = data.data.access_token;
+  const accessToken = data.access_token;
   // Set Authorization header for future requests
   apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
   const userData = {
-    userUuid: data.data.user_uuid,
-    firstName: data.data.first_name,
-    lastName: data.data.last_name,
-    isRoot: data.data.is_root
+    userUuid: data.user_uuid,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    isRoot: data.is_root
   }
 
   return userData;

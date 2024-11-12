@@ -29,7 +29,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const checkSession = async () => {
       try {
         const data = await checkAuthStatus();
+        console.log('auth hook data', data)
         if (data.status === "success") {
+          console.log('dataaaa', data)
           setUserUuid(data.data.user_uuid);
           setName(`${data.data.first_name} ${data.data.last_name}`);
           setIsRoot(data.data.is_root);
