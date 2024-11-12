@@ -44,23 +44,26 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
   const handleProjectSelection = (uuid: string) => {
     fetchUsersForProject(uuid);
-  }
+  };
 
   const handleUserSelection = (uuid: string) => {
     setSelectedUserUuid(uuid);
-  }
+  };
 
   const fetchUsersForProject = async (uuid: string) => {
     try {
       const { data } = await getUsersForProject(uuid);
-      setCurrentUsers(users.filter(user => data.includes(user.uuid)));
+      setCurrentUsers(users.filter((user) => data.includes(user.uuid)));
       setSelectedProjectUuid(uuid);
     } catch {
       alert("Could not fetch users for selected project");
     }
-  }
+  };
 
-  const deleteUserFromProject = async (projectUuid: string, userUuid: string) => {
+  const deleteUserFromProject = async (
+    projectUuid: string,
+    userUuid: string,
+  ) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
@@ -84,7 +87,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     } catch {
       alert("Could not remove user from project");
     }
-  }
+  };
 
   const addNewUserToProject = async () => {
     try {
@@ -110,7 +113,8 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
   const availableUsers = users.filter(
     (user) =>
-      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) && !user.is_root,
+      !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
+      !user.is_root,
   );
 
   return (

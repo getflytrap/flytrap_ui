@@ -7,7 +7,7 @@ export interface getAllProjectsResponse {
     total_pages: number;
     issue_count: number;
   };
-  message: string;  
+  message: string;
 }
 
 export interface createProjectResponse {
@@ -15,5 +15,5 @@ export interface createProjectResponse {
     uuid: string;
     name: string;
     platform: string;
-  }
+  };
 }

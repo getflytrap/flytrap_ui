@@ -6,9 +6,14 @@ interface AuthContextType {
   userUuid: string | null;
   name: string | null;
   isRoot: boolean;
-  login: (uuid: string, firstName: string, lastName: string, isRoot: boolean) => void;
+  login: (
+    uuid: string,
+    firstName: string,
+    lastName: string,
+    isRoot: boolean,
+  ) => void;
   logout: () => void;
-};
+}
 
 export const AuthContext = createContext<AuthContextType>({
   isLoggedIn: null,
@@ -46,7 +51,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkSession();
   }, []);
 
-  const login = (uuid: string, firstName: string, lastName: string, isRoot: boolean) => {
+  const login = (
+    uuid: string,
+    firstName: string,
+    lastName: string,
+    isRoot: boolean,
+  ) => {
     setUserUuid(uuid);
     setName(`${firstName} ${lastName}`);
     setIsRoot(isRoot);
@@ -66,7 +76,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userUuid, name, isRoot, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userUuid, name, isRoot, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -15,7 +15,7 @@ import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
 
 import AdminRequired from "./authentication/components/AdminRequired.tsx";
-import "./App.css"; 
+import "./App.css";
 
 const App = () => {
   return (

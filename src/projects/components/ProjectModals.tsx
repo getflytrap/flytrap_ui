@@ -42,7 +42,7 @@ const ProjectModals = ({
   isDeleteOpen,
   onDeleteClose,
 }: ProjectModalsProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { setProjects, selectProject, selectedProject } = useProjects();
   const [newProjectName, setNewProjectName] = useState("");
@@ -70,10 +70,20 @@ const ProjectModals = ({
 
     try {
       const { data } = await createProject(newProjectName, selectedPlatform);
-      setProjects((prev) => [...prev, { uuid: data.uuid, name: data.name, issue_count: 0, platform: data.platform }]);
+      setProjects((prev) => [
+        ...prev,
+        {
+          uuid: data.uuid,
+          name: data.name,
+          issue_count: 0,
+          platform: data.platform,
+        },
+      ]);
       onNewProjectClose();
       toast({ title: "Project created", status: "success" });
-      navigate(`/projects/${data.uuid}/setup`, { state: { platform: selectedPlatform } })
+      navigate(`/projects/${data.uuid}/setup`, {
+        state: { platform: selectedPlatform },
+      });
     } catch {
       toast({ title: "Error creating project", status: "error" });
     }
@@ -136,22 +146,30 @@ const ProjectModals = ({
               />
             </FormControl>
 
-            <Text mt={4} mb={2}>Choose Your Platform:</Text>
+            <Text mt={4} mb={2}>
+              Choose Your Platform:
+            </Text>
             <Flex justify="center" gap={4} wrap="nowrap" overflowX="auto">
               {platforms.map((platform) => (
                 <Box
                   key={platform.name}
                   p={4}
-                  bg={selectedPlatform === platform.name ? "green.400" : "gray.200"} 
+                  bg={
+                    selectedPlatform === platform.name
+                      ? "green.400"
+                      : "gray.200"
+                  }
                   borderWidth={2}
                   borderRadius="md"
-                  borderColor={selectedPlatform === platform.name ? "blue.500" : "gray.300"}
+                  borderColor={
+                    selectedPlatform === platform.name ? "blue.500" : "gray.300"
+                  }
                   boxShadow={selectedPlatform === platform.name ? "lg" : "none"}
                   cursor="pointer"
                   onClick={() => setSelectedPlatform(platform.name)}
                   textAlign="center"
-                  width="150px" 
-                  height="150px" 
+                  width="150px"
+                  height="150px"
                   display="flex"
                   flexDirection="column"
                   alignItems="center"

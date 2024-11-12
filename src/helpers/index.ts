@@ -12,7 +12,6 @@ export const convertResolvedToBoolean = (resolved: string): boolean | null => {
   return null;
 };
 
-
 export const convertToTimeStamp = (period: string): string | null => {
   const now = new Date();
   let pastDate: Date;

@@ -14,7 +14,7 @@ const FilterBar = ({
   setSelectedHandled,
   setSelectedTime,
   selectedResolved,
-  setSelectedResolved
+  setSelectedResolved,
 }: FilterBarProps) => {
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value as TimeFilter);
@@ -28,7 +28,7 @@ const FilterBar = ({
     setSelectedResolved(option);
   };
 
-  const fixedButtonWidth = "90px";  // Ensure fixed width for uniform buttons
+  const fixedButtonWidth = "90px"; // Ensure fixed width for uniform buttons
   const fixedButtonHeight = "40px"; // Set a height for uniform button height
 
   return (
@@ -54,8 +54,8 @@ const FilterBar = ({
         <Stack direction="column" spacing={4}>
           {/* Handled Filter */}
           <Box borderRadius="50px" bg="gray.200" p="4px">
-            <Stack direction="row" spacing={4} >
-              <Box 
+            <Stack direction="row" spacing={4}>
+              <Box
                 as="button"
                 onClick={() => handleHandledChange("Handled")}
                 borderRadius="20px"
@@ -183,7 +183,9 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedResolved === "Unresolved" ? "#5ECF5E" : "transparent"}
+                bg={
+                  selectedResolved === "Unresolved" ? "#5ECF5E" : "transparent"
+                }
                 color={selectedResolved === "Unresolved" ? "white" : "black"}
                 border={
                   selectedResolved === "Unresolved"

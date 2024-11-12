@@ -8,7 +8,7 @@ export interface loginResponse {
     first_name: string;
     last_name: string;
     is_root: boolean;
-  }
+  };
 }
 
 export interface loginServiceResponse {
@@ -30,7 +30,7 @@ export interface checkStatusResponse {
     first_name: string;
     last_name: string;
     is_root: boolean;
-  }
+  };
 }
 
 export interface AccessTokenPayload extends JwtPayload {
