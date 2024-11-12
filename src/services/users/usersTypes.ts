@@ -9,12 +9,12 @@ export interface CreateAccountRequest {
 export interface UserProjectsResponse {
   data: {
     projects: {
-      project_uuid: string;
+      uuid: string;
       name: string;
       issue_count: number;
     }[];
     total_pages: number;
     current_page: number;
   };
-  message: string;
+  status: string;
 }

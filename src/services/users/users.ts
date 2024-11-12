@@ -35,7 +35,7 @@ export const getProjectsForUser = async (
   userUuid: string | null,
   page: number,
   limit: number,
-): Promise<{ status: string; data: UserProjectsResponse }> => {
+): Promise<UserProjectsResponse> => {
   const params = {
     page,
     limit,
