@@ -92,7 +92,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
       setCurrentUsers((prevUsers) => {
         const newUser = users.find((user) => user.uuid === selectedUserUuid);
-        return [...prevUsers, newUser];
+        return newUser ? [...prevUsers, newUser] : prevUsers;
       });
 
       setSelectedUserUuid("");
