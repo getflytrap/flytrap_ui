@@ -45,7 +45,10 @@ const ProjectCard = ({
 
   const handleSetupClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    navigate(`/projects/${project.uuid}/setup`);
+    console.log("in ProjectCard", project.platform);
+    navigate(`/projects/${project.uuid}/setup`, {
+      state: { platform: project.platform },
+    });
   };
 
   return (
@@ -88,7 +91,7 @@ const ProjectCard = ({
           </Button>
           <Button
             variant="ghost"
-            leftIcon={<InfoOutlineIcon />} // Use InfoOutlineIcon for setup instructions
+            leftIcon={<InfoOutlineIcon />}
             onClick={handleSetupClick}
           >
             Setup
