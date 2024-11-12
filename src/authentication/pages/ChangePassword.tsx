@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { login as postLoginData } from "../../services/auth/auth";
 import { updatePassword } from "../../services/users/users";
-import { jwtDecode } from "jwt-decode";
-import { AccessTokenPayload } from "../../services/auth/authTypes";
 
 import {
   Box,
@@ -13,70 +10,54 @@ import {
   FormLabel,
   Heading,
   Input,
-  Text,
   Divider,
   useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
 } from "@chakra-ui/react";
 
 const ChangePassword = () => {
-  const auth = useAuth();
+  const { userUuid, logout } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    try {
-      async function postData() {
-        const accessToken = await postLoginData(email, password);
-        console.log("accessToken", accessToken);
-        const tokenPayload: AccessTokenPayload = jwtDecode(accessToken);
-        auth.login(tokenPayload.user_uuid);
+  const handleCancel = () => {
+    navigate("/projects");
+  };
 
-        toast({
-          title: "Successful Login",
-          description: "You are successfully logged in",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-        });
-
-        onOpen();
-      }
-
-      postData();
-    } catch {
+  function isValidPassword() {
+    if (newPassword.length < 8) {
       toast({
-        title: "Login error",
-        description: "User could not be logged in - check your inputs",
+        title: "Invalid Password",
+        description: "Password must be at least 8 characters long",
         status: "error",
         duration: 4000,
         isClosable: true,
       });
+      return false;
+    } else if (newPassword !== confirmNewPassword) {
+      toast({
+        title: "Invalid Password",
+        description: "Password values do not match",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
     }
-  };
 
-  const handleCancel = () => {
-    navigate("/login");
-  };
+    return true;
+  }
 
   async function handleSubmitNewPassword() {
-    if (auth.userUuid) {
+    if (!isValidPassword()) {
+      return;
+    }
+
+    if (userUuid) {
       try {
-        alert(newPassword);
-        await updatePassword(auth.userUuid, newPassword);
+        await updatePassword(userUuid, newPassword);
         console.log("New password submitted:", newPassword);
 
         toast({
@@ -87,8 +68,7 @@ const ChangePassword = () => {
           isClosable: true,
         });
 
-        onClose();
-        auth.logout();
+        logout();
         navigate("/login");
       } catch {
         toast({
@@ -104,19 +84,9 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Heading as="h1" size="xl">
+      <Heading as="h1" size="xl" color="white">
         Change Password{" "}
       </Heading>
-      <Text
-        fontSize="xl"
-        m="50px"
-        border="1px dashed gray"
-        borderRadius="100px"
-        p="30px"
-        bg="gray.100"
-      >
-        LOGO
-      </Text>
       <Box
         borderWidth="1px"
         borderColor="lightgray"
@@ -126,33 +96,34 @@ const ChangePassword = () => {
         maxWidth="600px"
         mx="auto"
         mt={10}
+        bg="white"
       >
-        <Heading as="h3" size="md" mb={4} textAlign="center">
-          Enter Current Credentials:
-        </Heading>
-
         <FormControl isRequired mt={4}>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
-        </FormControl>
-
-        <FormControl isRequired mt={4}>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>New Password</FormLabel>
           <Input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Enter your new password"
+          />
+        </FormControl>
+        <FormControl isRequired mt={4}>
+          <FormLabel>Confirm Password</FormLabel>
+          <Input
+            type="password"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+            placeholder="Confirm your new password"
           />
         </FormControl>
 
-        <Button colorScheme="green" mt={4} onClick={handleSubmit} width="full">
-          Submit
+        <Button
+          colorScheme="green"
+          mt={4}
+          onClick={handleSubmitNewPassword}
+          width="full"
+        >
+          Confirm Password Change
         </Button>
 
         <Divider my={4} />
@@ -161,35 +132,6 @@ const ChangePassword = () => {
           Cancel
         </Button>
       </Box>
-
-      {/* Modal for Changing Password */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Change Your Password</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl isRequired>
-              <FormLabel>New Password</FormLabel>
-              <Input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Enter your new password"
-              />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmitNewPassword}>
-              Confirm Password Change
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </>
   );
 };
