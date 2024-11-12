@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
 import { useAuth } from "../../hooks/useAuth";
+import flytrap_logo from "../../assets/flytrap_logo.png";
 
 import {
   Box,
@@ -10,8 +11,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  Text,
-  Divider,
+  Image,
   useToast,
 } from "@chakra-ui/react";
 
@@ -50,25 +50,17 @@ const Login = () => {
     }
   };
 
-  const handleChangePassword = () => {
-    navigate("/change-password");
-  };
-
   return (
-    <>
-      <Heading as="h1" size="xl">
-        Welcome to Fly Trap!
-      </Heading>
-      <Text
-        fontSize="xl"
-        m="50px"
-        border="1px dashed gray"
-        borderRadius="100px"
-        p="30px"
-        bg="gray.100"
-      >
-        LOGO
-      </Text>
+    <Box
+      width="100vw"
+      height="100vh"
+      bg="brand.500"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
       <Box
         borderWidth="1px"
         borderColor="lightgray"
@@ -78,6 +70,7 @@ const Login = () => {
         maxWidth="600px"
         mx="auto"
         mt={10}
+        bg="gray.100"
       >
         <Heading as="h2" size="lg" mb={4} textAlign="center">
           Login
@@ -93,6 +86,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            bg="white"
           />
         </FormControl>
 
@@ -103,6 +97,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
+            bg="white"
           />
         </FormControl>
 
@@ -110,7 +105,7 @@ const Login = () => {
           Submit
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 

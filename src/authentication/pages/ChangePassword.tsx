@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 const ChangePassword = () => {
-  const { isLoggedIn, userUuid, logout } = useAuth();
+  const { userUuid, logout } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
