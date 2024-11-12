@@ -43,7 +43,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       );
       console.log('proj data hook', data)
       setProjects(data.projects);
-      setCurrentPage(data.  current_page);
+      setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
     } catch {
       // setLoadingError("Failed to load projects");
