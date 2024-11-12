@@ -27,7 +27,6 @@ const MainLayout = () => {
       maxWidth={1280}
       padding="0 2rem"
       backgroundColor="#1D7D55"
-
     >
       <Flex
         as="header"
@@ -36,8 +35,7 @@ const MainLayout = () => {
         justify="space-between"
         padding="1rem"
         whiteSpace="nowrap"
-        alignItems="center"
-
+        alignItems="center"      
       >
         <Heading size="2xl" textAlign="center" >
         <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />

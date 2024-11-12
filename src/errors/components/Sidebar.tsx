@@ -22,7 +22,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <Stack spacing={3} color="whiteAlpha.900">
+      <Stack spacing={3} color="gray.900">
         {projects.map((project) => (
           <Box
             onClick={() => handleClick(project)}
@@ -30,13 +30,13 @@ export default function Sidebar() {
             borderRadius="20px"
             bg={
               selectedProject?.uuid === project.uuid
-                ? "blue.100"
+                ? "transparent"
                 : "transparent"
             }
             border={selectedProject?.uuid === project.uuid ? "2px" : "1px"}
             borderColor={
               selectedProject?.uuid === project.uuid
-                ? "blue.500"
+                ? "green.400"
                 : "transparent"
             }
             p={2}
