@@ -23,7 +23,7 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
-import { FaJsSquare, FaReact, FaNodeJs, FaPython } from "react-icons/fa"; // import icons
+import { FaJsSquare, FaReact, FaNodeJs, FaPython } from "react-icons/fa";
 
 type ProjectModalsProps = {
   isNewProjectOpen: boolean;
@@ -96,8 +96,8 @@ const ProjectModals = ({
         prev.map((p) =>
           p.uuid === selectedProject?.uuid
             ? { ...p, name: editedProjectName }
-            : p,
-        ),
+            : p
+        )
       );
       onEditClose();
       selectProject(null);
@@ -111,7 +111,7 @@ const ProjectModals = ({
     try {
       await deleteProject(selectedProject?.uuid);
       setProjects((prev) =>
-        prev.filter((p) => p.uuid !== selectedProject?.uuid),
+        prev.filter((p) => p.uuid !== selectedProject?.uuid)
       );
       onDeleteClose();
       selectProject(null);

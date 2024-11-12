@@ -9,6 +9,7 @@ import ExpressSetup from "../components/ExpressSetup";
 const ProjectSetup: React.FC = () => {
   const location = useLocation();
   const { platform } = location.state || {};
+  console.log("in ProjectSetup", platform);
 
   let platformComponent: React.ReactNode;
 
