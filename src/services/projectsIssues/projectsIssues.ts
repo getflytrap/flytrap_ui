@@ -21,7 +21,7 @@ export const getIssues = async (
   const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues`, {
     params,
   });
-
+  
   return data;
 };
 
