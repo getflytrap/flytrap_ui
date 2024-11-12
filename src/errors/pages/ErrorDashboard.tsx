@@ -9,7 +9,7 @@ const ErrorDashboard = () => {
         <GridItem
           as="aside"
           colSpan={{ base: 6, lg: 2, xl: 1 }}
-          bg="purple.400"
+          bg="brand.50"
           minHeight={{ lg: "100vh" }}
           p={{ base: "20px", lg: "30px" }}
         >

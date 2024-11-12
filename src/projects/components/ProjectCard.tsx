@@ -52,7 +52,7 @@ const ProjectCard = ({
     <Card
       key={project.uuid}
       borderTop="8px"
-      borderColor="purple.400"
+      borderColor="green.400"
       bg="gray.100"
       cursor="pointer"
       width="50%"

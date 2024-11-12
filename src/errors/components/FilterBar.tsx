@@ -62,16 +62,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedHandled === "Handled" ? "blue.500" : "transparent"}
+                bg={selectedHandled === "Handled" ? "#5ECF5E" : "transparent"}
                 color={selectedHandled === "Handled" ? "white" : "black"}
                 border={
                   selectedHandled === "Handled"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{
@@ -91,16 +91,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedHandled === "Unhandled" ? "blue.500" : "transparent"}
+                bg={selectedHandled === "Unhandled" ? "#5ECF5E" : "transparent"}
                 color={selectedHandled === "Unhandled" ? "white" : "black"}
                 border={
                   selectedHandled === "Unhandled"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{
@@ -120,16 +120,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedHandled === "All" ? "blue.500" : "transparent"}
+                bg={selectedHandled === "All" ? "#5ECF5E" : "transparent"}
                 color={selectedHandled === "All" ? "white" : "black"}
                 border={
                   selectedHandled === "All"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{
@@ -154,16 +154,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedResolved === "Resolved" ? "blue.500" : "transparent"}
+                bg={selectedResolved === "Resolved" ? "#5ECF5E" : "transparent"}
                 color={selectedResolved === "Resolved" ? "white" : "black"}
                 border={
                   selectedResolved === "Resolved"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{
@@ -183,16 +183,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedResolved === "Unresolved" ? "blue.500" : "transparent"}
+                bg={selectedResolved === "Unresolved" ? "#5ECF5E" : "transparent"}
                 color={selectedResolved === "Unresolved" ? "white" : "black"}
                 border={
                   selectedResolved === "Unresolved"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{
@@ -212,16 +212,16 @@ const FilterBar = ({
                 p={2}
                 width={fixedButtonWidth}
                 height={fixedButtonHeight}
-                bg={selectedResolved === "All" ? "blue.500" : "transparent"}
+                bg={selectedResolved === "All" ? "#5ECF5E" : "transparent"}
                 color={selectedResolved === "All" ? "white" : "black"}
                 border={
                   selectedResolved === "All"
-                    ? "2px solid blue"
+                    ? "2px solid green.400"
                     : "2px solid transparent"
                 }
                 transition="background 0.2s, color 0.2s, border 0.2s"
                 _hover={{
-                  bg: "blue.300",
+                  bg: "green.200",
                   color: "white",
                 }}
                 _focus={{

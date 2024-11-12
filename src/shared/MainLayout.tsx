@@ -1,6 +1,8 @@
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { useAuth } from "../hooks/useAuth";
+import flytrap_logo from '../assets/flytrap_logo.png'
+
 
 const MainLayout = () => {
   const { logout } = useAuth();
@@ -24,6 +26,7 @@ const MainLayout = () => {
       flexDirection="column"
       maxWidth={1280}
       padding="0 2rem"
+      backgroundColor="#1D7D55"
     >
       <Flex
         as="header"
@@ -32,10 +35,11 @@ const MainLayout = () => {
         justify="space-between"
         padding="1rem"
         whiteSpace="nowrap"
-        alignItems="center"
+        alignItems="center"      
       >
-        <Heading size="2xl" textAlign="center">
-          Flytrap
+        <Heading size="2xl" textAlign="center" >
+        <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
+
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/">
