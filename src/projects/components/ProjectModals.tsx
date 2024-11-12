@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   renameProject,
   deleteProject,
@@ -19,7 +20,10 @@ import {
   Input,
   Text,
   useToast,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
+import { FaJsSquare, FaReact, FaNodeJs, FaPython } from "react-icons/fa"; // import icons
 
 type ProjectModalsProps = {
   isNewProjectOpen: boolean;
@@ -38,9 +42,11 @@ const ProjectModals = ({
   isDeleteOpen,
   onDeleteClose,
 }: ProjectModalsProps) => {
-  const { setProjects, selectProject, selectedProject } = useProjects();
+  const navigate = useNavigate()
 
+  const { setProjects, selectProject, selectedProject } = useProjects();
   const [newProjectName, setNewProjectName] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [editedProjectName, setEditedProjectName] = useState("");
 
   const toast = useToast();
@@ -53,11 +59,21 @@ const ProjectModals = ({
       });
       return;
     }
+
+    if (!selectedPlatform) {
+      toast({
+        title: "Must select a platform",
+        status: "error",
+      });
+      return;
+    }
+
     try {
-      const { uuid, name } = await createProject(newProjectName);
-      setProjects((prev) => [...prev, { uuid, name, issue_count: 0 }]);
+      const { data } = await createProject(newProjectName);
+      setProjects((prev) => [...prev, { uuid: data.uuid, name: data.name, issue_count: 0 }]);
       onNewProjectClose();
       toast({ title: "Project created", status: "success" });
+      navigate(`/projects/${data.uuid}/setup`, { state: { platform: selectedPlatform } })
     } catch {
       toast({ title: "Error creating project", status: "error" });
     }
@@ -95,10 +111,17 @@ const ProjectModals = ({
     }
   };
 
+  const platforms = [
+    { name: "JavaScript", icon: <FaJsSquare size={40} /> },
+    { name: "React", icon: <FaReact size={40} /> },
+    { name: "Express.js", icon: <FaNodeJs size={40} /> },
+    { name: "Flask", icon: <FaPython size={40} /> },
+  ];
+
   return (
     <>
       {/* New Project Modal */}
-      <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose}>
+      <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New Project</ModalHeader>
@@ -112,6 +135,33 @@ const ProjectModals = ({
                 placeholder="Enter project name"
               />
             </FormControl>
+
+            <Text mt={4} mb={2}>Choose Your Platform:</Text>
+            <Flex justify="center" gap={4} wrap="nowrap" overflowX="auto">
+              {platforms.map((platform) => (
+                <Box
+                  key={platform.name}
+                  p={4}
+                  bg={selectedPlatform === platform.name ? "green.400" : "gray.200"} 
+                  borderWidth={2}
+                  borderRadius="md"
+                  borderColor={selectedPlatform === platform.name ? "blue.500" : "gray.300"}
+                  boxShadow={selectedPlatform === platform.name ? "lg" : "none"}
+                  cursor="pointer"
+                  onClick={() => setSelectedPlatform(platform.name)}
+                  textAlign="center"
+                  width="150px" 
+                  height="150px" 
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {platform.icon}
+                  <Text mt={2}>{platform.name}</Text>
+                </Box>
+              ))}
+            </Flex>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleNewProjectSubmit}>

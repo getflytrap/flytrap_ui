@@ -18,6 +18,7 @@ import {
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
+import { User, Project } from "../../types";
 
 interface AssignUsersProps {
   users: User[];
@@ -42,17 +43,17 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     }
   }, []);
 
-  function handleProjectSelection(uuid: string) {
+  const handleProjectSelection = (uuid: string) => {
     // const selection = projects.find((project) => project.name === name);
     fetchUsersForProject(uuid);
   }
 
-  function handleUserSelection(uuid: string) {
+  const handleUserSelection = (uuid: string) => {
     setSelectedUserUuid(uuid);
     // const selection = users.find((user) => user.name )
   }
 
-  async function fetchUsersForProject(uuid: string) {
+  const fetchUsersForProject = async (uuid: string) => {
     try {
       console.log("project selection", uuid);
       const { data } = await getUsersForProject(uuid);
@@ -65,18 +66,19 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     }
   }
 
-  async function deleteUserFromProject(project_id: string, user_id: string) {
+  const deleteUserFromProject = async (projectUuid: string, userUuid: string) => {
     try {
-      await removeUserFromProject(project_id, user_id);
+      await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
         prevUsers.filter((user) => user.uuid !== user_id),
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
-      console.log("projects", projects, project_id, user_id);
+      console.log("projects", projects, projectUuid, userUuid);
       console.log("cu", currentUsers);
 
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== user_id),
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
       toast({

@@ -10,7 +10,7 @@ export interface User {
   last_name: string;
   email: string;
   is_root: boolean;
-  created_at: string; // ISO Date string
+  created_at?: string; // ISO Date string
 }
 
 export interface ErrorData {
@@ -36,6 +36,8 @@ export interface Rejection {
 }
 
 export type HandledFilter = "All" | "Handled" | "Unhandled";
+export type ResolvedFilter = "All" | "Resolved" | "Unresolved";
+
 export type TimeFilter =
   | "Today"
   | "Last 7 days"
