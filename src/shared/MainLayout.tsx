@@ -68,7 +68,6 @@ const MainLayout = () => {
               Projects
             </Button>
           </Link>
-
           <Menu>
             <MenuButton
               as={Button}
@@ -118,7 +117,6 @@ const MainLayout = () => {
                   </MenuItem>
                 </Link>
               )}
-
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             </MenuList>
           </Menu>

@@ -8,7 +8,7 @@ export interface getAllProjectsResponse {
     issue_count: number;
   };
   message: string;  
-
+}
 
 export interface createProjectResponse {
   data: {
