@@ -16,7 +16,7 @@ const JavaScriptSetup: React.FC = () => {
 
   const handleButtonClick = () => {
     if (project_uuid) {
-      navigate(`/projects/${project_uuid}/errors`);
+      navigate(`/projects/${project_uuid}/issues`);
     }
   };
 
