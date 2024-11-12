@@ -1,6 +1,7 @@
 import { JwtPayload } from "jwt-decode";
 
 export interface loginResponse {
+  status: string;
   data: {
     access_token: string;
     user_uuid: string;
@@ -8,7 +9,6 @@ export interface loginResponse {
     last_name: string;
     is_root: boolean;
   }
-  status: string;
 }
 
 export interface loginServiceResponse {
