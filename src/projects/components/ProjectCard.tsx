@@ -28,7 +28,7 @@ const ProjectCard = ({
   const navigate = useNavigate();
   const { selectProject } = useProjects();
 
-  console.log('project: ', project);
+  console.log("project: ", project);
 
   const handleProjectClick = () => {
     selectProject(project.uuid);
@@ -55,7 +55,7 @@ const ProjectCard = ({
       key={project.uuid}
       borderTop="8px"
       borderColor="green.400"
-      bg="gray.100"
+      bg="white"
       cursor="pointer"
       width="50%"
       onClick={handleProjectClick}

@@ -13,6 +13,7 @@ import { ProjectsProvider } from "./contexts/ProjectsContext";
 import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
+
 import AdminRequired from "./authentication/components/AdminRequired.tsx";
 import "./App.css"; 
 
@@ -42,7 +43,10 @@ const App = () => {
             >
               <Route index element={<ErrorDisplay />} />
               <Route path="errors/:error_uuid" element={<ErrorDetails />} />
-              <Route path="rejections/:rejection_uuid" element={<RejectionDetails />} />
+              <Route
+                path="rejections/:rejection_uuid"
+                element={<RejectionDetails />}
+              />
             </Route>
           </Route>
           <Route element={<AdminRequired />}>

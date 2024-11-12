@@ -8,7 +8,7 @@ export const getAllProjects = async (): Promise<getAllProjectsResponse> => {
 };
 
 export const createProject = async (
-  projectName: string,
+  projectName: string
 ): Promise<createProjectResponse> => {
   const { data } = await apiClient.post("/api/projects", {
     name: projectName,
@@ -18,14 +18,14 @@ export const createProject = async (
 };
 
 export const deleteProject = async (
-  projectUuid: string | undefined,
+  projectUuid: string | undefined
 ): Promise<void> => {
   await apiClient.delete(`/api/projects/${projectUuid}`);
 };
 
 export const renameProject = async (
   projectUuid: string | undefined,
-  newProjectName: string,
+  newProjectName: string
 ): Promise<void> => {
   await apiClient.patch(`/api/projects/${projectUuid}`, {
     new_name: newProjectName,

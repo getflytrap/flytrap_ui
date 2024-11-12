@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, Box, Heading, Text, Button, Code, Divider, Container } from '@chakra-ui/react';
+import {  Box, Heading, Text, Button, Code, Divider, Container } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ExpressSetup: React.FC = () => {
