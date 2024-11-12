@@ -15,7 +15,7 @@ const ManageUsers = () => {
   useEffect(() => {
     async function fetchUsers() {
       const { data } = await getUsers();
-      console.log('users here', data)
+      console.log("users here", data);
       setUsers(data);
     }
     try {

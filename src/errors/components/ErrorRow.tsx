@@ -25,9 +25,11 @@ const ErrorRow = ({
       <Td>
         <Link
           as={RouterLink}
-          to={isErrorData(issue)
-            ? `/projects/${selectedProject?.uuid}/issues/errors/${issue.uuid}`
-            : `/projects/${selectedProject?.uuid}/issues/rejections/${issue.uuid}`}
+          to={
+            isErrorData(issue)
+              ? `/projects/${selectedProject?.uuid}/issues/errors/${issue.uuid}`
+              : `/projects/${selectedProject?.uuid}/issues/rejections/${issue.uuid}`
+          }
           _hover={{ color: "blue.500", cursor: "pointer" }}
           state={{ time: selectedTime, handled: selectedHandled }}
         >

@@ -34,15 +34,14 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
 
   async function postNewUserData() {
     try {
-      const credentials = 
-        {
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          password,
-          confirmed_password: confirmedPassword
-        }
-        
+      const credentials = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        confirmed_password: confirmedPassword,
+      };
+
       const data = await createAccount(credentials);
 
       const newUser = {

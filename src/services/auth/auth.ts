@@ -23,8 +23,8 @@ export const login = async (
     userUuid: data.data.user_uuid,
     firstName: data.data.first_name,
     lastName: data.data.last_name,
-    isRoot: data.data.is_root
-  }
+    isRoot: data.data.is_root,
+  };
 
   return userData;
 };
@@ -36,5 +36,5 @@ export const logout = async (): Promise<void> => {
 
 export const checkAuthStatus = async (): Promise<checkStatusResponse> => {
   const { data } = await apiClient.get("/api/auth/status");
-  return data
+  return data;
 };

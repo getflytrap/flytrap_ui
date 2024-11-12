@@ -16,7 +16,11 @@ import PaginationControls from "../../shared/Pagination";
 import { useProjects } from "../../hooks/useProjects";
 import { ErrorData, Rejection } from "../../types";
 import { getIssues } from "../../services";
-import { convertHandledToBoolean, convertToTimeStamp, convertResolvedToBoolean } from "../../helpers";
+import {
+  convertHandledToBoolean,
+  convertToTimeStamp,
+  convertResolvedToBoolean,
+} from "../../helpers";
 import ErrorRow from "./ErrorRow";
 
 const ERROR_LIMIT_PER_PAGE = 10;
@@ -27,7 +31,11 @@ interface ErrorsTableProps {
   selectedResolved: string;
 }
 
-const ErrorsTable = ({ selectedHandled, selectedTime, selectedResolved }: ErrorsTableProps) => {
+const ErrorsTable = ({
+  selectedHandled,
+  selectedTime,
+  selectedResolved,
+}: ErrorsTableProps) => {
   const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
   const { projects, selectedProject, selectProject, fetchProjectsForUser } =
     useProjects();

@@ -28,7 +28,8 @@ const RejectionDetails = () => {
   const location = useLocation();
   const { handled, time } = location.state || {};
 
-  const { project_uuid: projectUuid, rejection_uuid: rejectionUuid } = useParams();
+  const { project_uuid: projectUuid, rejection_uuid: rejectionUuid } =
+    useParams();
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -100,7 +101,7 @@ const RejectionDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {

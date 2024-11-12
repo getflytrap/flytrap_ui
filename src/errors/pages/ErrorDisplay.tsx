@@ -6,7 +6,8 @@ import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
 
 const ErrorDisplay = () => {
   const [selectedHandled, setSelectedHandled] = useState<HandledFilter>("All");
-  const [selectedResolved, setSelectedResolved] = useState<ResolvedFilter>("All");
+  const [selectedResolved, setSelectedResolved] =
+    useState<ResolvedFilter>("All");
   const [selectedTime, setSelectedTime] = useState<TimeFilter>("Forever");
   const location = useLocation();
 
