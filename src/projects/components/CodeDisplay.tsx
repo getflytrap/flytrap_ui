@@ -1,9 +1,16 @@
 import React from "react";
-import { Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism"; // You can use other styles, e.g., 'okaidia', 'tomorrow', etc.
+import * as Prism from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const CodeDisplay = ({ language, code }) => {
+interface CodeDisplayProps {
+  language: string;
+  code: string;
+}
+
+const CodeDisplay: React.FC<CodeDisplayProps> = ({ language, code }) => {
+  const { tomorrow } = Prism;
+
   return (
     <Box
       borderWidth={1}
