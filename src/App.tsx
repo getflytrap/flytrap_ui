@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import ErrorDashboard from "./errors/pages/ErrorDashboard.tsx";
 import ErrorDisplay from "./errors/pages/ErrorDisplay.tsx";
 import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
