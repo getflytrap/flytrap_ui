@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -49,6 +49,10 @@ const Login = () => {
       });
     }
   };
+
+  if (isLoggedIn) {
+    navigate("/projects");
+  }
 
   return (
     <Box
