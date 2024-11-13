@@ -11,7 +11,12 @@ import {
   Flex,
   useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import {
+  ArrowBackIcon,
+  DeleteIcon,
+  CheckIcon,
+  CloseIcon,
+} from "@chakra-ui/icons"; // Import the icons
 import WarningModal from "../../shared/WarningModal";
 import { deleteRejection, getRejection, toggleRejection } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
@@ -101,7 +106,7 @@ const RejectionDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?",
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
     );
 
     if (confirmAction) {
@@ -137,19 +142,45 @@ const RejectionDetails = () => {
   return (
     <Box>
       <Flex justify="space-between" align="center" mb={4}>
-        <Button colorScheme="purple" size="lg" onClick={handleReturnToIssues}>
+        {/* Return to Issues Button */}
+        <Button
+          size="md"
+          onClick={handleReturnToIssues}
+          bg="gray.200"
+          _hover={{ bg: "gray.100" }}
+        >
           <ArrowBackIcon mr={2} />
           Return to Issues
         </Button>
+
+        {/* Mark as Resolved Button */}
         <Button
-          colorScheme={resolved ? "pink" : "green"}
-          size="lg"
+          size="md"
           onClick={handleToggleResolved}
+          bg={resolved ? "red.400" : "brand.400"}
+          _hover={{
+            bg: resolved ? "red.300" : "green.200",
+          }}
         >
-          {resolved ? "Mark As Unresolved" : "Mark As Resolved"}
+          {resolved ? (
+            <>
+              <CloseIcon mr={2} /> Mark As Unresolved
+            </>
+          ) : (
+            <>
+              <CheckIcon mr={2} /> Mark As Resolved
+            </>
+          )}
         </Button>
-        <Button colorScheme="pink" size="lg" onClick={handleDeleteClick}>
-          Delete Rejection
+
+        {/* Delete Rejection Button */}
+        <Button
+          size="md"
+          onClick={handleDeleteClick}
+          bg="red.400"
+          _hover={{ bg: "red.300" }}
+        >
+          <DeleteIcon mr={2} /> Delete Rejection
         </Button>
       </Flex>
 
