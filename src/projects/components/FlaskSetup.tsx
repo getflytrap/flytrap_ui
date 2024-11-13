@@ -29,7 +29,6 @@ const FlaskSetup: React.FC = () => {
           Flask SDK Setup Instructions
         </Heading>
 
-        {/* Step 1: Install the SDK */}
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
             Run this command in your project directory or virtual environment:
@@ -39,7 +38,6 @@ const FlaskSetup: React.FC = () => {
 
         <Divider />
 
-        {/* Step 2: Import Flytrap */}
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
             In your project's main app file, import flytrap:
@@ -49,7 +47,6 @@ const FlaskSetup: React.FC = () => {
 
         <Divider />
 
-        {/* Step 3: Instantiate the Flytrap class */}
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
             Instantiate the Flytrap class at the top of the main app file,
@@ -68,7 +65,6 @@ const FlaskSetup: React.FC = () => {
 
         <Divider />
 
-        {/* Step 4: Set up Flask error handler */}
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
             Call the <Code>setup_flask_error_handler</Code> instance method,
@@ -87,7 +83,6 @@ const FlaskSetup: React.FC = () => {
 
         <Divider />
 
-        {/* Step 5: Capture handled exceptions */}
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
             To capture handled exceptions too, follow this pattern in each of
@@ -121,48 +116,3 @@ except Exception as e:
 };
 
 export default FlaskSetup;
-
-// import React from "react";
-// import {
-//   Box,
-//   Heading,
-//   Text,
-//   Button,
-//   Code,
-//   Divider,
-//   Container,
-// } from "@chakra-ui/react";
-
-// import { useParams, useNavigate } from "react-router-dom";
-// import CodeDisplay from "./CodeDisplay";
-
-// const FlaskSetup: React.FC = () => {
-//   const { project_uuid } = useParams();
-//   const navigate = useNavigate();
-
-//   const handleButtonClick = () => {
-//     if (project_uuid) {
-//       navigate(`/projects/${project_uuid}/issues`);
-//     }
-//   };
-
-//   return (
-//     <Container maxW="container.lg" py={10} px={6}>
-//       <Box>
-//         <Button
-//           colorScheme="teal"
-//           size="lg"
-//           width="100%"
-//           onClick={handleButtonClick}
-//           borderRadius="md"
-//           boxShadow="lg"
-//           _hover={{ bg: "teal.700" }}
-//         >
-//           Take me to Dashboard
-//         </Button>
-//       </Box>
-//     </Container>
-//   );
-// };
-
-// export default FlaskSetup;
