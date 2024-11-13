@@ -7,8 +7,10 @@ import {
   Code,
   Divider,
   Container,
+  VStack,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
+import CodeDisplay from "./CodeDisplay";
 
 const JavaScriptSetup: React.FC = () => {
   const { project_uuid } = useParams();
@@ -21,103 +23,105 @@ const JavaScriptSetup: React.FC = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={10} px={6}>
-      <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-        <Heading as="h1" size="xl" mb={6} color="teal.600">
-          JavaScript SDK
+    <Container maxW="container.lg" py={10} px={6} bg="gray.200">
+      <VStack spacing={8}>
+        <Heading as="h1" size="2xl" textAlign="center">
+          JavaScript SDK Setup Instructions
         </Heading>
 
-        <Divider mb={6} borderColor="gray.300" />
+        <Box textAlign="left" w="full">
+          <Text fontSize="xl" mb={2} fontWeight="bold">
+            Installation
+          </Text>
+          <Text fontSize="lg" mb={4}>
+            To use Flytrap, simply include the SDK in your project.
+          </Text>
+          <br />
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Install
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add the SDK using npm:
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            npm install sdk-package-name
-          </Code>
+          <Text fontSize="xl" mb={2} fontWeight="bold">
+            Via Script Tag:
+          </Text>
+          <Text fontSize="md" mb={4}>
+            The SDK is distributed in UMD format, allowing it to be imported
+            directly in the browser with a <Code>&lt;script&gt;</Code> tag:
+          </Text>
+          <CodeDisplay
+            language="html"
+            code={`<script src="scripts/flytrap/index.js"></script>`}
+          />
+          <br />
+
+          <Text fontSize="xl" mt={4} fontWeight="bold">
+            Development:
+          </Text>
+          <Text fontSize="lg" mt={4}>
+            Run <Code>npm build</Code> to create the bundled version. Then, copy
+            the bundled <Code>dist/index.debug.js</Code> and{" "}
+            <Code>index.debug.js.map</Code> file into a{" "}
+            <Code>scripts/flytrap</Code> directory.
+          </Text>
         </Box>
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Configure SDK
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add this code to FILL-IN-LATER file over your project:
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`import { initializeSDK } from "sdk-package-name";
-  
-  initializeSDK({
-    apiKey: "YOUR_API_KEY",
-    options: {
-      tracing: true,
-      errorTracking: true,
-    },
-  });
-  
-  const container = document.getElementById("app");
-  const root = createRoot(container);
-  root.render(<App />);
-  `}
-          </Code>
+        <Box textAlign="left" w="full">
+          <Text fontSize="xl" mt={4} fontWeight="bold">
+            Usage
+          </Text>
+          <Text fontSize="lg" mb={4}>
+            Initialization:
+            <br />
+            To begin using Flytrap, initialize it with your project
+            configuration:
+          </Text>
+          <CodeDisplay
+            language="javascript"
+            code={`const flytrap = new Flytrap({
+  projectId: 'your-project-id',
+  apiEndpoint: 'https://your-api-endpoint.com',
+  apiKey: 'your-api-key',
+});`}
+          />
+          <Text fontSize="md" mt={4}>
+            <b>projectId</b>: Your unique project identifier.
+            <br />
+            <b>apiEndpoint</b>: The endpoint to which errors should be logged.
+            <br />
+            <b>apiKey</b>: Your API key for authorization.
+          </Text>
         </Box>
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Verify
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          This snippet contains an intentional error and can be used as a test
-          to make sure that everything's working as expected.
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`return <button onClick={() => {throw new Error("This is your first error!");}}>Break the world</button>;`}
-          </Code>
+        <Box textAlign="left" w="full">
+          <Text fontSize="xl" mt={4} fontWeight="bold">
+            Capturing Errors
+          </Text>
+          <Text fontSize="lg" mb={4}>
+            Flytrap automatically listens for uncaught exceptions and unhandled
+            promise rejections. You can also manually capture errors by calling{" "}
+            <Code>captureException</Code>:
+          </Text>
+          <CodeDisplay
+            language="javascript"
+            code={`try {
+  throw new Error('An example error');
+} catch (error) {
+  flytrap.captureException(error);
+}`}
+          />
         </Box>
 
-        <Button
-          colorScheme="teal"
-          size="lg"
-          width="100%"
-          onClick={handleButtonClick}
-          borderRadius="md"
-          boxShadow="lg"
-          _hover={{ bg: "teal.700" }}
-        >
-          Take me to Dashboard
-        </Button>
-      </Box>
+        <Box textAlign="center" w="full" mt={8}>
+          <Button
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+            onClick={handleButtonClick}
+            borderRadius="md"
+            boxShadow="lg"
+            _hover={{ bg: "teal.700" }}
+          >
+            Take me to Dashboard
+          </Button>
+        </Box>
+      </VStack>
     </Container>
   );
 };

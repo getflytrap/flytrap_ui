@@ -7,8 +7,10 @@ import {
   Code,
   Divider,
   Container,
+  VStack,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
+import CodeDisplay from "./CodeDisplay";
 
 const FlaskSetup: React.FC = () => {
   const { project_uuid } = useParams();
@@ -21,105 +23,146 @@ const FlaskSetup: React.FC = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={10} px={6}>
-      <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-        <Heading as="h1" size="xl" mb={6} color="teal.600">
-          Flask SDK
+    <Container maxW="container.lg" py={10} px={6} bg="gray.200">
+      <VStack spacing={8}>
+        <Heading as="h1" size="2xl" textAlign="center">
+          Flask SDK Setup Instructions
         </Heading>
 
-        <Divider mb={6} borderColor="gray.300" />
-
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Install
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add the SDK using npm:
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            npm install sdk-package-name
-          </Code>
+        {/* Step 1: Install the SDK */}
+        <Box textAlign="left" w="full">
+          <Text fontSize="lg" mb={2}>
+            Run this command in your project directory or virtual environment:
+          </Text>
+          <CodeDisplay language="bash" code={`pip install flytrap_flask`} />
         </Box>
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Configure SDK
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add this code to FILL-IN-LATER file over your project:
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`import { initializeSDK } from "sdk-package-name";
-  
-  initializeSDK({
-    apiKey: "YOUR_API_KEY",
-    options: {
-      tracing: true,
-      errorTracking: true,
-    },
-  });
-  
-  const container = document.getElementById("app");
-  const root = createRoot(container);
-  root.render(<App />);
-  `}
-          </Code>
+        <Divider />
+
+        {/* Step 2: Import Flytrap */}
+        <Box textAlign="left" w="full">
+          <Text fontSize="lg" mb={2}>
+            In your project's main app file, import flytrap:
+          </Text>
+          <CodeDisplay language="python" code={`from flytrap import Flytrap`} />
         </Box>
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Verify
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          This snippet contains an intentional error and can be used as a test
-          to make sure that everything's working as expected.
-        </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`return <button onClick={() => {throw new Error("This is your first error!");}}>Break the world</button>;`}
-          </Code>
+        <Divider />
+
+        {/* Step 3: Instantiate the Flytrap class */}
+        <Box textAlign="left" w="full">
+          <Text fontSize="lg" mb={2}>
+            Instantiate the Flytrap class at the top of the main app file,
+            passing in the config object containing api_endpoint, api_key, and
+            project_id, which is provided in the project dashboard:
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`error_monitor = Flytrap({
+  api_endpoint: 'YOUR_API_ENDPOINT',
+  api_key: 'YOUR_API_KEY',
+  project_id: 'YOUR_PROJECT_ID'
+})`}
+          />
         </Box>
 
-        <Button
-          colorScheme="teal"
-          size="lg"
-          width="100%"
-          onClick={handleButtonClick}
-          borderRadius="md"
-          boxShadow="lg"
-          _hover={{ bg: "teal.700" }}
-        >
-          Take me to Dashboard
-        </Button>
-      </Box>
+        <Divider />
+
+        {/* Step 4: Set up Flask error handler */}
+        <Box textAlign="left" w="full">
+          <Text fontSize="lg" mb={2}>
+            Call the <Code>setup_flask_error_handler</Code> instance method,
+            e.g. assuming you named your Flytrap instance as{" "}
+            <Code>flytrap</Code>:
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`flytrap.setup_flask_error_handler()`}
+          />
+          <Text mt={4} fontSize="md">
+            Now, all unhandled exceptions that occur while your app is running
+            will automatically be sent to your Flytrap AWS architecture!
+          </Text>
+        </Box>
+
+        <Divider />
+
+        {/* Step 5: Capture handled exceptions */}
+        <Box textAlign="left" w="full">
+          <Text fontSize="lg" mb={2}>
+            To capture handled exceptions too, follow this pattern in each of
+            your <Code>except</Code> blocks:
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`try:
+    # Some code that might raise an exception
+except Exception as e:
+    flytrap.capture_exception(e)`}
+          />
+        </Box>
+
+        <Box textAlign="center" w="full" mt={8}>
+          <Button
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+            onClick={handleButtonClick}
+            borderRadius="md"
+            boxShadow="lg"
+            _hover={{ bg: "teal.700" }}
+          >
+            Take me to Dashboard
+          </Button>
+        </Box>
+      </VStack>
     </Container>
   );
 };
 
 export default FlaskSetup;
+
+// import React from "react";
+// import {
+//   Box,
+//   Heading,
+//   Text,
+//   Button,
+//   Code,
+//   Divider,
+//   Container,
+// } from "@chakra-ui/react";
+
+// import { useParams, useNavigate } from "react-router-dom";
+// import CodeDisplay from "./CodeDisplay";
+
+// const FlaskSetup: React.FC = () => {
+//   const { project_uuid } = useParams();
+//   const navigate = useNavigate();
+
+//   const handleButtonClick = () => {
+//     if (project_uuid) {
+//       navigate(`/projects/${project_uuid}/issues`);
+//     }
+//   };
+
+//   return (
+//     <Container maxW="container.lg" py={10} px={6}>
+//       <Box>
+//         <Button
+//           colorScheme="teal"
+//           size="lg"
+//           width="100%"
+//           onClick={handleButtonClick}
+//           borderRadius="md"
+//           boxShadow="lg"
+//           _hover={{ bg: "teal.700" }}
+//         >
+//           Take me to Dashboard
+//         </Button>
+//       </Box>
+//     </Container>
+//   );
+// };
+
+// export default FlaskSetup;
