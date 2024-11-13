@@ -183,7 +183,7 @@ const ErrorDetails = () => {
           bg="red.400"
           _hover={{ bg: "red.300" }}
         >
-          <DeleteIcon mr={2} /> Delete Error
+          <DeleteIcon mr={2} /> Delete Issue
         </Button>
       </Flex>
 
