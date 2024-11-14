@@ -9,7 +9,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-import CodeDisplay from "./CodeDisplay";
+// import CodeDisplay from "./CodeDisplay";
 
 const ReactSetup: React.FC = () => {
   const { project_uuid } = useParams();
