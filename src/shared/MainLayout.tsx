@@ -50,7 +50,13 @@ const MainLayout = () => {
         alignItems="center"
       >
         <Heading size="2xl" textAlign="center">
-          <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
+          <Image
+            src={flytrap_logo}
+            alt="Flytrap Logo"
+            height="auto"
+            maxWidth="100%"
+            maxHeight="150px"
+          />
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/projects">
