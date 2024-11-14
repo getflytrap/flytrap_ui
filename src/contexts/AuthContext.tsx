@@ -26,7 +26,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userUuid, setUserUuid] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [isRoot, setIsRoot] = useState<boolean>(false);
@@ -71,12 +71,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setName(null);
       setIsRoot(false);
       setIsLoggedIn(false);
+      sessionStorage.removeItem("access_token");
     } catch (e) {
       console.error("Error during logout:", e);
     }
   };
 
   useWebSocket(isLoggedIn)
+
   return (
     <AuthContext.Provider
       value={{ isLoggedIn, userUuid, name, isRoot, login, logout }}
