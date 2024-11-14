@@ -70,13 +70,6 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
         prevUsers.filter((user) => user.uuid !== userUuid)
       );
 
-      console.log("projects", projects, projectUuid, userUuid);
-      console.log("cu", currentUsers);
-
-      setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid)
-      );
-
       toast({
         title: "User removed.",
         description: "User has been removed from the project.",
@@ -124,7 +117,6 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
       borderRadius="md"
       padding={5}
       minHeight="600px"
-      maxW="800px"
       mx="auto"
       bg="gray.100"
     >

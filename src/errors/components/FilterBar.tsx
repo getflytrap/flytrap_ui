@@ -28,13 +28,17 @@ const FilterBar = ({
     setSelectedResolved(option);
   };
 
-  const fixedButtonWidth = "90px"; // Ensure fixed width for uniform buttons
-  const fixedButtonHeight = "40px"; // Set a height for uniform button height
+  const fixedButtonWidth = "90px";
+  const fixedButtonHeight = "40px";
 
   return (
     <Box p={4} bg="gray.100">
-      <Flex alignItems="center" justifyContent="space-around">
-        <Box>
+      <Flex
+        alignItems="center"
+        justifyContent="space-around"
+        flexDirection={["column", "column", "row"]}
+      >
+        <Box className="time-select" mb="15px">
           <Select
             height="50px"
             placeholder="Select time period"

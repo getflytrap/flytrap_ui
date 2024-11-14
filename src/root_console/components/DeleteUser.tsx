@@ -71,8 +71,7 @@ const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
       borderColor="lightgray"
       p={6}
       borderRadius="md"
-      width="400px"
-      maxWidth="600px"
+      maxWidth="400px"
       mx="auto"
       mt={10}
       bg="gray.100"
