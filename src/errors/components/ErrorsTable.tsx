@@ -62,6 +62,14 @@ const ErrorsTable = ({
     }
   }, [projects, projectUuid]);
 
+  // whenever project changes, currentPage is reset to 1
+  useEffect(() => {
+    if (selectedProject) {
+      setCurrentPage(1);
+      fetchIssues(1);
+    }
+  }, [selectedProject]);
+
   useEffect(() => {
     if (selectedProject) {
       fetchIssues(currentPage);
@@ -83,7 +91,7 @@ const ErrorsTable = ({
         convertResolvedToBoolean(selectedResolved), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
-        ERROR_LIMIT_PER_PAGE,
+        ERROR_LIMIT_PER_PAGE
       );
 
       setIssues(data.issues);

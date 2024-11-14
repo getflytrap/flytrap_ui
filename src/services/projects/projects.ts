@@ -5,6 +5,7 @@ import apiClient from "../apiClient";
 export const getAllProjects = async (
   page: number=1,
   limit: number=10
+
 ): Promise<getAllProjectsResponse> => {
   const params = {
     page,
@@ -18,7 +19,7 @@ export const getAllProjects = async (
 
 export const createProject = async (
   projectName: string,
-  platform: string,
+  platform: string
 ): Promise<createProjectResponse> => {
   const { data } = await apiClient.post("/api/projects", {
     name: projectName,
@@ -29,14 +30,14 @@ export const createProject = async (
 };
 
 export const deleteProject = async (
-  projectUuid: string | undefined,
+  projectUuid: string | undefined
 ): Promise<void> => {
   await apiClient.delete(`/api/projects/${projectUuid}`);
 };
 
 export const renameProject = async (
   projectUuid: string | undefined,
-  newProjectName: string,
+  newProjectName: string
 ): Promise<void> => {
   await apiClient.patch(`/api/projects/${projectUuid}`, {
     new_name: newProjectName,
