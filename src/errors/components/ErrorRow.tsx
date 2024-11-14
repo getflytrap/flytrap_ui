@@ -1,4 +1,4 @@
-import { Box, Td, Link } from "@chakra-ui/react";
+import { Box, Td, Link, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ErrorData, Rejection } from "../../types";
 import { Project } from "../../types";
@@ -20,8 +20,12 @@ const ErrorRow = ({
     return "name" in issue;
   };
 
+  // Use useBreakpointValue to check screen size and conditionally render columns
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
   return (
-    <Box as="tr" key={issue.uuid} mb={2}>
+    <Tr key={issue.uuid} mb={2}>
+      {/* Render Issue Name only on small screens */}
       <Td>
         <Link
           as={RouterLink}
@@ -36,7 +40,8 @@ const ErrorRow = ({
           {isErrorData(issue) ? issue.name || "Un-named Error" : issue.value}
         </Link>
       </Td>
-      {/* <Td>{issue.type}</Td> */}
+
+      {/* Render "Handled" status */}
       <Td>
         <Box
           as="span"
@@ -51,9 +56,15 @@ const ErrorRow = ({
           {issue.handled ? "Handled" : "Unhandled"}
         </Box>
       </Td>
-      <Td>{new Date(issue.created_at).toLocaleString()}</Td>
-      <Td>{issue.resolved ? "Resolved" : "Unresolved"}</Td>
-    </Box>
+
+      {/* Conditionally render time and resolved status only on larger screens */}
+      {!isSmallScreen && (
+        <>
+          <Td>{new Date(issue.created_at).toLocaleString()}</Td>
+          <Td>{issue.resolved ? "Resolved" : "Unresolved"}</Td>
+        </>
+      )}
+    </Tr>
   );
 };
 

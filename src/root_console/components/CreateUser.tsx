@@ -142,7 +142,7 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
       borderColor="lightgray"
       p={6}
       borderRadius="md"
-      width="400px"
+      maxWidth="400px"
       mx="auto"
       mt={10}
       bg="gray.100"

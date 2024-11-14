@@ -83,7 +83,13 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           <Text fontSize="lg" fontWeight="bold">
             Developed By:
           </Text>
-          <Flex justify="space-between" width="100%" mx="5px">
+          <Flex
+            justify="space-between"
+            width="100%"
+            mx="5px"
+            wrap="wrap"
+            gap={4}
+          >
             {developers.map((developer, index) => (
               <Box
                 key={index}
@@ -92,13 +98,14 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                mx="30px"
+                mx="10px"
+                width={["auto", "auto", "20%"]}
               >
                 <Image
                   src={developer.avatarUrl}
                   alt={developer.name}
                   borderRadius="full"
-                  boxSize="100px"
+                  boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
                 <Text noOfLines={1} isTruncated>

@@ -1,14 +1,26 @@
-import { Box, Button, Divider, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Heading,
+  Stack,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const RootConsole = () => {
+  const direction =
+    useBreakpointValue<"row" | "column">({ base: "column", md: "row" }) ||
+    "column";
+
   return (
-    <Box p={5} bg="white" borderRadius="20px">
+    <Box p={5} bg="white" borderRadius="20px" maxW="1200px" mx="auto">
       <Heading as="h1" size="2xl" textAlign="center" mb={8}>
         Admin Console
       </Heading>
 
-      <Stack direction="row" spacing={10} align="flex-start">
+      <Stack direction={direction} spacing={10} align="center">
         <Box flex="1" p={5} textAlign="center">
           <Heading as="h2" size="lg" mb={4}>
             Error Dashboard
@@ -19,13 +31,16 @@ const RootConsole = () => {
           </Link>
         </Box>
 
-        <Box>
-          <Divider
-            orientation="vertical"
-            height="100px"
-            borderColor="gray.300"
-          />
-        </Box>
+        {/* Divider between the columns, only visible on larger screens */}
+        {direction === "row" && (
+          <Box>
+            <Divider
+              orientation="vertical"
+              height="100px"
+              borderColor="gray.300"
+            />
+          </Box>
+        )}
 
         <Box flex="1" p={5} textAlign="center">
           <Heading as="h2" size="lg" mb={4}>

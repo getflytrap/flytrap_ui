@@ -11,6 +11,7 @@ import {
   CardFooter,
   Flex,
   Box,
+  useBreakpointValue, // Import useBreakpointValue
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
@@ -68,6 +69,8 @@ const ProjectCard = ({
     }
   };
 
+  const showLogo = useBreakpointValue({ base: false, lg: true });
+
   return (
     <Card
       key={project.uuid}
@@ -75,14 +78,17 @@ const ProjectCard = ({
       borderColor="green.400"
       bg="white"
       cursor="pointer"
-      width="50%"
+      width={["90%", "75%", "50%"]} // Adjust card width for different screen sizes
       onClick={handleProjectClick}
     >
       <CardHeader>
         <Flex justify="center" align="center" width="100%" position="relative">
-          <Box position="absolute" left="0">
-            {getPlatformLogo(project.platform)}
-          </Box>
+          {/* Render logo only if screen size is medium or larger */}
+          {showLogo && (
+            <Box position="absolute" left="0">
+              {getPlatformLogo(project.platform)}
+            </Box>
+          )}
 
           <Box width="100%" textAlign="center">
             <Heading as="h2" size="lg" color="gray.900">

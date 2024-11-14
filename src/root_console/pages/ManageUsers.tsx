@@ -39,7 +39,7 @@ const ManageUsers = () => {
       </Heading>
 
       <Stack spacing={4}>
-        <Stack direction={{ base: "column", md: "row" }} spacing={4}>
+        <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
           <Box flex="1" p={5} textAlign="center">
             <CreateUser setUsers={setUsers} />
           </Box>
