@@ -26,10 +26,10 @@ const ManageUsers = () => {
   }, []);
 
   return (
-    <Box p={5} bg="white" borderRadius="20px">
+    <Box p={5} borderRadius="20px" bg="gray.200">
       <Box textAlign="left" mb={6}>
         <Link to="/root-console">
-          <Button colorScheme="purple" size="lg" leftIcon={<ArrowBackIcon />}>
+          <Button bg="green.300" size="lg" leftIcon={<ArrowBackIcon />}>
             Return
           </Button>
         </Link>

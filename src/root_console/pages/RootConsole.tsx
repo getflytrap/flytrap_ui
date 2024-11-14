@@ -14,8 +14,8 @@ const RootConsole = () => {
             Error Dashboard
           </Heading>
           <Text mb={4}>Monitor and manage errors here.</Text>
-          <Link to="/">
-            <Button colorScheme="teal">Go to Dashboard</Button>
+          <Link to="/projects">
+            <Button bg="green.300">Go to Dashboard</Button>
           </Link>
         </Box>
 
@@ -31,13 +31,11 @@ const RootConsole = () => {
           <Heading as="h2" size="lg" mb={4}>
             Manage Users
           </Heading>
-          <Stack spacing={4} align="center">
-            <Text mb={4}>Create or remove users here.</Text>
+          <Text mb={4}>Create or remove users here.</Text>
 
-            <Link to="/manage-users">
-              <Button colorScheme="blue">Go To User Management Console</Button>
-            </Link>
-          </Stack>
+          <Link to="/manage-users">
+            <Button bg="green.300">Go To User Management Console</Button>
+          </Link>
         </Box>
       </Stack>
     </Box>

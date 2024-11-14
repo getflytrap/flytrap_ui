@@ -30,7 +30,7 @@ export default function Sidebar() {
             borderRadius="20px"
             bg={
               selectedProject?.uuid === project.uuid
-                ? "transparent"
+                ? "green.100"
                 : "transparent"
             }
             border={selectedProject?.uuid === project.uuid ? "2px" : "1px"}
@@ -41,13 +41,11 @@ export default function Sidebar() {
             }
             p={2}
             _hover={{
-              borderColor: "gray.300",
+              borderColor: "green.400",
             }}
             cursor="pointer"
             color={selectedProject?.uuid === project.uuid ? "black" : "inherit"}
-            fontWeight={
-              selectedProject?.uuid === project.uuid ? "bold" : "normal"
-            }
+            fontWeight="bold"
           >
             <Text textAlign="left">{`${project.name} (${project.issue_count})`}</Text>
           </Box>

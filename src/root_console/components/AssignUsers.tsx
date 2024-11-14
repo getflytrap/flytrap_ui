@@ -62,19 +62,19 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
   const deleteUserFromProject = async (
     projectUuid: string,
-    userUuid: string,
+    userUuid: string
   ) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid),
+        prevUsers.filter((user) => user.uuid !== userUuid)
       );
 
       console.log("projects", projects, projectUuid, userUuid);
       console.log("cu", currentUsers);
 
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid),
+        prevUsers.filter((user) => user.uuid !== userUuid)
       );
 
       toast({
@@ -114,18 +114,19 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
   const availableUsers = users.filter(
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
-      !user.is_root,
+      !user.is_root
   );
 
   return (
     <Box
-      borderWidth={1}
-      borderRadius="lg"
+      borderWidth="1px"
+      borderColor="lightgray"
+      borderRadius="md"
       padding={5}
       minHeight="600px"
-      boxShadow="lg"
       maxW="800px"
       mx="auto"
+      bg="gray.100"
     >
       <Heading as="h2" size="lg" mb={4} textAlign="center">
         Project Assignments
