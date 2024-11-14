@@ -26,10 +26,10 @@ export interface logoutResponse {
 export interface checkStatusResponse {
   status: string;
   data: {
-    user_uuid: string;
-    first_name: string;
-    last_name: string;
-    is_root: boolean;
+    userUuid: string;
+    firstName: string;
+    lastName: string;
+    isRoot: boolean;
   };
 }
 
