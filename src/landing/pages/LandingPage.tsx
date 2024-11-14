@@ -40,10 +40,10 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           <Image src={flytrap_logo} alt="FlyTrap Logo" maxW="400px" />
         </Flex>
         <Text fontSize="lg" textAlign="center" maxW="lg" mb={8}>
-          FlyTrap is the ultimate error monitoring solution for developers,
+          Flytrap is the ultimate error monitoring solution for developers,
           offering real-time detection and detailed insights into your code’s
           issues—so you can fix bugs faster and improve your user experience.
-          FlyTrap is lightweight, easy to set up, and focused solely on what
+          Flytrap is lightweight, easy to set up, and focused solely on what
           matters most: identifying and resolving errors before they disrupt
           your application.
         </Text>
