@@ -10,7 +10,7 @@ interface AuthContextType {
     uuid: string,
     firstName: string,
     lastName: string,
-    isRoot: boolean,
+    isRoot: boolean
   ) => void;
   logout: () => void;
 }
@@ -47,15 +47,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
       }
     };
-
-    checkSession();
+    if (
+      window.location.pathname !== "/" &&
+      window.location.pathname !== "/login"
+    ) {
+      checkSession();
+    }
   }, []);
 
   const login = (
     uuid: string,
     firstName: string,
     lastName: string,
-    isRoot: boolean,
+    isRoot: boolean
   ) => {
     setUserUuid(uuid);
     setName(`${firstName} ${lastName}`);
