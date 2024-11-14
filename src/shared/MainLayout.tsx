@@ -60,7 +60,13 @@ const MainLayout = () => {
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/projects">
-            <Button colorScheme={getButtonColor("/")} mx="10px">
+            <Button
+              colorScheme={getButtonColor("/")}
+              mx="10px"
+              size={["sm", "md"]}
+              px={["4", "6"]}
+              py={["2", "4"]}
+            >
               Projects
             </Button>
           </Link>
@@ -70,6 +76,9 @@ const MainLayout = () => {
               colorScheme="gray"
               rightIcon={<ChevronDownIcon />}
               mx="10px"
+              size={["sm", "md"]}
+              px={["4", "6"]}
+              py={["2", "4"]}
             >
               Account
             </MenuButton>
