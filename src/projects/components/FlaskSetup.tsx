@@ -7,7 +7,6 @@ import {
   Code,
   Divider,
   Container,
-  VStack,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
@@ -23,9 +22,9 @@ const FlaskSetup: React.FC = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={10} px={6} bg="gray.200">
-      <VStack spacing={8}>
-        <Heading as="h1" size="2xl" textAlign="center">
+    <Container maxW="container.lg" py={10} px={6}>
+      <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
+        <Heading as="h1" size="xl" mb={6} color="teal.600">
           Flask SDK Setup Instructions
         </Heading>
 
@@ -37,6 +36,7 @@ const FlaskSetup: React.FC = () => {
         </Box>
 
         <Divider />
+        <br />
 
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
@@ -46,6 +46,7 @@ const FlaskSetup: React.FC = () => {
         </Box>
 
         <Divider />
+        <br />
 
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
@@ -64,6 +65,7 @@ const FlaskSetup: React.FC = () => {
         </Box>
 
         <Divider />
+        <br />
 
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
@@ -82,6 +84,7 @@ const FlaskSetup: React.FC = () => {
         </Box>
 
         <Divider />
+        <br />
 
         <Box textAlign="left" w="full">
           <Text fontSize="lg" mb={2}>
@@ -110,7 +113,7 @@ except Exception as e:
             Take me to Dashboard
           </Button>
         </Box>
-      </VStack>
+      </Box>
     </Container>
   );
 };
