@@ -1,5 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { logout as logoutService, checkAuthStatus } from "../services";
+import { useWebSocket } from "../hooks/useWebSocket";
 
 interface AuthContextType {
   isLoggedIn: boolean | null;
@@ -33,11 +34,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const data = await checkAuthStatus();
-        if (data.status === "success") {
-          setUserUuid(data.data.user_uuid);
-          setName(`${data.data.first_name} ${data.data.last_name}`);
-          setIsRoot(data.data.is_root);
+        const { status, data } = await checkAuthStatus();
+        if (status === "success") {
+          setUserUuid(data.userUuid);
+          setName(`${data.firstName} ${data.lastName}`);
+          setIsRoot(data.isRoot);
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
@@ -75,6 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  useWebSocket(isLoggedIn)
   return (
     <AuthContext.Provider
       value={{ isLoggedIn, userUuid, name, isRoot, login, logout }}
