@@ -145,6 +145,7 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
       width="400px"
       mx="auto"
       mt={10}
+      bg="gray.100"
     >
       <Heading as="h2" size="lg" mb={4} textAlign="center">
         Create User
