@@ -44,6 +44,7 @@ const ErrorsTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); // State to handle window size
   const toast = useToast();
 
   useEffect(() => {
@@ -61,6 +62,22 @@ const ErrorsTable = ({
       loadProject();
     }
   }, [projects, projectUuid]);
+
+  useEffect(() => {
+    // Check if window width is below 768px to set mobile state
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check on component mount
+    handleResize();
+
+    // Add resize listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the resize listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // whenever project changes, currentPage is reset to 1
   useEffect(() => {
@@ -128,14 +145,14 @@ const ErrorsTable = ({
 
   return (
     <Box p={4}>
-      <Table variant="striped" colorScheme="gray">
+      <Table variant="striped" colorScheme="gray" width="100%" mx="auto">
         <Thead>
           <Tr>
             <Th>Error Title</Th>
-            {/* <Th>Type</Th> */}
             <Th>Handled</Th>
-            <Th>Time</Th>
-            <Th>Status</Th>
+            {/* Conditionally render the 'Time' and 'Status' columns */}
+            {!isMobile && <Th>Time</Th>}
+            {!isMobile && <Th>Status</Th>}
           </Tr>
         </Thead>
         <Tbody>
