@@ -2,8 +2,17 @@ import { getAllProjectsResponse, createProjectResponse } from "./projectsTypes";
 
 import apiClient from "../apiClient";
 
-export const getAllProjects = async (): Promise<getAllProjectsResponse> => {
-  const { data } = await apiClient.get("/api/projects");
+export const getAllProjects = async (
+  page: number=1,
+  limit: number=10
+): Promise<getAllProjectsResponse> => {
+  const params = {
+    page,
+    limit,
+  };
+  const { data } = await apiClient.get("/api/projects", {
+    params,
+  });
   return data;
 };
 
