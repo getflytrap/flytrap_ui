@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
 import { useAuth } from "../../hooks/useAuth";
@@ -23,6 +23,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/projects");
+    }
+  }, [isLoggedIn, navigate]);
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -36,8 +42,6 @@ const Login = () => {
         duration: 4000,
         isClosable: true,
       });
-
-      navigate("/projects");
     } catch (e) {
       console.log("error logging in: ", e);
       toast({
@@ -49,10 +53,6 @@ const Login = () => {
       });
     }
   };
-
-  if (isLoggedIn) {
-    navigate("/projects");
-  }
 
   return (
     <Box

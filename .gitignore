@@ -4,3 +4,4 @@ dist/
 *.tsbuildinfo
 .git-coauthors
 .git-coauthors.save
+.vite

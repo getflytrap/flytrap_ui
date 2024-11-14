@@ -16,8 +16,8 @@ export const login = async (
   });
 
   const accessToken = data.data.access_token;
-  // Set Authorization header for future requests
   apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  sessionStorage.setItem("access_token", accessToken);
 
   const userData = {
     userUuid: data.data.user_uuid,
@@ -36,5 +36,16 @@ export const logout = async (): Promise<void> => {
 
 export const checkAuthStatus = async (): Promise<checkStatusResponse> => {
   const { data } = await apiClient.get("/api/auth/status");
-  return data;
+  const accessToken = data.data.access_token;
+  apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  sessionStorage.setItem("access_token", accessToken);
+
+  const userData = {
+    userUuid: data.data.user_uuid,
+    firstName: data.data.first_name,
+    lastName: data.data.last_name,
+    isRoot: data.data.is_root,
+  };
+
+  return { status: data.status, data: userData};
 };

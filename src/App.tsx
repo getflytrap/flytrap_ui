@@ -14,7 +14,6 @@ import Projects from "./projects/pages/Projects";
 import ChangePassword from "./authentication/pages/ChangePassword.tsx";
 import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
 import LandingPage from "./landing/pages/LandingPage.tsx";
-
 import AdminRequired from "./authentication/components/AdminRequired.tsx";
 import "./App.css";
 
