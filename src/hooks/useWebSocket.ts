@@ -6,15 +6,19 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
   const toast = useToast();
 
   useEffect(() => {
-    if (!isLoggedIn) return; 
-
     const accessToken = sessionStorage.getItem("access_token");
     if (!accessToken) return;
 
-    const socket = io(`${import.meta.env.VITE_BASE_URL}/api/notifications/events`, {
-      query: { token: accessToken }
+    const socket = io(`${import.meta.env.VITE_BASEURL}/notifications`, {
+      query: { token: accessToken },
+      transports: ["websocket"],
     });
 
+    // Remove log statements
+    socket.on('connect', () => {
+      console.log("WebSocket connected.")
+    });
+    
     socket.on("authenticated", () => {
       console.log("WebSocket connection authenticated.");
       sessionStorage.removeItem("access_token");  
@@ -23,7 +27,7 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     socket.on("new_notification", (data) => {
       toast({
         title: "New Issue Logged",
-        description: data.message,
+        description: data.project_name,
         status: "info",
         duration: 4000,
         isClosable: true,
@@ -37,5 +41,5 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     return () => {
       socket.disconnect();
     }
-  }, [toast]);
+  }, [isLoggedIn, toast]);
 };
