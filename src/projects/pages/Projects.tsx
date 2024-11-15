@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import { Box, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import ProjectList from "../components/ProjectList";
 import PaginationControls from "../../shared/Pagination";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import ProjectModals from "../components/ProjectModals";
 import { useProjects } from "../../hooks/useProjects";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Projects = () => {
   const {
@@ -14,6 +16,8 @@ const Projects = () => {
     fetchProjectsForUser,
     selectProject,
   } = useProjects();
+
+  const { isRoot } = useContext(AuthContext);
 
   // Modal controls
   const {
@@ -49,9 +53,11 @@ const Projects = () => {
   return (
     <Box bg="gray.100" borderRadius="20px">
       <Heading my="40px">Active Projects:</Heading>
-      <Button onClick={onNewProjectOpen} size="lg" mb="30px" bg="green.400">
-        Start A New Project
-      </Button>
+      {isRoot && (
+        <Button onClick={onNewProjectOpen} size="lg" mb="30px" bg="green.400">
+          Start A New Project
+        </Button>
+      )}
 
       <ProjectList
         projects={projects}
