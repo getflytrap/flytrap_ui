@@ -52,12 +52,12 @@ const ReactSetup: React.FC = () => {
           language="typescript"
           code={`import Flytrap from "flytrap_react";
 
+// Initialize Flytrap with your project credentials
 const flytrap = new Flytrap({
-  projectId: 'your-project-id',
-  apiEndpoint: 'https://your-api-endpoint.com',
-  apiKey: 'your-api-key',
-});
-`}
+  projectId: ${project_uuid},
+  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
+});`}
         />
 
         <Text fontSize="lg" mb={4} mt={6}>

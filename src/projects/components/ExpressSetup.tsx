@@ -57,10 +57,10 @@ const ExpressSetup: React.FC = () => {
           code={`import Flytrap from 'flytrap_express';
 
 // Initialize Flytrap with your project credentials
-const flytrap = new Flytrap({  
-  projectId: 'YOUR_PROJECT_ID',  
-  apiEndpoint: 'YOUR_ENDPOINT',  
-  apiKey: 'YOUR_API_KEY',
+const flytrap = new Flytrap({
+  projectId: ${project_uuid},
+  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
 });`}
         />
 

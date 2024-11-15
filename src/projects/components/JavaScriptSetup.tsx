@@ -70,27 +70,19 @@ const JavaScriptSetup: React.FC = () => {
           <Text fontSize="xl" mt={4} fontWeight="bold">
             Usage
           </Text>
+          <br />
           <Text fontSize="lg" mb={4}>
-            Initialization:
-            <br />
             To begin using Flytrap, initialize it with your project
             configuration:
           </Text>
           <CodeDisplay
             language="javascript"
             code={`const flytrap = new Flytrap({
-  projectId: 'your-project-id',
-  apiEndpoint: 'https://your-api-endpoint.com',
-  apiKey: 'your-api-key',
+  projectId: ${project_uuid},
+  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
 });`}
           />
-          <Text fontSize="md" mt={4}>
-            <b>projectId</b>: Your unique project identifier.
-            <br />
-            <b>apiEndpoint</b>: The endpoint to which errors should be logged.
-            <br />
-            <b>apiKey</b>: Your API key for authorization.
-          </Text>
         </Box>
 
         <Divider />
