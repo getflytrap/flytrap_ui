@@ -5,17 +5,20 @@ import "./index.css";
 import App from "./App.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import customTheme from "./theme/theme.js";
+import ErrorBoundary from "./shared/ErrorBoundary.tsx";
 
 import { ChakraProvider } from "@chakra-ui/react";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ChakraProvider theme={customTheme}>
-      <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AuthProvider>
+      <ErrorBoundary fallback={<h1>Something went wrong!</h1>}>
+        <AuthProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AuthProvider>
+      </ErrorBoundary>
     </ChakraProvider>
-  </StrictMode>,
+  </StrictMode>
 );
