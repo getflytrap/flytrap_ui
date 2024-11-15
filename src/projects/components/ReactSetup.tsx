@@ -4,12 +4,11 @@ import {
   Heading,
   Text,
   Button,
-  Code,
   Divider,
   Container,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-// import CodeDisplay from "./CodeDisplay";
+import CodeDisplay from "./CodeDisplay";
 
 const ReactSetup: React.FC = () => {
   const { project_uuid } = useParams();
@@ -24,88 +23,98 @@ const ReactSetup: React.FC = () => {
   return (
     <Container maxW="container.lg" py={10} px={6}>
       <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-        <Heading as="h1" size="xl" mb={6} color="teal.600">
-          React SDK
+        <Heading as="h1" size="xl" mb={4}>
+          React SDK Instructions
         </Heading>
 
-        <Divider mb={6} borderColor="gray.300" />
-
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Install
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add the SDK using npm:
+        <Text fontSize="lg" mb={4}>
+          <b>Installation</b>
         </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            npm install sdk-package-name
-          </Code>
-        </Box>
-
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Configure SDK
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          Add this code to FILL-IN-LATER file over your project:
+        <Text mb={4}>
+          In your project directory, install the Flytrap SDK via npm:
         </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`import { initializeSDK } from "sdk-package-name";
 
-initializeSDK({
-  apiKey: "YOUR_API_KEY",
-  options: {
-    tracing: true,
-    errorTracking: true,
-  },
+        <CodeDisplay language="bash" code="npm install flytrap_react" />
+
+        <Divider />
+        <br />
+        <Text fontSize="lg" mb={4}>
+          <b>Usage</b>
+        </Text>
+        <Text fontSize="lg" mb={4} mt={6}>
+          In the file where your top-level component is rendered (usually named
+          `main.tsx` or `index.jsx`), add the following code snippet:
+        </Text>
+
+        <CodeDisplay
+          language="typescript"
+          code={`import Flytrap from "flytrap_react";
+
+const flytrap = new Flytrap({
+  projectId: 'your-project-id',
+  apiEndpoint: 'https://your-api-endpoint.com',
+  apiKey: 'your-api-key',
 });
-
-const container = document.getElementById("app");
-const root = createRoot(container);
-root.render(<App />);
 `}
-          </Code>
-        </Box>
+        />
 
-        <Heading as="h2" size="lg" mb={3} color="teal.500">
-          Verify
-        </Heading>
-        <Divider mb={6} borderColor="gray.300" />
-        <Text mb={4} fontSize="lg" color="gray.700">
-          This snippet contains an intentional error and can be used as a test
-          to make sure that everything's working as expected.
+        <Text fontSize="lg" mb={4} mt={6}>
+          In the same file (main.tsx or index.js), wrap your top-level component{" "}
+          {`<App />`} in the {`<ErrorBoundary>`} tags:
         </Text>
-        <Box mb={8}>
-          <Code
-            display="block"
-            p={4}
-            bg="black"
-            color="white"
-            fontSize="lg"
-            borderRadius="md"
-            boxShadow="lg"
-          >
-            {`return <button onClick={() => {throw new Error("This is your first error!");}}>Break the world</button>;`}
-          </Code>
-        </Box>
+
+        <CodeDisplay
+          language="tsx"
+          code={`createRoot(document.getElementById("root")!).render(
+  <Flytrap.ErrorBoundary flytrap={flytrap}>
+    <App />
+  </Flytrap.ErrorBoundary>
+);
+`}
+        />
+        <Divider />
+        <br />
+
+        <Text fontSize="lg" mb={4} mt={6}>
+          <b>Optional:</b> Insert these JSX tags into the return statement of
+          any component to test:
+        </Text>
+
+        <Text mb={4}>
+          <b>Throw a test error</b>
+        </Text>
+
+        <CodeDisplay
+          language="tsx"
+          code={`// Throw a test error
+<button
+   onClick={() => {
+     let number = 42;
+     number.toUpperCase();
+ }}
+ >
+  Throw a test error
+</button>
+`}
+        />
+
+        <Text mb={4} mt={6}>
+          <b>Throw an unhandled rejected promise</b>
+        </Text>
+
+        <CodeDisplay
+          language="tsx"
+          code={`<button
+  onClick={() => {
+    throw Promise.reject("for testing: unhandled rejected promise");
+  }}
+>
+  Throw an unhandled rejected promise
+</button>
+`}
+        />
+
+        <Divider my={6} />
 
         <Button
           colorScheme="teal"

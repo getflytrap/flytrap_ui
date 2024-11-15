@@ -48,8 +48,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
       }
     };
-
-    checkSession();
   }, []);
 
   const login = (
@@ -77,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  useWebSocket(isLoggedIn)
+  useWebSocket(isLoggedIn);
 
   return (
     <AuthContext.Provider
