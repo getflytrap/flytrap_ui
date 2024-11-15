@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const AuthRequired = () => {
   const { isLoggedIn } = useAuth();
 
   if (isLoggedIn === null) {
-    // TODO: replace with a spinner?
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (!isLoggedIn) {
