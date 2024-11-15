@@ -29,7 +29,7 @@ const PaginationControls = ({
       <Button
         rightIcon={<ChevronRightIcon />}
         onClick={onNextPage}
-        isDisabled={currentPage === totalPages}
+        isDisabled={currentPage >= totalPages}
       >
         Next Page
       </Button>
