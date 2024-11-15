@@ -23,9 +23,11 @@ const ReactSetup: React.FC = () => {
   return (
     <Container maxW="container.lg" py={10} px={6}>
       <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-        <Heading as="h1" size="xl" mb={4}>
+        <Heading as="h1" size="xl" mb={6} color="teal.600">
           React SDK Instructions
         </Heading>
+        <Divider />
+        <br />
 
         <Text fontSize="lg" mb={4}>
           <b>Installation</b>
@@ -86,8 +88,7 @@ const flytrap = new Flytrap({
 
         <CodeDisplay
           language="tsx"
-          code={`// Throw a test error
-<button
+          code={`<button
    onClick={() => {
      let number = 42;
      number.toUpperCase();
