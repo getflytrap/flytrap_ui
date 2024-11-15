@@ -7,6 +7,8 @@ import {
   Heading,
   Collapse,
   Stack,
+  HStack,
+  Icon,
   Table,
   Tbody,
   Tr,
@@ -24,9 +26,10 @@ import WarningModal from "../../shared/WarningModal";
 import { deleteError, getError, toggleError } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
 import { ErrorData, FrameWithContext } from "../../types";
-import { renameAndFilterProperties, parseStackTrace } from "../../helpers";
+import { parseStackTrace } from "../../helpers";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import CodeContextDisplay from "../components/ContextDisplay";
+import { WarningIcon, CheckCircleIcon } from "@chakra-ui/icons";
 
 const ErrorDetails = () => {
   const { projects, selectProject, selectedProject, fetchProjectsForUser } =
@@ -92,7 +95,7 @@ const ErrorDetails = () => {
     loadProject();
   }, [projects, selectedProject]);
 
-  const existingProperties = renameAndFilterProperties(errorData);
+  // const existingProperties = renameAndFilterProperties(errorData);
 
   const handleFrameClick = (index: number) => {
     setExpandedFrameIndex(index);
@@ -216,45 +219,47 @@ const ErrorDetails = () => {
         borderWidth={1}
         borderRadius="md"
         overflow="hidden"
-        margin="30px 20px"
+        textAlign="left"
+        mt={8}
       >
-        <Table variant="simple">
-          <Tbody>
-            {existingProperties.map(([key, value], index) => (
-              <Tr key={key} bg={index % 2 === 0 ? "gray.50" : "white"}>
-                <Td fontWeight="bold" paddingY={2}>
-                  {key}
-                </Td>
-                <Td p="5px 50px" whiteSpace="normal">
-                  {value}
-                </Td>
+        <Stack>
+          <Flex justify="space-between" align="center" mb={4} px={4}>
+            <HStack>
+              <Text fontSize="lg">
+                <b>{errorData.name}:</b> {errorData.message}
+              </Text>
+              <Icon
+                as={errorData.handled === false ? WarningIcon : CheckCircleIcon}
+                color={errorData.handled === false ? "red.500" : "green.500"}
+              />
+              <Text fontSize="sm" fontWeight="bold" color={errorData.handled === false ? "red.500" : "green.500"}>
+                {errorData.handled === false ? "Unhandled" : "Handled"}
+              </Text>
+            </HStack>
+            <Text fontSize="sm" color="gray.500">
+              {new Date(errorData.created_at).toLocaleString()}
+            </Text>
+          </Flex>
+          <Table>
+            <Tbody>
+              <Tr>
+                <Td fontSize="sm" fontWeight="bold" maxW="500px">File</Td>
+                <Td fontSize="sm" fontWeight="bold">Line</Td>
+                <Td fontSize="sm" fontWeight="bold">Column</Td>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      {/* <Stack>
-          <Text size="md" mb={4}>
-            {errorData.name}: {errorData.message}
-          </Text>
-          <Text size="md" mb={4}>
-            
-          </Text>
-  
-      </Stack> */}
+              <Tr>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace" maxW="500px" whiteSpace="normal">{errorData.file}</Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.line_number}</Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.col_number}</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Stack>
       </Box>
       <Box mt={4} textAlign="left">
         <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
           Stack Trace
         </Text>
-        {/* <Box
-          padding={10}
-          borderWidth={1}
-          borderRadius="md"
-          backgroundColor="gray.100"
-          whiteSpace="pre-wrap"
-        >
-          {errorData.stack_trace ? errorData.stack_trace : "No Data"}
-        </Box> */}
         {stackFrames.map((item, index) => (
           <Box key={index} mb={2}>
             <Box

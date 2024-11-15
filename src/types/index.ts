@@ -26,6 +26,7 @@ export interface ErrorData {
   name: string;
   message: string;
   created_at: string;
+  file: string;
   line_number: number;
   col_number: number;
   project_uuid: string;

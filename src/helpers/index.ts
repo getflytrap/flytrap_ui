@@ -51,7 +51,7 @@ export const renameAndFilterProperties = (
   for (const [key, value] of Object.entries(errorData)) {
     if (!value) continue;
     switch (key) {
-      case "error_id":
+      case "error_uuid":
         result.push(["Id", value]);
         break;
       case "name":
