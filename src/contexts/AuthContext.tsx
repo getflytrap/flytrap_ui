@@ -48,12 +48,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
       }
     };
-    if (
-      window.location.pathname !== "/" &&
-      window.location.pathname !== "/login"
-    ) {
-      checkSession();
-    }
+
+    checkSession();
   }, []);
 
   const login = (
