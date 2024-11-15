@@ -57,9 +57,9 @@ const FlaskSetup: React.FC = () => {
           <CodeDisplay
             language="python"
             code={`error_monitor = Flytrap({
-  api_endpoint: 'YOUR_API_ENDPOINT',
-  api_key: 'YOUR_API_KEY',
-  project_id: 'YOUR_PROJECT_ID'
+  api_endpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  api_key: ${"WILL_BE_SENT_FROM_BACKEND"},
+  project_id: ${project_uuid}'
 })`}
           />
         </Box>
