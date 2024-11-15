@@ -5,6 +5,8 @@ import {
   Text,
   Button,
   Heading,
+  Collapse,
+  Stack,
   Table,
   Tbody,
   Tr,
@@ -21,9 +23,10 @@ import {
 import WarningModal from "../../shared/WarningModal";
 import { deleteError, getError, toggleError } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
-import { ErrorData } from "../../types";
-import { renameAndFilterProperties } from "../../helpers";
+import { ErrorData, FrameWithContext } from "../../types";
+import { renameAndFilterProperties, parseStackTrace } from "../../helpers";
 import LoadingSpinner from "../../shared/LoadingSpinner";
+import CodeContextDisplay from "../components/ContextDisplay";
 
 const ErrorDetails = () => {
   const { projects, selectProject, selectedProject, fetchProjectsForUser } =
@@ -32,6 +35,8 @@ const ErrorDetails = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [resolved, setResolved] = useState<boolean>(false);
+  const [stackFrames, setStackFrames] = useState<FrameWithContext[]>([]);
+  const [expandedFrameIndex, setExpandedFrameIndex] = useState(0);
   const location = useLocation();
   const { handled, time } = location.state || {};
 
@@ -47,6 +52,22 @@ const ErrorDetails = () => {
         const { data } = await getError(projectUuid, errorUuid);
         setErrorData(data);
         setResolved(data.resolved);
+
+
+        if (data.stack_trace) {
+          const frames = parseStackTrace(data.stack_trace)
+          const contexts = data.contexts || [];
+
+          const framesWithContext = frames.map(frame => {
+            const codeContext = contexts.find(context => frame.includes(context.file)) || null;
+            return {
+              frame,
+              codeContext
+            }
+          });
+
+          setStackFrames(framesWithContext)
+        }
       } catch (e) {
         setLoadingError(e instanceof Error ? e.message : "Unknown error");
       } finally {
@@ -72,6 +93,10 @@ const ErrorDetails = () => {
   }, [projects, selectedProject]);
 
   const existingProperties = renameAndFilterProperties(errorData);
+
+  const handleFrameClick = (index: number) => {
+    setExpandedFrameIndex(index);
+  }
 
   const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
@@ -207,12 +232,21 @@ const ErrorDetails = () => {
             ))}
           </Tbody>
         </Table>
+      {/* <Stack>
+          <Text size="md" mb={4}>
+            {errorData.name}: {errorData.message}
+          </Text>
+          <Text size="md" mb={4}>
+            
+          </Text>
+  
+      </Stack> */}
       </Box>
-      <Box mt={4}>
+      <Box mt={4} textAlign="left">
         <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
           Stack Trace
         </Text>
-        <Box
+        {/* <Box
           padding={10}
           borderWidth={1}
           borderRadius="md"
@@ -220,7 +254,29 @@ const ErrorDetails = () => {
           whiteSpace="pre-wrap"
         >
           {errorData.stack_trace ? errorData.stack_trace : "No Data"}
-        </Box>
+        </Box> */}
+        {stackFrames.map((item, index) => (
+          <Box key={index} mb={2}>
+            <Box
+              padding={2}
+              bg={expandedFrameIndex === index ? 'gray.200' : 'gray.100'}
+              cursor="pointer"
+              onClick={() => handleFrameClick(index)}
+            >
+              <Text>{item.frame}</Text>
+            </Box>
+            <Collapse in={expandedFrameIndex === index} animateOpacity>
+              <Box
+                padding={4}
+                borderWidth={1}
+                borderRadius="md"
+                backgroundColor="gray.50"
+              >
+                <CodeContextDisplay codeContext={item.codeContext} />
+              </Box>
+            </Collapse>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

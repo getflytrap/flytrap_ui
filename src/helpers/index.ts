@@ -79,3 +79,10 @@ export const renameAndFilterProperties = (
   }
   return result;
 };
+
+export const parseStackTrace = (stackTrace: string) => {
+  const lines = stackTrace.split('\n');
+  // Skip the first line if it contains the error message
+  const frames = lines.slice(1).map((line) => line.trim()).filter(Boolean);
+  return frames;
+}
