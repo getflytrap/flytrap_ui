@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { VStack, Text } from "@chakra-ui/react";
 import ProjectCard from "./ProjectCard";
 import { Project } from "../../types";
 
@@ -14,14 +14,26 @@ const ProjectList = ({
   onDeleteOpen,
 }: ProjectListProps) => (
   <VStack spacing={4} width="100%">
-    {projects.map((project) => (
-      <ProjectCard
-        key={project.uuid}
-        project={project}
-        onEditOpen={onEditOpen}
-        onDeleteOpen={onDeleteOpen}
-      />
-    ))}
+    {projects?.length ? (
+      projects.map((project) => (
+        <ProjectCard
+          key={project.uuid}
+          project={project}
+          onEditOpen={onEditOpen}
+          onDeleteOpen={onDeleteOpen}
+        />
+      ))
+    ) : (
+      <Text
+        fontSize="lg"
+        my="30px"
+        borderRadius="20px"
+        border="solid 1px gray"
+        p="20px"
+      >
+        No Current Project Assignments
+      </Text>
+    )}
   </VStack>
 );
 
