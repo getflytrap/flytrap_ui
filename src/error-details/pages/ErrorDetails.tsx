@@ -5,6 +5,10 @@ import {
   Text,
   Button,
   Heading,
+  Collapse,
+  Stack,
+  HStack,
+  Icon,
   Table,
   Tbody,
   Tr,
@@ -21,9 +25,11 @@ import {
 import WarningModal from "../../shared/WarningModal";
 import { deleteError, getError, toggleError } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
-import { ErrorData } from "../../types";
-import { renameAndFilterProperties } from "../../helpers";
+import { ErrorData, FrameWithContext } from "../../types";
+import { parseStackTrace } from "../../helpers";
 import LoadingSpinner from "../../shared/LoadingSpinner";
+import CodeContextDisplay from "../components/ContextDisplay";
+import { WarningIcon, CheckCircleIcon } from "@chakra-ui/icons";
 
 const ErrorDetails = () => {
   const { projects, selectProject, selectedProject, fetchProjectsForUser } =
@@ -32,6 +38,8 @@ const ErrorDetails = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [resolved, setResolved] = useState<boolean>(false);
+  const [stackFrames, setStackFrames] = useState<FrameWithContext[]>([]);
+  const [expandedFrameIndex, setExpandedFrameIndex] = useState(0);
   const location = useLocation();
   const { handled, time } = location.state || {};
 
@@ -47,6 +55,22 @@ const ErrorDetails = () => {
         const { data } = await getError(projectUuid, errorUuid);
         setErrorData(data);
         setResolved(data.resolved);
+
+
+        if (data.stack_trace) {
+          const frames = parseStackTrace(data.stack_trace)
+          const contexts = data.contexts || [];
+
+          const framesWithContext = frames.map(frame => {
+            const codeContext = contexts.find(context => frame.includes(context.file)) || null;
+            return {
+              frame,
+              codeContext
+            }
+          });
+
+          setStackFrames(framesWithContext)
+        }
       } catch (e) {
         setLoadingError(e instanceof Error ? e.message : "Unknown error");
       } finally {
@@ -71,7 +95,11 @@ const ErrorDetails = () => {
     loadProject();
   }, [projects, selectedProject]);
 
-  const existingProperties = renameAndFilterProperties(errorData);
+  // const existingProperties = renameAndFilterProperties(errorData);
+
+  const handleFrameClick = (index: number) => {
+    setExpandedFrameIndex(index);
+  }
 
   const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
@@ -191,36 +219,69 @@ const ErrorDetails = () => {
         borderWidth={1}
         borderRadius="md"
         overflow="hidden"
-        margin="30px 20px"
+        textAlign="left"
+        mt={8}
       >
-        <Table variant="simple">
-          <Tbody>
-            {existingProperties.map(([key, value], index) => (
-              <Tr key={key} bg={index % 2 === 0 ? "gray.50" : "white"}>
-                <Td fontWeight="bold" paddingY={2}>
-                  {key}
-                </Td>
-                <Td p="5px 50px" whiteSpace="normal">
-                  {value}
-                </Td>
+        <Stack>
+          <Flex justify="space-between" align="center" mb={4} px={4}>
+            <HStack>
+              <Text fontSize="lg">
+                <b>{errorData.name}:</b> {errorData.message}
+              </Text>
+              <Icon
+                as={errorData.handled === false ? WarningIcon : CheckCircleIcon}
+                color={errorData.handled === false ? "red.500" : "green.500"}
+              />
+              <Text fontSize="sm" fontWeight="bold" color={errorData.handled === false ? "red.500" : "green.500"}>
+                {errorData.handled === false ? "Unhandled" : "Handled"}
+              </Text>
+            </HStack>
+            <Text fontSize="sm" color="gray.500">
+              {new Date(errorData.created_at).toLocaleString()}
+            </Text>
+          </Flex>
+          <Table>
+            <Tbody>
+              <Tr>
+                <Td fontSize="sm" fontWeight="bold" maxW="500px">File</Td>
+                <Td fontSize="sm" fontWeight="bold">Line</Td>
+                <Td fontSize="sm" fontWeight="bold">Column</Td>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+              <Tr>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace" maxW="500px" whiteSpace="normal">{errorData.file}</Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.line_number}</Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.col_number}</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Stack>
       </Box>
-      <Box mt={4}>
+      <Box mt={4} textAlign="left">
         <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
           Stack Trace
         </Text>
-        <Box
-          padding={10}
-          borderWidth={1}
-          borderRadius="md"
-          backgroundColor="gray.100"
-          whiteSpace="pre-wrap"
-        >
-          {errorData.stack_trace ? errorData.stack_trace : "No Data"}
-        </Box>
+        {stackFrames.map((item, index) => (
+          <Box key={index} mb={2}>
+            <Box
+              padding={2}
+              bg={expandedFrameIndex === index ? 'gray.200' : 'gray.100'}
+              cursor="pointer"
+              onClick={() => handleFrameClick(index)}
+            >
+              <Text>{item.frame}</Text>
+            </Box>
+            <Collapse in={expandedFrameIndex === index} animateOpacity>
+              <Box
+                padding={4}
+                borderWidth={1}
+                borderRadius="md"
+                backgroundColor="gray.50"
+              >
+                <CodeContextDisplay codeContext={item.codeContext} />
+              </Box>
+            </Collapse>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

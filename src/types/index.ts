@@ -14,17 +14,31 @@ export interface User {
   created_at?: string; // ISO Date string
 }
 
+export interface CodeContext {
+  file: string;
+  line: number;
+  column: number;
+  context: string;
+}
+
 export interface ErrorData {
   uuid: string;
   name: string;
   message: string;
   created_at: string;
+  file: string;
   line_number: number;
   col_number: number;
   project_uuid: string;
   stack_trace?: string;
   handled: boolean;
   resolved: boolean;
+  contexts: CodeContext[];
+}
+
+export interface FrameWithContext {
+  frame: string;
+  codeContext: CodeContext | null;
 }
 
 export interface Rejection {
