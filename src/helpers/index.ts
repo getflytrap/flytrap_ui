@@ -63,6 +63,9 @@ export const renameAndFilterProperties = (
       case "created_at":
         result.push(["Created At", new Date(value).toLocaleString()]);
         break;
+      case "file":
+        result.push(["File", value]);
+        break;
       case "line_number":
         result.push(["Line Number", value]);
         break;
