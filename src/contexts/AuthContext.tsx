@@ -48,6 +48,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
       }
     };
+
+    checkSession();
   }, []);
 
   const login = (
