@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Heading,
@@ -17,6 +18,8 @@ import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { Project } from "../../types";
 import { useProjects } from "../../hooks/useProjects";
 import { FaReact, FaNodeJs, FaPython, FaJsSquare } from "react-icons/fa";
+import { getDailyCounts } from "../../services";
+import Histogram from "./Histogram";
 
 type ProjectCardProps = {
   project: Project;
@@ -29,8 +32,22 @@ const ProjectCard = ({
   onEditOpen,
   onDeleteOpen,
 }: ProjectCardProps) => {
+  const [dailyCounts, setDailyCounts] = useState<number[]>([]);
   const navigate = useNavigate();
   const { selectProject } = useProjects();
+
+  useEffect(() => {
+    const getSummary = async () => {
+      try {
+        const { data } = await getDailyCounts(project.uuid);
+        setDailyCounts(data);
+      } catch (e) {
+        console.error("Failed to load summary.")
+      }
+    }
+
+    getSummary();
+  }, [])
 
   const handleProjectClick = () => {
     selectProject(project.uuid);
@@ -100,8 +117,9 @@ const ProjectCard = ({
 
       <CardBody color="gray.800">
         <Text fontSize="sm" textAlign="center">
-          Issues: {project.issue_count}
+          Total Issues: {project.issue_count}
         </Text>
+        <Histogram dailyCounts={dailyCounts} />
       </CardBody>
 
       <Divider borderColor="gray.200" />

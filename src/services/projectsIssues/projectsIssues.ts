@@ -63,12 +63,12 @@ export const toggleError = async (
 };
 
 export const toggleRejection = async (
-  projectUuidd: string | undefined,
-  rejectionUuidd: string | undefined,
+  projectUuid: string | undefined,
+  rejectionUuid: string | undefined,
   newResolvedState: boolean,
 ): Promise<void> => {
   await apiClient.patch(
-    `/api/projects/${projectUuidd}/issues/rejections/${rejectionUuidd}`,
+    `/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`,
     {
       resolved: newResolvedState,
     },
@@ -76,19 +76,26 @@ export const toggleRejection = async (
 };
 
 export const deleteError = async (
-  projectUuidd: string | undefined,
-  errorUuidd: string | undefined,
+  projectUuid: string | undefined,
+  errorUuid: string | undefined,
 ): Promise<void> => {
   await apiClient.delete(
-    `/api/projects/${projectUuidd}/issues/errors/${errorUuidd}`,
+    `/api/projects/${projectUuid}/issues/errors/${errorUuid}`,
   );
 };
 
 export const deleteRejection = async (
-  projectUuidd: string | undefined,
-  rejectionUuidd: string | undefined,
+  projectUuid: string | undefined,
+  rejectionUuid: string | undefined,
 ): Promise<void> => {
   await apiClient.delete(
-    `/api/projects/${projectUuidd}/issues/rejections/${rejectionUuidd}`,
+    `/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`,
   );
 };
+
+export const getDailyCounts = async (
+  projectUuid: string | undefined
+): Promise<{ status: string, data: number[]}> => {
+  const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues/summary`);
+  return data;
+}

@@ -14,13 +14,7 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
       transports: ["websocket"],
     });
 
-    // Remove log statements
-    socket.on("connect", () => {
-      console.log("WebSocket connected.");
-    });
-
     socket.on("authenticated", () => {
-      console.log("WebSocket connection authenticated.");
       sessionStorage.removeItem("access_token");
     });
 
