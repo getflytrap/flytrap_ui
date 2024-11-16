@@ -32,7 +32,7 @@ const CodeContextDisplay = ({ codeContext }: CodeContextDisplayProps) => {
       lineProps={(lineNumber: number) => {
         let style: React.CSSProperties = { display: "block" };
         if (lineNumber === line) {
-          style.backgroundColor = "rgba(255, 0, 0, 0.2)"; // Highlight the error line
+          style.backgroundColor = "rgba(255, 0, 0, 0.3)"; // Highlight the error line
         }
         return { style };
       }}
