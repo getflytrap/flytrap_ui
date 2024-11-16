@@ -1,4 +1,4 @@
-import { Box, Select, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Select, Flex, Text, Divider } from "@chakra-ui/react";
 import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
 
 interface FilterBarProps {
@@ -28,23 +28,26 @@ const FilterBar = ({
     setSelectedResolved(option);
   };
 
-  const fixedButtonWidth = "90px";
-  const fixedButtonHeight = "40px";
+  // const fixedButtonWidth = "90px";
+  // const fixedButtonHeight = "50px";
 
   return (
-    <Box p={4} bg="gray.100">
+    <Box p={4} mb={8} bg="gray.100" borderRadius="8px">
       <Flex
         alignItems="center"
-        justifyContent="space-around"
-        flexDirection={["column", "column", "row"]}
+        justifyContent="space-between"
+        flexWrap="wrap"
+        gap={2}
       >
-        <Box className="time-select" mb="15px">
+        {/* Time Filter Dropdown */}
+        <Box className="time-select">
           <Select
             height="50px"
-            placeholder="Select time period"
+            placeholder="Select Time Period"
             onChange={handleTimeChange}
             bg="gray.200"
             width="200px"
+            fontSize="sm"
           >
             <option value="Today">Today</option>
             <option value="Last 7 days">Last 7 days</option>
@@ -55,193 +58,109 @@ const FilterBar = ({
           </Select>
         </Box>
 
-        <Stack direction="column" spacing={4}>
-          {/* Handled Filter */}
-          <Box borderRadius="50px" bg="gray.200" p="4px">
-            <Stack direction="row" spacing={4}>
+        <Flex gap={2}>
+          <Flex align="center" gap={2}>
+            {["Handled", "Unhandled", "All"].map((status) => (
               <Box
-                as="button"
-                onClick={() => handleHandledChange("Handled")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={selectedHandled === "Handled" ? "#5ECF5E" : "transparent"}
-                color={selectedHandled === "Handled" ? "white" : "black"}
-                border={
-                  selectedHandled === "Handled"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
+                borderRadius="2px"
+                borderBottom={
+                  selectedHandled === status
+                    ? "4px solid #186A4A"
+                    : "4px solid transparent"
                 }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
               >
-                <Text fontSize="sm">Handled</Text>
+                <Box
+                  as="button"
+                  key={status}
+                  onClick={() => handleHandledChange(status as HandledFilter)}
+                  borderRadius="8px"
+                  p={2}
+                  width="90px"
+                  height="50px"
+                  bg="transparent"
+                  color={selectedHandled === status ? "brand.600" : "gray.900"}
+                  transition="all 0.2s ease"
+                  _hover={
+                    selectedHandled === status
+                      ? {
+                          bg: "gray.200",
+                          color: "brand.600",
+                          borderBottomLeftRadius: "2px",
+                          borderBottomRightRadius: "2px",
+                        }
+                      : {
+                          bg: "gray.200",
+                          color: "brand.600",
+                        }
+                  }
+                  _focus={{
+                    outline: "none",
+                  }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Text fontSize="sm">{status}</Text>
+                </Box>
               </Box>
+            ))}
+          </Flex>
 
-              <Box
-                as="button"
-                onClick={() => handleHandledChange("Unhandled")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={selectedHandled === "Unhandled" ? "#5ECF5E" : "transparent"}
-                color={selectedHandled === "Unhandled" ? "white" : "black"}
-                border={
-                  selectedHandled === "Unhandled"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
-                }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text fontSize="sm">Unhandled</Text>
-              </Box>
-
-              <Box
-                as="button"
-                onClick={() => handleHandledChange("All")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={selectedHandled === "All" ? "#5ECF5E" : "transparent"}
-                color={selectedHandled === "All" ? "white" : "black"}
-                border={
-                  selectedHandled === "All"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
-                }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text fontSize="sm">All</Text>
-              </Box>
-            </Stack>
-          </Box>
+          <Divider
+            orientation="vertical"
+            height="40px"
+            borderColor="gray.400"
+            mx={2}
+          />
 
           {/* Resolved Filter */}
-          <Box borderRadius="50px" bg="gray.200" p="4px">
-            <Stack direction="row" spacing={4}>
+          <Flex align="center" gap={2}>
+            {["Resolved", "Unresolved", "All"].map((status) => (
               <Box
-                as="button"
-                onClick={() => handleResolvedChange("Resolved")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={selectedResolved === "Resolved" ? "#5ECF5E" : "transparent"}
-                color={selectedResolved === "Resolved" ? "white" : "black"}
-                border={
-                  selectedResolved === "Resolved"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
+                borderRadius="2px"
+                borderBottom={
+                  selectedHandled === status
+                    ? "4px solid #186A4A"
+                    : "4px solid transparent"
                 }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
               >
-                <Text fontSize="sm">Resolved</Text>
+                <Box
+                  as="button"
+                  key={status}
+                  onClick={() => handleResolvedChange(status as ResolvedFilter)}
+                  borderRadius="8px"
+                  p={2}
+                  width="90px"
+                  height="50px"
+                  bg="transparent"
+                  color={selectedResolved === status ? "brand.600" : "gray.900"}
+                  transition="all 0.2s ease"
+                  _hover={
+                    selectedHandled === status
+                      ? {
+                          bg: "gray.200",
+                          color: "brand.600",
+                          borderBottomLeftRadius: "2px",
+                          borderBottomRightRadius: "2px",
+                        }
+                      : {
+                          bg: "gray.200",
+                          color: "brand.600",
+                        }
+                  }
+                  _focus={{
+                    outline: "none",
+                  }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Text fontSize="sm">{status}</Text>
+                </Box>
               </Box>
-
-              <Box
-                as="button"
-                onClick={() => handleResolvedChange("Unresolved")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={
-                  selectedResolved === "Unresolved" ? "#5ECF5E" : "transparent"
-                }
-                color={selectedResolved === "Unresolved" ? "white" : "black"}
-                border={
-                  selectedResolved === "Unresolved"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
-                }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text fontSize="sm">Unresolved</Text>
-              </Box>
-
-              <Box
-                as="button"
-                onClick={() => handleResolvedChange("All")}
-                borderRadius="20px"
-                p={2}
-                width={fixedButtonWidth}
-                height={fixedButtonHeight}
-                bg={selectedResolved === "All" ? "#5ECF5E" : "transparent"}
-                color={selectedResolved === "All" ? "white" : "black"}
-                border={
-                  selectedResolved === "All"
-                    ? "2px solid green.400"
-                    : "2px solid transparent"
-                }
-                transition="background 0.2s, color 0.2s, border 0.2s"
-                _hover={{
-                  bg: "green.200",
-                  color: "white",
-                }}
-                _focus={{
-                  outline: "none",
-                }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text fontSize="sm">All</Text>
-              </Box>
-            </Stack>
-          </Box>
-        </Stack>
+            ))}
+          </Flex>
+        </Flex>
       </Flex>
     </Box>
   );

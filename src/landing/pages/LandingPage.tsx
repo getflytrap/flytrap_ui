@@ -9,7 +9,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import flytrap_logo from "../../assets/flytrap_logo.png";
+import { BsFolder, BsUnlock } from "react-icons/bs";
+import transparent_logo from "../../assets/transparent_logo.png";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const LandingPage = ({ bgColor = "brand.500" }) => {
@@ -34,14 +35,20 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
   ];
 
   return (
-    <Box bg={bgColor} minH="100vh" minW="100vw" color="white" py={12}>
+    <Box bg={bgColor} minH="100vh" minW="100vw" color="white">
       <Container maxWidth="1280px" centerContent>
-        <Flex justify="center" mb={8}>
-          <Image src={flytrap_logo} alt="FlyTrap Logo" maxW="400px" />
+        <Flex justify="center" my={8}>
+          <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" />
         </Flex>
-        <Text fontSize="lg" textAlign="center" maxW="lg" mb={8}>
+        <Text
+          fontSize="lg"
+          variant="light"
+          textAlign="center"
+          maxW="lg"
+          mt={12}
+        >
           Flytrap is the ultimate error monitoring solution for developers,
-          offering real-time detection and detailed insights into your code’s
+          offering real-time detection and detailed insights into your code's
           issues—so you can fix bugs faster and improve your user experience.
           Flytrap is lightweight, easy to set up, and focused solely on what
           matters most: identifying and resolving errors before they disrupt
@@ -51,13 +58,15 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           {isLoggedIn ? (
             <Link to="/projects">
               <Button
+                leftIcon={<BsFolder />}
                 size="2xl"
                 bg="brand.400"
                 px={8}
                 py={6}
                 mt="50px"
                 mb="70px"
-                borderRadius="full"
+                // borderRadius="full"
+                fontWeight="light"
               >
                 Go to Projects
               </Button>
@@ -65,6 +74,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           ) : (
             <Link to="/login">
               <Button
+                leftIcon={<BsUnlock />}
                 size="2xl"
                 bg="brand.400"
                 px={8}
@@ -72,6 +82,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                 mt="50px"
                 mb="70px"
                 borderRadius="full"
+                fontWeight="light"
               >
                 Login
               </Button>
@@ -79,9 +90,9 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           )}
         </Flex>
 
-        <VStack spacing={6} mb={12}>
-          <Text fontSize="lg" fontWeight="bold">
-            Developed By:
+        <VStack spacing={6} my={8}>
+          <Text fontSize="lg" variant="light">
+            Developed By
           </Text>
           <Flex
             justify="space-between"
@@ -108,7 +119,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                   boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
-                <Text noOfLines={1} isTruncated>
+                <Text variant="light" noOfLines={1} isTruncated>
                   {developer.name}
                 </Text>
               </Box>

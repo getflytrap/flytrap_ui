@@ -57,13 +57,13 @@ const ProjectCard = ({
   const getPlatformLogo = (platform: string) => {
     switch (platform) {
       case "React":
-        return <FaReact size={50} />;
+        return <FaReact size={50} color="#61DAFB" />;
       case "Express.js":
-        return <FaNodeJs size={50} />;
+        return <FaNodeJs size={50} color="#339933" />;
       case "Flask":
-        return <FaPython size={50} />;
+        return <FaPython size={50} color="#3776AB" />;
       case "JavaScript":
-        return <FaJsSquare size={50} />;
+        return <FaJsSquare size={50} color="#F7DF1E" />;
       default:
         return null;
     }
@@ -75,10 +75,10 @@ const ProjectCard = ({
     <Card
       key={project.uuid}
       borderTop="8px"
-      borderColor="green.400"
+      borderColor="brand.600"
       bg="white"
       cursor="pointer"
-      width={["90%", "75%", "50%"]} // Adjust card width for different screen sizes
+      // width={["90%", "75%", "50%"]} // Adjust card width for different screen sizes
       onClick={handleProjectClick}
     >
       <CardHeader>
@@ -91,7 +91,7 @@ const ProjectCard = ({
           )}
 
           <Box width="100%" textAlign="center">
-            <Heading as="h2" size="lg" color="gray.900">
+            <Heading as="h2" fontSize="1.5rem" color="gray.900">
               {project.name}
             </Heading>
           </Box>
@@ -99,7 +99,9 @@ const ProjectCard = ({
       </CardHeader>
 
       <CardBody color="gray.800">
-        <Text fontSize="lg">{project.issue_count} Issues</Text>
+        <Text fontSize="sm" textAlign="center">
+          Issues: {project.issue_count}
+        </Text>
       </CardBody>
 
       <Divider borderColor="gray.200" />

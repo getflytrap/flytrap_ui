@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, Flex } from "@chakra-ui/react";
 import { User } from "../../types/index";
 import { getUsers } from "../../services/index";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 import CreateUser from "../components/CreateUser";
 import DeleteUser from "../components/DeleteUser";
@@ -26,31 +26,39 @@ const ManageUsers = () => {
   }, []);
 
   return (
-    <Box p={5} borderRadius="20px" bg="gray.200">
-      <Box textAlign="left" mb={6}>
+    <Box p={6} bg="gray.100">
+      <Flex mb={6} alignItems="center" justifyContent="space-between">
         <Link to="/root-console">
-          <Button bg="green.300" size="lg" leftIcon={<ArrowBackIcon />}>
+          <Button
+            size="md"
+            leftIcon={<IoArrowBackOutline />}
+            fontWeight="light"
+            bg="gray.200"
+            _hover={{ bg: "gray.100" }}
+          >
             Return
           </Button>
         </Link>
-      </Box>
-      <Heading as="h1" size="2xl" mb={6} textAlign="center">
-        Manage Users
-      </Heading>
+        <Flex flex="1" justifyContent="center">
+          <Heading as="h2" fontSize="2rem" my="30px">
+            Manage Users
+          </Heading>
+        </Flex>
+      </Flex>
 
-      <Stack spacing={4}>
-        <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
-          <Box flex="1" p={5} textAlign="center">
-            <CreateUser setUsers={setUsers} />
-          </Box>
-          <Box flex="1" p={5} textAlign="center">
-            <DeleteUser users={users} setUsers={setUsers} />
-          </Box>
-        </Stack>
-        <Box flex="1" p={5} textAlign="center">
-          <AssignUsers users={users} />
-        </Box>
-      </Stack>
+      <Flex
+        direction="column"
+        bg="white"
+        borderWidth="1px"
+        borderColor="lightgray"
+        borderRadius="md"
+      >
+        <Flex>
+          <CreateUser setUsers={setUsers} />
+          <DeleteUser users={users} setUsers={setUsers} />
+        </Flex>
+        <AssignUsers users={users} />
+      </Flex>
     </Box>
   );
 };

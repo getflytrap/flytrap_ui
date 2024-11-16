@@ -15,24 +15,20 @@ const PaginationControls = ({
   onNextPage,
 }: PaginationControlsProps) => {
   return (
-    <HStack justify="space-between" mt={4}>
+    <HStack justify="center" my={8}>
       <Button
         leftIcon={<ChevronLeftIcon />}
         onClick={onPrevPage}
         isDisabled={currentPage === 1}
-      >
-        Previous Page
-      </Button>
-      <Text>
-        Page {currentPage} of {totalPages}
+      ></Button>
+      <Text variant="light">
+        {currentPage} / {totalPages}
       </Text>
       <Button
         rightIcon={<ChevronRightIcon />}
         onClick={onNextPage}
         isDisabled={currentPage >= totalPages}
-      >
-        Next Page
-      </Button>
+      ></Button>
     </HStack>
   );
 };

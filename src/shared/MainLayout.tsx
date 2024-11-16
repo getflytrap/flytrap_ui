@@ -13,7 +13,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import flytrap_logo from "../assets/flytrap_logo.png";
+// import flytrap_logo from "../assets/flytrap_logo.png";
+import transparent_logo from "../assets/transparent_logo.png";
+import { BsFolder, BsPerson } from "react-icons/bs";
 import { AuthContext } from "../contexts/AuthContext";
 
 const MainLayout = () => {
@@ -36,8 +38,8 @@ const MainLayout = () => {
       height="100vh"
       display="flex"
       flexDirection="column"
-      maxWidth={1280}
-      padding="0 2rem"
+      // maxWidth={1280}
+      // padding="0 2rem"
       backgroundColor="#1D7D55"
     >
       <Flex
@@ -51,21 +53,23 @@ const MainLayout = () => {
       >
         <Heading size="2xl" textAlign="center">
           <Image
-            src={flytrap_logo}
+            src={transparent_logo}
             alt="Flytrap Logo"
             height="auto"
             maxWidth="100%"
-            maxHeight="150px"
+            maxHeight="120px"
           />
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/projects">
             <Button
               colorScheme={getButtonColor("/")}
+              leftIcon={<BsFolder />}
               mx="10px"
               size={["sm", "md"]}
               px={["4", "6"]}
               py={["2", "4"]}
+              fontWeight="light"
             >
               Projects
             </Button>
@@ -74,11 +78,13 @@ const MainLayout = () => {
             <MenuButton
               as={Button}
               colorScheme="gray"
+              leftIcon={<BsPerson />}
               rightIcon={<ChevronDownIcon />}
               mx="10px"
               size={["sm", "md"]}
               px={["4", "6"]}
               py={["2", "4"]}
+              fontWeight="light"
             >
               Account
             </MenuButton>
@@ -129,7 +135,6 @@ const MainLayout = () => {
       </Flex>
 
       <Box
-        padding="1rem"
         width="100%"
         flex="1"
         overflowY="auto"

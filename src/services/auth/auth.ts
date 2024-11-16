@@ -47,5 +47,5 @@ export const checkAuthStatus = async (): Promise<checkStatusResponse> => {
     isRoot: data.data.is_root,
   };
 
-  return { status: data.status, data: userData};
+  return { status: data.status, data: userData };
 };

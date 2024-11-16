@@ -15,7 +15,7 @@ const RootConsole = () => {
     "column";
 
   return (
-    <Box p={5} bg="white" borderRadius="20px" maxW="1200px" mx="auto">
+    <Box p={5} bg="gray.100" height="100%">
       <Heading as="h1" size="2xl" textAlign="center" mb={8}>
         Admin Console
       </Heading>
@@ -27,7 +27,15 @@ const RootConsole = () => {
           </Heading>
           <Text mb={4}>Monitor and manage errors here.</Text>
           <Link to="/projects">
-            <Button bg="green.300">Go to Dashboard</Button>
+            <Button
+              bg="brand.500"
+              color="white"
+              _hover={{
+                bg: "brand.700",
+              }}
+            >
+              Go to Dashboard
+            </Button>
           </Link>
         </Box>
 
@@ -49,7 +57,15 @@ const RootConsole = () => {
           <Text mb={4}>Create or remove users here.</Text>
 
           <Link to="/manage-users">
-            <Button bg="green.300">Go To User Management Console</Button>
+            <Button
+              bg="brand.500"
+              color="white"
+              _hover={{
+                bg: "brand.700",
+              }}
+            >
+              Go To User Management Console
+            </Button>
           </Link>
         </Box>
       </Stack>

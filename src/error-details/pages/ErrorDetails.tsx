@@ -13,15 +13,10 @@ import {
   Tbody,
   Tr,
   Td,
+  Th,
   Flex,
   useToast,
 } from "@chakra-ui/react";
-import {
-  ArrowBackIcon,
-  DeleteIcon,
-  CheckIcon,
-  CloseIcon,
-} from "@chakra-ui/icons";
 import WarningModal from "../../shared/WarningModal";
 import { deleteError, getError, toggleError } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
@@ -29,7 +24,14 @@ import { ErrorData, FrameWithContext } from "../../types";
 import { parseStackTrace } from "../../helpers";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import CodeContextDisplay from "../components/ContextDisplay";
-import { WarningIcon, CheckCircleIcon } from "@chakra-ui/icons";
+import {
+  IoTrashOutline,
+  IoCloseOutline,
+  IoCheckmarkOutline,
+  IoArrowBackOutline,
+  IoSkullOutline,
+  IoCheckmarkCircleOutline,
+} from "react-icons/io5";
 
 const ErrorDetails = () => {
   const { projects, selectProject, selectedProject, fetchProjectsForUser } =
@@ -56,20 +58,20 @@ const ErrorDetails = () => {
         setErrorData(data);
         setResolved(data.resolved);
 
-
         if (data.stack_trace) {
-          const frames = parseStackTrace(data.stack_trace)
+          const frames = parseStackTrace(data.stack_trace);
           const contexts = data.contexts || [];
 
-          const framesWithContext = frames.map(frame => {
-            const codeContext = contexts.find(context => frame.includes(context.file)) || null;
+          const framesWithContext = frames.map((frame) => {
+            const codeContext =
+              contexts.find((context) => frame.includes(context.file)) || null;
             return {
               frame,
-              codeContext
-            }
+              codeContext,
+            };
           });
 
-          setStackFrames(framesWithContext)
+          setStackFrames(framesWithContext);
         }
       } catch (e) {
         setLoadingError(e instanceof Error ? e.message : "Unknown error");
@@ -99,7 +101,7 @@ const ErrorDetails = () => {
 
   const handleFrameClick = (index: number) => {
     setExpandedFrameIndex(index);
-  }
+  };
 
   const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
@@ -137,7 +139,7 @@ const ErrorDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {
@@ -171,52 +173,51 @@ const ErrorDetails = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <Box>
+    <Box p={4}>
       <Flex justify="space-between" align="center" mb={4}>
         {/* Return to Errors Button */}
         <Button
           size="md"
+          leftIcon={<IoArrowBackOutline />}
+          fontWeight="light"
           onClick={handleReturnToErrors}
           bg="gray.200"
           _hover={{ bg: "gray.100" }}
         >
-          <ArrowBackIcon mr={2} />
-          Return to Errors
+          Return
         </Button>
 
-        {/* Mark as Resolved Button */}
-        <Button
-          size="md"
-          onClick={handleToggleResolved}
-          bg={resolved ? "red.400" : "brand.400"}
-          _hover={{
-            bg: resolved ? "red.300" : "green.200",
-          }}
-        >
-          {resolved ? (
-            <>
-              <CloseIcon mr={2} /> Mark As Unresolved
-            </>
-          ) : (
-            <>
-              <CheckIcon mr={2} /> Mark As Resolved
-            </>
-          )}
-        </Button>
+        <Flex direction="row" gap={2}>
+          {/* Mark as Resolved Button */}
+          <Button
+            size="md"
+            onClick={handleToggleResolved}
+            leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
+            fontWeight="light"
+            bg={resolved ? "red.400" : "brand.400"}
+            _hover={{
+              bg: resolved ? "red.300" : "green.200",
+            }}
+          >
+            {resolved ? <>Mark As Unresolved</> : <>Mark As Resolved</>}
+          </Button>
 
-        {/* Delete Error Button */}
-        <Button
-          size="md"
-          onClick={handleDeleteClick}
-          bg="red.400"
-          _hover={{ bg: "red.300" }}
-        >
-          <DeleteIcon mr={2} /> Delete Issue
-        </Button>
+          {/* Delete Error Button */}
+          <Button
+            size="md"
+            onClick={handleDeleteClick}
+            leftIcon={<IoTrashOutline />}
+            fontWeight="light"
+            bg="red.400"
+            _hover={{ bg: "red.300" }}
+          >
+            Delete Issue
+          </Button>
+        </Flex>
       </Flex>
 
       <Box
-        borderWidth={1}
+        // borderWidth={1}
         borderRadius="md"
         overflow="hidden"
         textAlign="left"
@@ -225,14 +226,22 @@ const ErrorDetails = () => {
         <Stack>
           <Flex justify="space-between" align="center" mb={4} px={4}>
             <HStack>
-              <Text fontSize="lg">
-                <b>{errorData.name}:</b> {errorData.message}
-              </Text>
+              <Heading as="h2" fontSize="1.5rem">
+                {errorData.name}: {errorData.message}
+              </Heading>
               <Icon
-                as={errorData.handled === false ? WarningIcon : CheckCircleIcon}
+                as={
+                  errorData.handled === false
+                    ? IoSkullOutline
+                    : IoCheckmarkCircleOutline
+                }
                 color={errorData.handled === false ? "red.500" : "green.500"}
               />
-              <Text fontSize="sm" fontWeight="bold" color={errorData.handled === false ? "red.500" : "green.500"}>
+              <Text
+                fontSize="md"
+                fontWeight="bold"
+                color={errorData.handled === false ? "red.500" : "green.500"}
+              >
                 {errorData.handled === false ? "Unhandled" : "Handled"}
               </Text>
             </HStack>
@@ -243,20 +252,38 @@ const ErrorDetails = () => {
           <Table>
             <Tbody>
               <Tr>
-                <Td fontSize="sm" fontWeight="bold" maxW="500px">File</Td>
-                <Td fontSize="sm" fontWeight="bold">Line</Td>
-                <Td fontSize="sm" fontWeight="bold">Column</Td>
+                <Th fontSize="sm" fontWeight="bold" maxW="500px">
+                  File
+                </Th>
+                <Th fontSize="sm" fontWeight="bold">
+                  Line
+                </Th>
+                <Th fontSize="sm" fontWeight="bold">
+                  Column
+                </Th>
               </Tr>
               <Tr>
-                <Td fontSize="xs" fontWeight="light" fontFamily="monospace" maxW="500px" whiteSpace="normal">{errorData.file}</Td>
-                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.line_number}</Td>
-                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">{errorData.col_number}</Td>
+                <Td
+                  fontSize="xs"
+                  fontWeight="light"
+                  fontFamily="monospace"
+                  maxW="500px"
+                  whiteSpace="normal"
+                >
+                  {errorData.file}
+                </Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                  {errorData.line_number}
+                </Td>
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                  {errorData.col_number}
+                </Td>
               </Tr>
             </Tbody>
           </Table>
         </Stack>
       </Box>
-      <Box mt={4} textAlign="left">
+      <Box mt={6} px={4} textAlign="left">
         <Text as="h3" fontSize="lg" fontWeight="bold" mb={2}>
           Stack Trace
         </Text>
@@ -264,19 +291,15 @@ const ErrorDetails = () => {
           <Box key={index} mb={2}>
             <Box
               padding={2}
-              bg={expandedFrameIndex === index ? 'gray.200' : 'gray.100'}
+              bg={expandedFrameIndex === index ? "gray.500" : "gray.100"}
+              color={expandedFrameIndex === index ? "white" : "black"}
               cursor="pointer"
               onClick={() => handleFrameClick(index)}
             >
-              <Text>{item.frame}</Text>
+              <Text variant="light">{item.frame}</Text>
             </Box>
             <Collapse in={expandedFrameIndex === index} animateOpacity>
-              <Box
-                padding={4}
-                borderWidth={1}
-                borderRadius="md"
-                backgroundColor="gray.50"
-              >
+              <Box padding={4} borderWidth={1} backgroundColor="gray.50">
                 <CodeContextDisplay codeContext={item.codeContext} />
               </Box>
             </Collapse>

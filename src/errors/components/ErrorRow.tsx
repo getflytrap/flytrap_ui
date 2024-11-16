@@ -2,6 +2,7 @@ import { Box, Td, Link, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ErrorData, Rejection } from "../../types";
 import { Project } from "../../types";
+import { IoSkullOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 
 interface ErrorRowProps {
   issue: ErrorData | Rejection;
@@ -45,14 +46,16 @@ const ErrorRow = ({
       <Td>
         <Box
           as="span"
-          borderRadius="20px"
+          borderRadius="8px"
           bg={issue.handled ? "green.50" : "red.50"}
           border={`1px solid ${issue.handled ? "green.800" : "red.800"}`}
           color={issue.handled ? "green.800" : "red.800"}
           px={2}
           py={1}
-          display="inline-block"
+          display="inline-flex"
+          gap={1}
         >
+          {issue.handled ? <IoCheckmarkCircleOutline /> : <IoSkullOutline />}
           {issue.handled ? "Handled" : "Unhandled"}
         </Box>
       </Td>

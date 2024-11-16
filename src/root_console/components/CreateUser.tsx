@@ -137,17 +137,8 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
   };
 
   return (
-    <Box
-      borderWidth="1px"
-      borderColor="lightgray"
-      p={6}
-      borderRadius="md"
-      maxWidth="400px"
-      mx="auto"
-      mt={10}
-      bg="gray.100"
-    >
-      <Heading as="h2" size="lg" mb={4} textAlign="center">
+    <Box p={6} maxWidth="400px" mx="auto" mt={10} bg="white" flex="1">
+      <Heading as="h2" fontSize="1.5rem" mb={4} textAlign="center">
         Create User
       </Heading>
 

@@ -1,4 +1,4 @@
-import { VStack, Text } from "@chakra-ui/react";
+import { Text, Grid } from "@chakra-ui/react";
 import ProjectCard from "./ProjectCard";
 import { Project } from "../../types";
 
@@ -13,7 +13,11 @@ const ProjectList = ({
   onEditOpen,
   onDeleteOpen,
 }: ProjectListProps) => (
-  <VStack spacing={4} width="100%">
+  <Grid
+    templateColumns={["1fr", "repeat(2, 1fr)"]} // Responsive grid layout
+    gap={4}
+    width="100%"
+  >
     {projects?.length ? (
       projects.map((project) => (
         <ProjectCard
@@ -34,7 +38,7 @@ const ProjectList = ({
         No Current Project Assignments
       </Text>
     )}
-  </VStack>
+  </Grid>
 );
 
 export default ProjectList;

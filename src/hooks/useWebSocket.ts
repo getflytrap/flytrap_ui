@@ -15,13 +15,13 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     });
 
     // Remove log statements
-    socket.on('connect', () => {
-      console.log("WebSocket connected.")
+    socket.on("connect", () => {
+      console.log("WebSocket connected.");
     });
-    
+
     socket.on("authenticated", () => {
       console.log("WebSocket connection authenticated.");
-      sessionStorage.removeItem("access_token");  
+      sessionStorage.removeItem("access_token");
     });
 
     socket.on("new_notification", (data) => {
@@ -40,6 +40,6 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
 
     return () => {
       socket.disconnect();
-    }
+    };
   }, [isLoggedIn, toast]);
 };

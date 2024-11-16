@@ -34,7 +34,7 @@ const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
       const userUuid = users.find(
         (user) =>
           user.first_name === selectedFirstName &&
-          user.last_name === selectedLastName
+          user.last_name === selectedLastName,
       )?.uuid;
 
       if (!userUuid) {
@@ -44,7 +44,7 @@ const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
       await deleteAccount(userUuid);
 
       setUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid)
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
       toast({
         title: "Successful Deletion",
@@ -66,16 +66,7 @@ const DeleteUser = ({ users, setUsers }: DeleteUserProps) => {
   }
 
   return (
-    <Box
-      borderWidth="1px"
-      borderColor="lightgray"
-      p={6}
-      borderRadius="md"
-      maxWidth="400px"
-      mx="auto"
-      mt={10}
-      bg="gray.100"
-    >
+    <Box p={6} maxWidth="400px" mx="auto" mt={10} bg="white" flex="1">
       <Heading as="h2" size="lg" mb={6} textAlign="center">
         Delete User
       </Heading>
