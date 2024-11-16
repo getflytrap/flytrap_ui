@@ -10,7 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { BsFolder, BsUnlock } from "react-icons/bs";
-import transparent_logo from "../../assets/transparent_logo.png";
+// import transparent_logo from "../../assets/transparent_logo.png";
+import transparent_logo_animated from "../../assets/transparent_logo_animated.png";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const LandingPage = ({ bgColor = "brand.500" }) => {
@@ -38,14 +39,15 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
     <Box bg={bgColor} minH="100vh" minW="100vw" color="white">
       <Container maxWidth="1280px" centerContent>
         <Flex justify="center" my={8}>
-          <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" />
+          {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
+          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="400px" />
         </Flex>
         <Text
           fontSize="lg"
           variant="light"
           textAlign="center"
           maxW="lg"
-          mt={12}
+          mt={8}
         >
           Flytrap is the ultimate error monitoring solution for developers,
           offering real-time detection and detailed insights into your code's
