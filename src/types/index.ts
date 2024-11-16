@@ -34,6 +34,8 @@ export interface ErrorData {
   handled: boolean;
   resolved: boolean;
   contexts: CodeContext[];
+  method: string;
+  path: string;
 }
 
 export interface FrameWithContext {
