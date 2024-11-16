@@ -51,7 +51,6 @@ const App = () => {
           <Route element={<AdminRequired />}>
             <Route path="/root-console" element={<RootConsole />} />
           </Route>
-          <Route path="/root-console" element={<RootConsole />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/change-password" element={<ChangePassword />} />
         </Route>
