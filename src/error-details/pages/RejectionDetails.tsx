@@ -194,30 +194,36 @@ const RejectionDetails = () => {
         <Stack>
           <Flex justify="space-between" align="center" mb={4} px={4}>
             <HStack>
-              <Heading as="h2" fontSize="1.5rem">
-                Rejected Promise: {rejectionData.value}
+              <Heading as="h2" fontSize="2rem">
+                Rejected Promise
               </Heading>
-              <Icon
-                as={
-                  rejectionData.handled === false
-                    ? IoWarningOutline
-                    : IoCheckmarkCircleOutline
-                }
-                color={rejectionData.handled === false ? "red.500" : "green.500"}
-              />
-              <Text
-                fontSize="md"
-                fontWeight="bold"
-                color={rejectionData.handled === false ? "red.500" : "green.500"}
-              >
-                {rejectionData.handled === false ? "Unhandled" : "Handled"}
-              </Text>
+              <Text fontSize="1.5rem" color="gray">{rejectionData.method ? rejectionData.method.toUpperCase() : ""}</Text>
+              <Text fontSize="1.5rem" color="gray">{rejectionData.path ? rejectionData.path : ""}</Text>
             </HStack>
             <Text fontSize="sm" color="gray.500">
               {new Date(rejectionData.created_at).toLocaleString()}
             </Text>
           </Flex>
-
+          <Flex justify="space-between" align="center" mb={4} px={4}>
+            <HStack>
+              <Text>{rejectionData.value}</Text>
+              <Icon
+                  as={
+                    rejectionData.handled === false
+                      ? IoWarningOutline
+                      : IoCheckmarkCircleOutline
+                  }
+                  color={rejectionData.handled === false ? "red.500" : "green.500"}
+                />
+                <Text
+                  fontSize="md"
+                  fontWeight="bold"
+                  color={rejectionData.handled === false ? "red.500" : "green.500"}
+                >
+                  {rejectionData.handled === false ? "Unhandled" : "Handled"}
+                </Text>
+            </HStack>
+          </Flex>
         </Stack>
       </Box>
     </Box>
