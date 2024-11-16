@@ -1,26 +1,27 @@
 import { Outlet } from "react-router-dom";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 
 const ErrorDashboard = () => {
   return (
-    <div className="site-wrapper">
-      <Grid templateColumns="repeat(6, 1fr)" bg="gray.50">
-        <GridItem
-          as="aside"
-          colSpan={{ base: 6, lg: 2, xl: 1 }}
-          bg="brand.50"
-          minHeight={{ lg: "100vh" }}
-          p={{ base: "20px", lg: "30px" }}
-        >
-          <Sidebar />
-        </GridItem>
+    <Flex direction="row" height="100%" bg="gray.50">
+      {/* Sidebar */}
+      <Flex
+        as="aside"
+        flex={{ base: "1", lg: "0 0 300px" }}
+        display={{ base: "none", sm: "flex" }}
+        bg="white"
+        direction="column"
+        overflow="hidden"
+      >
+        <Sidebar />
+      </Flex>
 
-        <GridItem as="main" colSpan={{ base: 6, lg: 4, xl: 5 }} p="40px">
-          <Outlet />
-        </GridItem>
-      </Grid>
-    </div>
+      {/* Main Content */}
+      <Flex as="main" flex="1" direction="column" overflowY="auto">
+        <Outlet />
+      </Flex>
+    </Flex>
   );
 };
 

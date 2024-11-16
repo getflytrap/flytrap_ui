@@ -1,7 +1,7 @@
-import { Text } from '@chakra-ui/react';
+import { Text } from "@chakra-ui/react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { CodeContext } from '../../types';
+import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { CodeContext } from "../../types";
 
 const CONTEXT_LINES: number = 5;
 
@@ -30,14 +30,14 @@ const CodeContextDisplay = ({ codeContext }: CodeContextDisplayProps) => {
       startingLineNumber={startLineNumber > 0 ? startLineNumber : 1}
       wrapLines
       lineProps={(lineNumber: number) => {
-        let style: React.CSSProperties = { display: 'block' };
+        let style: React.CSSProperties = { display: "block" };
         if (lineNumber === line) {
-          style.backgroundColor = 'rgba(255, 0, 0, 0.2)'; // Highlight the error line
+          style.backgroundColor = "rgba(255, 0, 0, 0.2)"; // Highlight the error line
         }
         return { style };
       }}
       customStyle={{
-        fontSize: '12px'
+        fontSize: "12px",
       }}
     >
       {context}

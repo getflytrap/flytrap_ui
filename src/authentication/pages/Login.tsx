@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as postLoginData } from "../../services/auth/auth";
 import { useAuth } from "../../hooks/useAuth";
-import flytrap_logo from "../../assets/flytrap_logo.png";
+import transparent_logo from "../../assets/transparent_logo.png";
 
 import {
   Box,
@@ -64,7 +64,7 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Image src={flytrap_logo} alt="Flytrap Logo" height="150px" />
+      <Image src={transparent_logo} alt="Flytrap Logo" height="150px" />
       <Box
         borderWidth="1px"
         borderColor="lightgray"
@@ -73,7 +73,7 @@ const Login = () => {
         width="50vw"
         maxWidth="600px"
         mx="auto"
-        mt={10}
+        my={50}
         bg="gray.100"
       >
         <Heading as="h2" size="lg" mb={4} textAlign="center">
@@ -105,7 +105,16 @@ const Login = () => {
           />
         </FormControl>
 
-        <Button colorScheme="green" mt={4} onClick={handleSubmit} width="full">
+        <Button
+          bg="brand.500"
+          color="white"
+          _hover={{
+            bg: "brand.700",
+          }}
+          mt={4}
+          onClick={handleSubmit}
+          width="full"
+        >
           Submit
         </Button>
       </Box>

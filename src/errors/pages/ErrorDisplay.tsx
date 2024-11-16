@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Box, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
@@ -28,7 +29,10 @@ const ErrorDisplay = () => {
   }, [location.state]);
 
   return (
-    <>
+    <Box overflowY="auto" mx={4}>
+      <Heading as="h2" fontSize="2rem" my="30px">
+        Issues
+      </Heading>
       <FilterBar
         selectedHandled={selectedHandled}
         setSelectedHandled={setSelectedHandled}
@@ -41,7 +45,7 @@ const ErrorDisplay = () => {
         selectedTime={selectedTime}
         selectedResolved={selectedResolved}
       />
-    </>
+    </Box>
   );
 };
 

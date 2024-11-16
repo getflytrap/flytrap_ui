@@ -83,8 +83,8 @@ const ChangePassword = () => {
   }
 
   return (
-    <>
-      <Heading as="h1" size="xl" color="white">
+    <Box bg="gray.100" px={6} height="100%" textAlign="center">
+      <Heading as="h2" fontSize="2rem" my="30px">
         Change Password{" "}
       </Heading>
       <Box
@@ -132,7 +132,7 @@ const ChangePassword = () => {
           Cancel
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 

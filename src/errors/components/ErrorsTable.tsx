@@ -108,7 +108,7 @@ const ErrorsTable = ({
         convertResolvedToBoolean(selectedResolved), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
-        ERROR_LIMIT_PER_PAGE
+        ERROR_LIMIT_PER_PAGE,
       );
 
       setIssues(data.issues);
@@ -144,15 +144,15 @@ const ErrorsTable = ({
   }
 
   return (
-    <Box p={4}>
+    <Box>
       <Table variant="striped" colorScheme="gray" width="100%" mx="auto">
         <Thead>
           <Tr>
-            <Th>Error Title</Th>
-            <Th>Handled</Th>
+            <Th fontSize="sm">Error Title</Th>
+            <Th fontSize="sm">Handled</Th>
             {/* Conditionally render the 'Time' and 'Status' columns */}
-            {!isMobile && <Th>Time</Th>}
-            {!isMobile && <Th>Status</Th>}
+            {!isMobile && <Th fontSize="sm">Time</Th>}
+            {!isMobile && <Th fontSize="sm">Status</Th>}
           </Tr>
         </Thead>
         <Tbody>

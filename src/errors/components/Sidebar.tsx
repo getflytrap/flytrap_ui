@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text, Flex } from "@chakra-ui/react";
 import { useProjects } from "../../hooks/useProjects";
 import PaginationControls from "../../shared/Pagination";
 import { Project } from "../../types";
@@ -21,42 +21,52 @@ export default function Sidebar() {
   };
 
   return (
-    <>
-      <Stack spacing={3} color="gray.900">
+    <Flex direction="column" height="100%" overflow="hidden">
+      <Stack spacing={3} color="gray.900" flex="2" py={4}>
         {projects.map((project) => (
           <Box
-            onClick={() => handleClick(project)}
-            key={project.uuid}
-            borderRadius="20px"
-            bg={
+            borderLeft={
               selectedProject?.uuid === project.uuid
-                ? "green.100"
+                ? "4px solid #186A4A"
                 : "transparent"
             }
-            border={selectedProject?.uuid === project.uuid ? "2px" : "1px"}
-            borderColor={
-              selectedProject?.uuid === project.uuid
-                ? "green.400"
-                : "transparent"
-            }
-            p={2}
-            _hover={{
-              borderColor: "green.400",
-            }}
-            cursor="pointer"
-            color={selectedProject?.uuid === project.uuid ? "black" : "inherit"}
-            fontWeight="bold"
+            px={4}
           >
-            <Text textAlign="left">{`${project.name} (${project.issue_count})`}</Text>
+            <Box
+              onClick={() => handleClick(project)}
+              key={project.uuid}
+              bg={
+                selectedProject?.uuid === project.uuid
+                  ? "brand.100"
+                  : "transparent"
+              }
+              borderRadius="8px"
+              p={2}
+              _hover={{
+                bg: "gray.100",
+              }}
+              cursor="pointer"
+              color={
+                selectedProject?.uuid === project.uuid ? "black" : "inherit"
+              }
+              fontWeight="bold"
+            >
+              <Flex justifyContent="space-between" px={2}>
+                <Text>{`${project.name}`}</Text>
+                <Text color="gray.500">{`${project.issue_count}`}</Text>
+              </Flex>
+            </Box>
           </Box>
         ))}
       </Stack>
-      <PaginationControls
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPrevPage={() => fetchProjectsForUser(currentPage - 1)}
-        onNextPage={() => fetchProjectsForUser(currentPage + 1)}
-      />
-    </>
+      <Box>
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrevPage={() => fetchProjectsForUser(currentPage - 1)}
+          onNextPage={() => fetchProjectsForUser(currentPage + 1)}
+        />
+      </Box>
+    </Flex>
   );
 }

@@ -9,6 +9,7 @@ import {
   Button,
   useToast,
   Heading,
+  Flex
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { User, Project } from "../../types/index";
@@ -62,12 +63,12 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
   const deleteUserFromProject = async (
     projectUuid: string,
-    userUuid: string
+    userUuid: string,
   ) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid)
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
       toast({
@@ -107,25 +108,22 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
   const availableUsers = users.filter(
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
-      !user.is_root
+      !user.is_root,
   );
 
   return (
     <Box
-      borderWidth="1px"
-      borderColor="lightgray"
-      borderRadius="md"
       padding={5}
       minHeight="600px"
-      mx="auto"
-      bg="gray.100"
+      px={12}
+      mx={12}
     >
-      <Heading as="h2" size="lg" mb={4} textAlign="center">
+      <Heading as="h2" fontSize="1.5rem" mb={4} textAlign="center">
         Project Assignments
       </Heading>
-      <HStack spacing={10} align="start">
+      <Flex justifyContent="center" gap={8} pt={8}>
         {/* Project Selection Column */}
-        <VStack align="start" spacing={4}>
+        <VStack align="start" spacing={4} flex="1">
           <Text fontWeight="bold" fontSize="lg">
             Project
           </Text>
@@ -144,7 +142,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
         </VStack>
 
         {/* Current Users Column */}
-        <VStack align="start" flex={1} spacing={4}>
+        <VStack align="start" flex="1" spacing={4}>
           <Text fontWeight="bold" fontSize="lg">
             Current Users
           </Text>
@@ -166,7 +164,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
         </VStack>
 
         {/* Add User Column */}
-        <VStack align="start" flex={1} spacing={4}>
+        <VStack align="start" flex="1" spacing={4}>
           <Text fontWeight="bold" fontSize="lg">
             Add User
           </Text>
@@ -174,7 +172,8 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
             placeholder="Select users to add"
             multiple
             size="lg"
-            height="200px"
+            height="300px"
+            minWidth="300px"
             onChange={(e) => {
               handleUserSelection(e.target.value);
             }}
@@ -189,7 +188,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
             Add
           </Button>
         </VStack>
-      </HStack>
+      </Flex>
     </Box>
   );
 };
