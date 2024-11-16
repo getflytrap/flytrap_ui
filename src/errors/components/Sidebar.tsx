@@ -25,6 +25,7 @@ export default function Sidebar() {
       <Stack spacing={3} color="gray.900" flex="2" py={4}>
         {projects.map((project) => (
           <Box
+            key={project.uuid}
             borderLeft={
               selectedProject?.uuid === project.uuid
                 ? "4px solid #186A4A"
@@ -34,7 +35,6 @@ export default function Sidebar() {
           >
             <Box
               onClick={() => handleClick(project)}
-              key={project.uuid}
               bg={
                 selectedProject?.uuid === project.uuid
                   ? "brand.100"
