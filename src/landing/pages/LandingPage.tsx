@@ -81,7 +81,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                 py={6}
                 mt="50px"
                 mb="70px"
-                borderRadius="full"
+                // borderRadius="full"
                 fontWeight="light"
               >
                 Login

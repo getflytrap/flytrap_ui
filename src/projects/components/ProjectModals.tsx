@@ -122,10 +122,10 @@ const ProjectModals = ({
   };
 
   const platforms = [
-    { name: "JavaScript", icon: <FaJsSquare size={40} /> },
-    { name: "React", icon: <FaReact size={40} /> },
-    { name: "Express.js", icon: <FaNodeJs size={40} /> },
-    { name: "Flask", icon: <FaPython size={40} /> },
+    { name: "JavaScript", icon: <FaJsSquare size={40} color="#F7DF1E"/> },
+    { name: "React", icon: <FaReact size={40} color="#61DAFB"/> },
+    { name: "Express.js", icon: <FaNodeJs size={40} color="#339933" /> },
+    { name: "Flask", icon: <FaPython size={40} color="#3776AB" /> },
   ];
 
   return (
@@ -133,7 +133,7 @@ const ProjectModals = ({
       {/* New Project Modal */}
       <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose} size="lg">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxWidth="700px" width="90%">
           <ModalHeader>Create New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -156,14 +156,12 @@ const ProjectModals = ({
                   p={4}
                   bg={
                     selectedPlatform === platform.name
-                      ? "green.400"
-                      : "gray.200"
+                      ? "brand.200"
+                      : "gray.100"
                   }
                   borderWidth={2}
                   borderRadius="md"
-                  borderColor={
-                    selectedPlatform === platform.name ? "blue.500" : "gray.300"
-                  }
+                  borderColor="transparent"
                   boxShadow={selectedPlatform === platform.name ? "lg" : "none"}
                   cursor="pointer"
                   onClick={() => setSelectedPlatform(platform.name)}

@@ -28,9 +28,6 @@ const FilterBar = ({
     setSelectedResolved(option);
   };
 
-  // const fixedButtonWidth = "90px";
-  // const fixedButtonHeight = "50px";
-
   return (
     <Box p={4} mb={8} bg="gray.100" borderRadius="8px">
       <Flex

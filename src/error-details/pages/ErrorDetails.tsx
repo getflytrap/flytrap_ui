@@ -29,7 +29,7 @@ import {
   IoCloseOutline,
   IoCheckmarkOutline,
   IoArrowBackOutline,
-  IoSkullOutline,
+  IoWarningOutline,
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 
@@ -232,7 +232,7 @@ const ErrorDetails = () => {
               <Icon
                 as={
                   errorData.handled === false
-                    ? IoSkullOutline
+                    ? IoWarningOutline
                     : IoCheckmarkCircleOutline
                 }
                 color={errorData.handled === false ? "red.500" : "green.500"}
