@@ -30,18 +30,22 @@ const ChangePassword = () => {
     if (newPassword.length < 8) {
       toast({
         title: "Invalid Password",
-        description: "Password must be at least 8 characters long",
+        description: "Password must be at least 8 characters long.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
     } else if (newPassword !== confirmNewPassword) {
       toast({
         title: "Invalid Password",
-        description: "Password values do not match",
+        description: "Password values do not match.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -58,13 +62,12 @@ const ChangePassword = () => {
     if (userUuid) {
       try {
         await updatePassword(userUuid, newPassword);
-        console.log("New password submitted:", newPassword);
-
         toast({
-          title: "Successfully Changed Password",
-          description: "You have successfully changed your password",
+          title: "Successfully Changed Password.",
           status: "success",
-          duration: 4000,
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
           isClosable: true,
         });
 
@@ -72,10 +75,11 @@ const ChangePassword = () => {
         navigate("/login");
       } catch {
         toast({
-          title: "Error Changing Password",
-          description: "Could not change password",
+          title: "Error Changing Password.",
           status: "error",
-          duration: 4000,
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
           isClosable: true,
         });
       }

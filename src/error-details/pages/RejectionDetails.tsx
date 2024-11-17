@@ -88,9 +88,10 @@ const RejectionDetails = () => {
       await deleteRejection(projectUuid, rejectionUuid);
       toast({
         title: "Successful Deletion",
-        description: "Rejection successfully deleted",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
 
@@ -98,9 +99,10 @@ const RejectionDetails = () => {
     } catch (e) {
       toast({
         title: "Deletion Error",
-        description: "Rejection could not be deleted",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }

@@ -57,18 +57,22 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
       resetForm();
 
       toast({
-        title: "Successful Creation",
-        description: "User Successfully Created",
+        title: "Success",
+        description: "User successfully created",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch (e) {
       toast({
-        title: "Creation error",
+        title: "Creation Error",
         description: "User could not be created",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }
@@ -80,7 +84,9 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         title: "Invalid First Name",
         description: "First name must be at least 1 character long.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -90,7 +96,9 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         title: "Invalid Last Name",
         description: "Last name must be at least 1 character long.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -100,7 +108,9 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         title: "Invalid Password",
         description: "Password must be at least 8 characters long.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -110,7 +120,9 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         title: "Password Mismatch",
         description: "Passwords do not match.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -121,7 +133,9 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         title: "Invalid Email",
         description: "Please enter a valid email address.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;

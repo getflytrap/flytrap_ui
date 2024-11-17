@@ -118,7 +118,14 @@ const ErrorsTable = ({
       }
     } catch (e) {
       console.error(e);
-      toast({ title: "Failed to load error data.", status: "error" });
+      toast({ 
+        title: "Failed to load error data.", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }

@@ -13,6 +13,7 @@ const ErrorDashboard = () => {
         bg="white"
         direction="column"
         overflow="hidden"
+        boxShadow="md"
       >
         <Sidebar />
       </Flex>

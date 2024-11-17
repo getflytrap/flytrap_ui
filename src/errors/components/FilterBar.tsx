@@ -29,7 +29,7 @@ const FilterBar = ({
   };
 
   return (
-    <Box p={4} mb={8} bg="gray.100" borderRadius="8px">
+    <Box p={4} mb={8} bg="gray.100" borderRadius="8px" boxShadow="sm">
       <Flex
         alignItems="center"
         justifyContent="space-between"

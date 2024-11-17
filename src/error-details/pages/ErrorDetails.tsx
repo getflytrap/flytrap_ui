@@ -119,9 +119,10 @@ const ErrorDetails = () => {
       await deleteError(projectUuid, errorUuid);
       toast({
         title: "Successful Deletion",
-        description: "Error successfully deleted",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
 
@@ -129,9 +130,10 @@ const ErrorDetails = () => {
     } catch (e) {
       toast({
         title: "Deletion Error",
-        description: "Error could not be created",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }

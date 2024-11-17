@@ -23,7 +23,9 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
         title: "New Issue Logged",
         description: data.project_name,
         status: "info",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     });

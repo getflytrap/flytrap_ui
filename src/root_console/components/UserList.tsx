@@ -47,15 +47,19 @@ const UserList = ({ users, setUsers }: UserListProps) => {
         title: "Successful Deletion",
         description: "User Successfully Deleted",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch (e) {
       toast({
-        title: "Deletion error",
+        title: "Deletion Error",
         description: "User could not be deleted",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }

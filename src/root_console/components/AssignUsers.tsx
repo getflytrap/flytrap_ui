@@ -72,14 +72,22 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
       );
 
       toast({
-        title: "User removed.",
+        title: "Success.",
         description: "User has been removed from the project.",
         status: "success",
-        duration: 2000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch {
-      alert("Could not remove user from project");
+      toast({
+        title: "Failed to remove user.",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      })
     }
   };
 
@@ -94,14 +102,22 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
       setSelectedUserUuid("");
       toast({
-        title: "Users added.",
+        title: "Success.",
         description: "Users have been added to the project.",
         status: "success",
-        duration: 2000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch {
-      alert("Could not add users to project");
+      toast({
+        title: "Failed to add users.",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      })
     }
   };
 
