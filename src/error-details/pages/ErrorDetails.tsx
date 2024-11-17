@@ -196,9 +196,9 @@ const ErrorDetails = () => {
             onClick={handleToggleResolved}
             leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
             fontWeight="light"
-            bg={resolved ? "red.400" : "brand.400"}
+            bg={resolved ? "red.400" : "green.400"}
             _hover={{
-              bg: resolved ? "red.300" : "green.200",
+              bg: resolved ? "red.500" : "green.500",
             }}
           >
             {resolved ? <>Mark As Unresolved</> : <>Mark As Resolved</>}
@@ -211,7 +211,7 @@ const ErrorDetails = () => {
             leftIcon={<IoTrashOutline />}
             fontWeight="light"
             bg="red.400"
-            _hover={{ bg: "red.300" }}
+            _hover={{ bg: "red.500" }}
           >
             Delete Issue
           </Button>

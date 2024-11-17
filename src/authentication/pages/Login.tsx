@@ -67,7 +67,7 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Image src={transparent_logo} alt="Flytrap Logo" height="150px" />
+      <Image src={transparent_logo} alt="Flytrap Logo" height="200px" />
       <Box
         borderWidth="1px"
         borderColor="lightgray"
@@ -79,11 +79,8 @@ const Login = () => {
         my={50}
         bg="gray.100"
       >
-        <Heading as="h2" size="lg" mb={4} textAlign="center">
+        <Heading as="h2" fontSize="1.5rem" mb={4} textAlign="center">
           Login
-        </Heading>
-        <Heading as="h3" size="md" mb={4} textAlign="center">
-          Sign in as:
         </Heading>
 
         <FormControl isRequired mt={4}>
@@ -109,16 +106,12 @@ const Login = () => {
         </FormControl>
 
         <Button
-          bg="brand.500"
-          color="white"
-          _hover={{
-            bg: "brand.300",
-          }}
-          mt={4}
+          colorScheme="teal"
+          mt={8}
           onClick={handleSubmit}
           width="full"
         >
-          Submit
+          Continue
         </Button>
       </Box>
     </Box>

@@ -10,7 +10,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  Divider,
+  Flex,
   useToast,
 } from "@chakra-ui/react";
 
@@ -88,8 +88,8 @@ const ChangePassword = () => {
 
   return (
     <Box bg="gray.100" px={6} height="100%" textAlign="center">
-      <Heading as="h2" fontSize="2rem" my="30px">
-        Change Password{" "}
+      <Heading as="h2" fontSize="1.5rem" my="30px">
+        Change Your Password{" "}
       </Heading>
       <Box
         borderWidth="1px"
@@ -121,20 +121,25 @@ const ChangePassword = () => {
           />
         </FormControl>
 
-        <Button
-          colorScheme="green"
-          mt={4}
-          onClick={handleSubmitNewPassword}
-          width="full"
-        >
-          Confirm Password Change
-        </Button>
-
-        <Divider my={4} />
-
-        <Button colorScheme="blue" onClick={handleCancel} width="full">
-          Cancel
-        </Button>
+        <Flex alignItems="center" justifyContent="space-around" mt={8} gap={4}>
+          <Button
+            colorScheme="teal"
+            onClick={handleSubmitNewPassword}
+            flex="1"
+            maxWidth="200px"
+          >
+            Change Password
+          </Button>
+  
+          <Button 
+            colorScheme="red"
+            onClick={handleCancel} 
+            flex="1"
+            maxWidth="200px"
+          >
+            Cancel
+          </Button>
+        </Flex>
       </Box>
     </Box>
   );

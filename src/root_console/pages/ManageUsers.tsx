@@ -28,7 +28,7 @@ const ManageUsers = () => {
     <Box p={6} bg="gray.100">
       <Container maxWidth="1200px" mx="auto">
         <Flex mb={6} alignItems="center" justifyContent="space-between">
-          <Link to="/root-console">
+          <Link to="/projects">
             <Button
               size="md"
               leftIcon={<IoArrowBackOutline />}

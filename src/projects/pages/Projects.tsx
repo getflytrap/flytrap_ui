@@ -13,6 +13,7 @@ import LoadingSpinner from "../../shared/LoadingSpinner";
 import ProjectModals from "../components/ProjectModals";
 import { useProjects } from "../../hooks/useProjects";
 import { AuthContext } from "../../contexts/AuthContext";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 const Projects = () => {
   const {
@@ -67,15 +68,16 @@ const Projects = () => {
           {isRoot && (
             <Button
               onClick={onNewProjectOpen}
+              leftIcon={<IoAddCircleOutline />}
               size="lg"
               bg="brand.500"
               color="white"
               _hover={{
-                bg: "brand.700",
+                bg: "brand.300",
               }}
               my="30px"
             >
-              Start A New Project
+              Create Project
             </Button>
           )}
         </Flex>
