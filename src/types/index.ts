@@ -34,6 +34,8 @@ export interface ErrorData {
   handled: boolean;
   resolved: boolean;
   contexts: CodeContext[];
+  method?: string;
+  path?: string;
 }
 
 export interface FrameWithContext {
@@ -48,6 +50,8 @@ export interface Rejection {
   project_uuid: string;
   handled: boolean;
   resolved: boolean;
+  method?: string;
+  path?: string;
 }
 
 export type HandledFilter = "All" | "Handled" | "Unhandled";

@@ -59,6 +59,7 @@ const FilterBar = ({
           <Flex align="center" gap={2}>
             {["Handled", "Unhandled", "All"].map((status) => (
               <Box
+                key={status}
                 borderRadius="2px"
                 borderBottom={
                   selectedHandled === status
@@ -68,7 +69,6 @@ const FilterBar = ({
               >
                 <Box
                   as="button"
-                  key={status}
                   onClick={() => handleHandledChange(status as HandledFilter)}
                   borderRadius="8px"
                   p={2}
@@ -114,6 +114,7 @@ const FilterBar = ({
           <Flex align="center" gap={2}>
             {["Resolved", "Unresolved", "All"].map((status) => (
               <Box
+                key={status}
                 borderRadius="2px"
                 borderBottom={
                   selectedHandled === status
@@ -123,7 +124,6 @@ const FilterBar = ({
               >
                 <Box
                   as="button"
-                  key={status}
                   onClick={() => handleResolvedChange(status as ResolvedFilter)}
                   borderRadius="8px"
                   p={2}

@@ -4,19 +4,21 @@ import {
   Box,
   Button,
   Heading,
-  Table,
-  Tbody,
-  Tr,
-  Td,
+  Stack,
+  HStack,
+  Icon,
   Flex,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import {
-  ArrowBackIcon,
-  DeleteIcon,
-  CheckIcon,
-  CloseIcon,
-} from "@chakra-ui/icons"; // Import the icons
+  IoTrashOutline,
+  IoCloseOutline,
+  IoCheckmarkOutline,
+  IoArrowBackOutline,
+  IoWarningOutline,
+  IoCheckmarkCircleOutline,
+} from "react-icons/io5";
 import WarningModal from "../../shared/WarningModal";
 import { deleteRejection, getRejection, toggleRejection } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
@@ -140,92 +142,89 @@ const RejectionDetails = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <Box>
+    <Box p={4}>
       <Flex justify="space-between" align="center" mb={4}>
         {/* Return to Issues Button */}
         <Button
           size="md"
+          leftIcon={<IoArrowBackOutline />}
           onClick={handleReturnToIssues}
+          fontWeight="light"
           bg="gray.200"
           _hover={{ bg: "gray.100" }}
         >
-          <ArrowBackIcon mr={2} />
-          Return to Issues
+          Return
         </Button>
 
-        {/* Mark as Resolved Button */}
-        <Button
-          size="md"
-          onClick={handleToggleResolved}
-          bg={resolved ? "red.400" : "brand.400"}
-          _hover={{
-            bg: resolved ? "red.300" : "green.200",
-          }}
-        >
-          {resolved ? (
-            <>
-              <CloseIcon mr={2} /> Mark As Unresolved
-            </>
-          ) : (
-            <>
-              <CheckIcon mr={2} /> Mark As Resolved
-            </>
-          )}
-        </Button>
-
-        {/* Delete Rejection Button */}
-        <Button
-          size="md"
-          onClick={handleDeleteClick}
-          bg="red.400"
-          _hover={{ bg: "red.300" }}
-        >
-          <DeleteIcon mr={2} /> Delete Rejection
-        </Button>
+        <Flex direction="row" gap={2}>
+          {/* Mark as Resolved Button */}
+          <Button
+            size="md"
+            onClick={handleToggleResolved}
+            leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
+            fontWeight="light"
+            bg={resolved ? "red.400" : "brand.400"}
+            _hover={{
+              bg: resolved ? "red.300" : "green.200",
+            }}
+          >
+            {resolved ? <>Mark As Unresolved</> : <>Mark As Resolved</>}
+          </Button>
+  
+          {/* Delete Rejection Button */}
+          <Button
+            size="md"
+            onClick={handleDeleteClick}
+            leftIcon={<IoTrashOutline />}
+            fontWeight="light"
+            bg="red.400"
+            _hover={{ bg: "red.300" }}
+          >
+            Delete Rejection
+          </Button>
+        </Flex>
       </Flex>
 
       <Box
-        borderWidth={1}
+        // borderWidth={1}
         borderRadius="md"
         overflow="hidden"
-        margin="30px 20px"
+        mt={8}
       >
-        <Table variant="simple">
-          <Tbody>
-            <Tr bg="white">
-              <Td fontWeight="bold" paddingY={2}>
-                Value
-              </Td>
-              <Td p="5px 50px" whiteSpace="normal">
-                {rejectionData.value}
-              </Td>
-            </Tr>
-            <Tr bg="gray.50">
-              <Td fontWeight="bold" paddingY={2}>
-                Created At
-              </Td>
-              <Td p="5px 50px" whiteSpace="normal">
-                {new Date(rejectionData.created_at).toLocaleString()}
-              </Td>
-            </Tr>
-            <Tr bg="white">
-              <Td fontWeight="bold" paddingY={2}>
-                Handled
-              </Td>
-              <Td p="5px 50px" whiteSpace="normal">
-                {rejectionData.handled ? "Yes" : "No"}
-              </Td>
-            </Tr>
-            <Tr bg="gray.50">
-              <Td fontWeight="bold" paddingY={2}>
-                Resolved
-              </Td>
-              <Td p="5px 50px" whiteSpace="normal">
-                {rejectionData.resolved ? "Yes" : "No"}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+        <Stack>
+          <Flex justify="space-between" align="center" mb={4} px={4}>
+            <HStack>
+              <Heading as="h2" fontSize="2rem">
+                Rejected Promise
+              </Heading>
+              <Text fontSize="1.5rem" color="gray">{rejectionData.method ? rejectionData.method.toUpperCase() : ""}</Text>
+              <Text fontSize="1.5rem" color="gray">{rejectionData.path ? rejectionData.path : ""}</Text>
+            </HStack>
+            <Text fontSize="sm" color="gray.500">
+              {new Date(rejectionData.created_at).toLocaleString()}
+            </Text>
+          </Flex>
+          <Flex justify="space-between" align="center" mb={4} px={4}>
+            <HStack>
+              <Text>{rejectionData.value}</Text>
+              <Icon
+                  as={
+                    rejectionData.handled === false
+                      ? IoWarningOutline
+                      : IoCheckmarkCircleOutline
+                  }
+                  color={rejectionData.handled === false ? "red.500" : "green.500"}
+                />
+                <Text
+                  fontSize="md"
+                  fontWeight="bold"
+                  color={rejectionData.handled === false ? "red.500" : "green.500"}
+                >
+                  {rejectionData.handled === false ? "Unhandled" : "Handled"}
+                </Text>
+            </HStack>
+          </Flex>
+        </Stack>
       </Box>
     </Box>
   );

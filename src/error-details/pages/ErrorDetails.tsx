@@ -224,19 +224,29 @@ const ErrorDetails = () => {
         mt={8}
       >
         <Stack>
+          <Flex justify="space-between" mb={4} px={4}>
+            <HStack>
+              <Heading as="h2" fontSize="2rem" mr={2}>
+                {errorData.name}
+              </Heading>
+              <Text fontSize="1.5rem" color="gray">{errorData.method ? errorData.method.toUpperCase() : ""}</Text>
+              <Text fontSize="1.5rem" color="gray">{errorData.path ? errorData.path : ""}</Text>
+            </HStack>
+              <Text fontSize="sm" color="gray.500">
+                {new Date(errorData.created_at).toLocaleString()}
+              </Text>
+          </Flex>
           <Flex justify="space-between" align="center" mb={4} px={4}>
             <HStack>
-              <Heading as="h2" fontSize="1.5rem">
-                {errorData.name}: {errorData.message}
-              </Heading>
+              <Text>{errorData.message}</Text>
               <Icon
-                as={
-                  errorData.handled === false
-                    ? IoWarningOutline
-                    : IoCheckmarkCircleOutline
-                }
-                color={errorData.handled === false ? "red.500" : "green.500"}
-              />
+                  as={
+                    errorData.handled === false
+                      ? IoWarningOutline
+                      : IoCheckmarkCircleOutline
+                  }
+                  color={errorData.handled === false ? "red.500" : "green.500"}
+                />
               <Text
                 fontSize="md"
                 fontWeight="bold"
@@ -245,9 +255,6 @@ const ErrorDetails = () => {
                 {errorData.handled === false ? "Unhandled" : "Handled"}
               </Text>
             </HStack>
-            <Text fontSize="sm" color="gray.500">
-              {new Date(errorData.created_at).toLocaleString()}
-            </Text>
           </Flex>
           <Table>
             <Tbody>
