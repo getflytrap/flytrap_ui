@@ -14,7 +14,7 @@ import { BsFolder, BsUnlock } from "react-icons/bs";
 import transparent_logo_animated from "../../assets/transparent_logo_animated.png";
 import { AuthContext } from "../../contexts/AuthContext";
 
-const LandingPage = ({ bgColor = "brand.500" }) => {
+const LandingPage = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const developers = [
     {
@@ -36,13 +36,18 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
   ];
 
   return (
-    <Box bg={bgColor} minH="100vh" minW="100vw" color="white">
+    <Box 
+      bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
+      minH="100vh" 
+      minW="100vw" 
+      color="white"
+    >
       <Container maxWidth="1280px" centerContent>
         <Flex justify="center" my={8}>
           {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
-          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="400px" />
+          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="500px" />
         </Flex>
-        <Text
+        {/* <Text
           fontSize="lg"
           variant="light"
           textAlign="center"
@@ -55,6 +60,17 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           Flytrap is lightweight, easy to set up, and focused solely on what
           matters most: identifying and resolving errors before they disrupt
           your application.
+        </Text> */}
+        <Text 
+          fontSize="3rem" 
+          fontWeight="bold"
+          color="white"
+          my={2}
+        >
+          Catching Bugs So You Don't Have To
+        </Text>
+        <Text fontSize="1.5rem" color="gray.200" my={2}>
+          Lightweight Error Monitoring You Own, Trust, and Control.
         </Text>
         <Flex justify="center">
           {isLoggedIn ? (
@@ -67,8 +83,9 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                 py={6}
                 mt="50px"
                 mb="70px"
-                // borderRadius="full"
                 fontWeight="light"
+                _hover={{ bg: "#23B9A5", color: "white", fontWeight: "bold"}}
+                boxShadow="lg"
               >
                 Go to Projects
               </Button>
@@ -83,8 +100,9 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                 py={6}
                 mt="50px"
                 mb="70px"
-                // borderRadius="full"
                 fontWeight="light"
+                _hover={{ bg: "#23B9A5", color: "white", fontWeight: "bold"}}
+                boxShadow="lg"
               >
                 Login
               </Button>
@@ -93,9 +111,9 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
         </Flex>
 
         <VStack spacing={6} my={8}>
-          <Text fontSize="lg" variant="light">
+          {/* <Text fontSize="lg" variant="light">
             Developed By
-          </Text>
+          </Text> */}
           <Flex
             justify="space-between"
             width="100%"
@@ -121,7 +139,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                   boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
-                <Text variant="light" noOfLines={1} isTruncated>
+                <Text variant="light" noOfLines={1} isTruncated color="gray.200">
                   {developer.name}
                 </Text>
               </Box>

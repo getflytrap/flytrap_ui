@@ -1,4 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
+import "@fontsource/inter";
+import "@fontsource/inconsolata";
 
 const customTheme = extendTheme({
   colors: {
@@ -6,7 +8,7 @@ const customTheme = extendTheme({
       50: "#E3F7E3",
       100: "#E9F6D8",
       200: "#DCF2C4", // logo font
-      300: "#B1CF5E",
+      300: "#25C1AB",
       400: "#B1CF5F", // logo wings
       500: "#1D7D55", // logo background
       600: "#186A4A",
@@ -16,8 +18,8 @@ const customTheme = extendTheme({
     },
   },
   fonts: {
-    heading: "Roboto, sans-serif",
-    body: "Roboto, sans-serif",
+    heading: "Inter, sans-serif",
+    body: "Inter, sans-serif",
   },
   styles: {
     global: {
