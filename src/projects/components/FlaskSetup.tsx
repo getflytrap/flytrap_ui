@@ -25,8 +25,8 @@ const FlaskSetup: React.FC = () => {
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxW="1200px" mx="auto">
         <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-          <Heading as="h1" size="xl" mb={6}>
-            Flask SDK Setup Instructions
+          <Heading as="h2" fontSize="1.5rem" mb={6}>
+            Configure Flask SDK
           </Heading>
   
           <Box textAlign="left" w="full">
@@ -100,20 +100,22 @@ const FlaskSetup: React.FC = () => {
       flytrap.capture_exception(e)`}
             />
           </Box>
-  
-          <Box textAlign="center" w="full" mt={8}>
-            <Button
-              colorScheme="teal"
-              size="lg"
-              width="100%"
-              onClick={handleButtonClick}
-              borderRadius="md"
-              boxShadow="lg"
-              _hover={{ bg: "teal.700" }}
-            >
-              Take me to Dashboard
-            </Button>
-          </Box>
+
+          <Divider my={4} />
+          
+          <Button
+            colorScheme="teal"
+            size="lg"
+            width="30%"
+            onClick={handleButtonClick}
+            borderRadius="md"
+            boxShadow="lg"
+            _hover={{ bg: "teal.700" }}
+            mt={8}
+            mb={12}
+          >
+            Take me to issues
+          </Button>
         </Box>
       </Container>
     </Box>
