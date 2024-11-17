@@ -19,8 +19,8 @@ import AdminRequired from "./authentication/components/AdminRequired.tsx";
 const App = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
       <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Login />} />
 
       <Route element={<AuthRequired />}>
         <Route element={<MainLayout />}>

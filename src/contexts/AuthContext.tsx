@@ -14,6 +14,7 @@ interface AuthContextType {
     isRoot: boolean,
   ) => void;
   logout: () => void;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -23,6 +24,7 @@ export const AuthContext = createContext<AuthContextType>({
   isRoot: false,
   login: () => {},
   logout: () => {},
+  loading: true,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userUuid, setUserUuid] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [isRoot, setIsRoot] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -46,6 +49,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (e) {
         console.error("Error checking session:", e);
         setIsLoggedIn(false);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,7 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userUuid, name, isRoot, login, logout }}
+      value={{ isLoggedIn, userUuid, name, isRoot, login, logout, loading }}
     >
       {children}
     </AuthContext.Provider>
