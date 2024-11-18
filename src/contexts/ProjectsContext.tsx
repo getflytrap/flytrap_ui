@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
 import { useToast } from "@chakra-ui/react";
 import { eventBus } from "../hooks/eventBus";
+import { WebSocketDataType } from "../types";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -32,45 +33,9 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   // const [loadingError, setLoadingError] = useState<string | null>(null);
   const toast = useToast();
 
-  // // I NEED A WAY TO GET ACCESS TO SET PROJECTS!!!
-  // setProjects((prevProjects) => {
-  //   const newProjects = prevProjects.slice();
-  //   newProjects.map((project) => {
-  //     if (project.uuid === data.project_uuid) {
-  //       project.issue_count += 1;
-  //     } else {
-  //       return project;
-  //     }
-  //   });
-
-  //   return newProjects;
-  // });
-
-  // export interface Project {
-  //  uuid: string;
-  //  name: string;
-  //  issue_count: number;
-  //  platform: string;
-  //  }
-
-  //   data = {
-  //     "project_uuid": project_uuid,
-  //     "project_name": project_name,
-  //     "issue_data":  latest_issue
-  // }
-
-  // for user_uuid in project_users:
-  //     print(data)
-  //     socketio.emit(
-  //         "new_notification",
-  //         data,
-  //         namespace="/notifications",
-  //         room=user_uuid,
-  //     )
-
   useEffect(() => {
     // Event listener to handle new notifications
-    const handleNewNotification = (data) => {
+    const handleNewNotification = (data: WebSocketDataType) => {
       setProjects((prevProjects) => {
         const newProjects = prevProjects.slice();
         newProjects.map((project) => {
@@ -84,10 +49,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       });
     };
 
-    // Subscribe to the event
     eventBus.on("newIssueNotification", handleNewNotification);
 
-    // Cleanup the event listener on component unmount
     return () => {
       eventBus.off("newIssueNotification", handleNewNotification);
     };

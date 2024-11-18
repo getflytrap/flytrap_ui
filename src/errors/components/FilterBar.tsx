@@ -1,5 +1,6 @@
-import { Box, Select, Flex, Text, Divider } from "@chakra-ui/react";
+import { Box, Select, Flex, Text, Divider, IconButton } from "@chakra-ui/react";
 import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
+import { MdRefresh } from "react-icons/md";
 
 interface FilterBarProps {
   selectedHandled: HandledFilter;
@@ -7,6 +8,7 @@ interface FilterBarProps {
   setSelectedTime: React.Dispatch<React.SetStateAction<TimeFilter>>;
   selectedResolved: ResolvedFilter;
   setSelectedResolved: React.Dispatch<React.SetStateAction<ResolvedFilter>>;
+  handleRefresh: () => void;
 }
 
 const FilterBar = ({
@@ -15,6 +17,7 @@ const FilterBar = ({
   setSelectedTime,
   selectedResolved,
   setSelectedResolved,
+  handleRefresh,
 }: FilterBarProps) => {
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value as TimeFilter);
@@ -157,6 +160,15 @@ const FilterBar = ({
               </Box>
             ))}
           </Flex>
+          <IconButton
+            icon={<MdRefresh />}
+            aria-label="Refresh Issues"
+            onClick={handleRefresh}
+            colorScheme="teal"
+            variant="outline"
+            size="sm"
+            ml={4}
+          />
         </Flex>
       </Flex>
     </Box>

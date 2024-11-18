@@ -1,32 +1,119 @@
 import { useState, useEffect } from "react";
-import { Box, Heading } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { Box, Heading, useToast } from "@chakra-ui/react";
+
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
-import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
+
+import {
+  HandledFilter,
+  TimeFilter,
+  ResolvedFilter,
+  ErrorData,
+  Rejection,
+} from "../../types";
+import {
+  convertHandledToBoolean,
+  convertToTimeStamp,
+  convertResolvedToBoolean,
+} from "../../helpers";
+import { getIssues } from "../../services";
+import { useProjects } from "../../hooks/useProjects";
+
+const ERROR_LIMIT_PER_PAGE = 10;
 
 const ErrorDisplay = () => {
+  const [issues, setIssues] = useState<(ErrorData | Rejection)[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [selectedHandled, setSelectedHandled] = useState<HandledFilter>("All");
   const [selectedResolved, setSelectedResolved] =
     useState<ResolvedFilter>("All");
   const [selectedTime, setSelectedTime] = useState<TimeFilter>("Forever");
+
+  const { projects, selectedProject, selectProject, fetchProjectsForUser } =
+    useProjects();
+  const { project_uuid: projectUuid } = useParams<{ project_uuid: string }>();
   const location = useLocation();
+  const toast = useToast();
 
   useEffect(() => {
-    if (location.state) {
-      const { handled, time, resolved } = location.state;
+    const loadProject = async () => {
+      if (projects.length === 0) await fetchProjectsForUser();
 
-      if (handled) {
-        setSelectedHandled(handled);
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
       }
-      if (resolved) {
-        setSelectedResolved(resolved);
-      }
-      if (time) {
-        setSelectedTime(time);
-      }
+    };
+
+    if (!selectedProject || projects.length === 0) loadProject();
+  }, [
+    projects,
+    projectUuid,
+    selectedProject,
+    selectProject,
+    fetchProjectsForUser,
+  ]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      setCurrentPage(1);
+      fetchIssues(1);
     }
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (selectedProject) fetchIssues(currentPage);
+  }, [selectedProject, currentPage]);
+
+  useEffect(() => {
+    if (selectedProject) fetchIssues(1);
+  }, [selectedHandled, selectedTime, selectedResolved]);
+
+  useEffect(() => {
+    const { handled, time, resolved } = location.state || {};
+    if (handled) setSelectedHandled(handled);
+    if (resolved) setSelectedResolved(resolved);
+    if (time) setSelectedTime(time);
   }, [location.state]);
+
+  const handleRefresh = () => {
+    fetchIssues(currentPage);
+  };
+
+  const fetchIssues = async (page: number = 1) => {
+    setIsLoading(true);
+    try {
+      const { data } = await getIssues(
+        selectedProject?.uuid,
+        convertHandledToBoolean(selectedHandled),
+        convertResolvedToBoolean(selectedResolved),
+        convertToTimeStamp(selectedTime),
+        page,
+        ERROR_LIMIT_PER_PAGE
+      );
+
+      setIssues(data.issues);
+      if (data.current_page && data.total_pages) {
+        setCurrentPage(data.current_page);
+        setTotalPages(data.total_pages);
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to load error data.",
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Box overflowY="auto" mx={4}>
@@ -39,11 +126,19 @@ const ErrorDisplay = () => {
         setSelectedTime={setSelectedTime}
         selectedResolved={selectedResolved}
         setSelectedResolved={setSelectedResolved}
+        handleRefresh={handleRefresh}
       />
       <ErrorsTable
+        issues={issues}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        setTotalPages={setTotalPages}
+        isLoading={isLoading}
         selectedHandled={selectedHandled}
         selectedTime={selectedTime}
         selectedResolved={selectedResolved}
+        selectedProject={selectedProject}
       />
     </Box>
   );
