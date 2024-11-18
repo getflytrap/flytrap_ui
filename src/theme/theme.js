@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 import "@fontsource/inter";
+import "@fontsource/inter/300.css";
 import "@fontsource/inconsolata";
 
 const customTheme = extendTheme({

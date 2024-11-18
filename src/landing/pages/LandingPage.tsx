@@ -43,7 +43,7 @@ const LandingPage = () => {
       color="white"
     >
       <Container maxWidth="1280px" centerContent>
-        <Flex justify="center" my={8}>
+        <Flex justify="center" my={12}>
           {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
           <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="500px" />
         </Flex>
@@ -62,32 +62,31 @@ const LandingPage = () => {
           your application.
         </Text> */}
         <Text 
-          fontSize="3rem" 
+          fontSize="2rem" 
           fontWeight="bold"
-          color="white"
-          my={2}
+          color="brand.800"
+          // my={2}
         >
           Catching Bugs So You Don't Have To
         </Text>
-        <Text fontSize="1.5rem" color="gray.200" my={2}>
+        <Text fontSize="1.2rem" color="brand.800" my={2} fontWeight="300">
           Lightweight Error Monitoring You Own, Trust, and Control.
         </Text>
-        <Flex justify="center">
+        <Flex justify="center" mt={12}>
           {isLoggedIn ? (
             <Link to="/projects">
               <Button
                 leftIcon={<BsFolder />}
                 size="2xl"
-                bg="brand.400"
+                bg="#8CA44B"
                 px={8}
                 py={6}
-                mt="50px"
-                mb="70px"
+                my={12}
                 fontWeight="light"
-                _hover={{ bg: "#23B9A5", color: "white", fontWeight: "bold"}}
+                _hover={{ bg: "teal.400", fontWeight: "bold"}}
                 boxShadow="lg"
               >
-                Go to Projects
+                Dashboard
               </Button>
             </Link>
           ) : (
@@ -95,13 +94,12 @@ const LandingPage = () => {
               <Button
                 leftIcon={<BsUnlock />}
                 size="2xl"
-                bg="brand.400"
+                bg="#8CA44B"
                 px={8}
                 py={6}
-                mt="50px"
-                mb="70px"
+                my={12}
                 fontWeight="light"
-                _hover={{ bg: "#23B9A5", color: "white", fontWeight: "bold"}}
+                _hover={{ bg: "teal.400", fontWeight: "bold"}}
                 boxShadow="lg"
               >
                 Login
