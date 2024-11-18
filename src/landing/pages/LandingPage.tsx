@@ -9,7 +9,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { BsFolder, BsUnlock } from "react-icons/bs";
 // import transparent_logo from "../../assets/transparent_logo.png";
 import transparent_logo_animated from "../../assets/transparent_logo_animated.png";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -76,15 +75,16 @@ const LandingPage = () => {
           {isLoggedIn ? (
             <Link to="/projects">
               <Button
-                leftIcon={<BsFolder />}
-                size="2xl"
-                bg="#8CA44B"
+                bg="rgba(233, 246, 216, 0.7)"
+                color="brand.800"
                 px={8}
                 py={6}
                 my={12}
-                fontWeight="light"
-                _hover={{ bg: "teal.400", fontWeight: "bold"}}
-                boxShadow="lg"
+                _hover={{ 
+                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  border: "none",
+                  fontWeight: "bold",
+                }}
               >
                 Dashboard
               </Button>
@@ -92,15 +92,16 @@ const LandingPage = () => {
           ) : (
             <Link to="/login">
               <Button
-                leftIcon={<BsUnlock />}
-                size="2xl"
-                bg="#8CA44B"
+                bg="rgba(233, 246, 216, 0.7)"
+                color="brand.800"
                 px={8}
                 py={6}
                 my={12}
-                fontWeight="light"
-                _hover={{ bg: "teal.400", fontWeight: "bold"}}
-                boxShadow="lg"
+                _hover={{ 
+                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  border: "none",
+                  fontWeight: "bold",
+                }}
               >
                 Login
               </Button>
@@ -137,7 +138,7 @@ const LandingPage = () => {
                   boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
-                <Text variant="light" noOfLines={1} isTruncated color="gray.200">
+                <Text variant="light" noOfLines={1} isTruncated color="brand.900">
                   {developer.name}
                 </Text>
               </Box>
