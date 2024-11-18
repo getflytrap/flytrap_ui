@@ -1,11 +1,6 @@
 // eventBus.ts
 import mitt from "mitt";
-
-interface WebSocketDataType {
-  project_uuid: string;
-  project_name: string;
-  issue_data: object;
-}
+import { WebSocketDataType } from "../types";
 
 export type Events = {
   newIssueNotification: WebSocketDataType;

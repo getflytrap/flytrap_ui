@@ -165,9 +165,11 @@ const FilterBar = ({
             aria-label="Refresh Issues"
             onClick={handleRefresh}
             colorScheme="teal"
-            variant="outline"
-            size="sm"
+            size="md"
+            bg="brand.500"
+            color="white"
             ml={4}
+            margin="30px"
           />
         </Flex>
       </Flex>
