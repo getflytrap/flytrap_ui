@@ -9,7 +9,6 @@ import {
   Th,
   Tbody,
   IconButton,
-  Heading,
   Text,
   useDisclosure,
   Modal,
@@ -76,9 +75,6 @@ const UserList = ({ users, setUsers }: UserListProps) => {
       overflowY="auto"
       p={6}
     >
-      <Heading as="h3" fontSize="1.5rem" mb={4} textAlign="center">
-        Users
-      </Heading>
       <Table variant="simple">
         <Thead>
           <Tr>

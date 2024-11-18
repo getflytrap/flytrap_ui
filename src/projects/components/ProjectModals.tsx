@@ -172,7 +172,7 @@ const ProjectModals = ({
       <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose} size="lg">
         <ModalOverlay />
         <ModalContent maxWidth="700px" width="90%">
-          <ModalHeader>Create New Project</ModalHeader>
+          <ModalHeader>Create a New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>

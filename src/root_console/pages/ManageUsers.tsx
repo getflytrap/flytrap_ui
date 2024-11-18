@@ -53,10 +53,10 @@ const ManageUsers = () => {
           borderColor="lightgray"
           borderRadius="md"
         >
-          <Flex justifyContent="center" gap={12} mb={8}>
-            <UserList users={users} setUsers={setUsers} />
-            <CreateUser setUsers={setUsers} />
-          </Flex>
+          <CreateUser setUsers={setUsers} />
+          <UserList users={users} setUsers={setUsers} />
+          {/* <Flex justifyContent="space-around" gap={12} mb={8}>
+          </Flex> */}
           <Divider />
           <AssignUsers users={users} />
         </Flex>

@@ -4,12 +4,19 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { createAccount } from "../../services/index";
 import { User } from "../../types";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 interface CreateUserProps {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
@@ -21,6 +28,7 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); 
 
   const toast = useToast();
 
@@ -151,64 +159,87 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
   };
 
   return (
-    <Box p={6} minWidth="400px">
-      <Heading as="h3" fontSize="1.5rem" mb={4} textAlign="center">
-        Create User
-      </Heading>
-
-      <FormControl isRequired mt={4}>
-        <FormLabel>First Name</FormLabel>
-        <Input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="Enter first name"
-        />
-      </FormControl>
-
-      <FormControl isRequired mt={4}>
-        <FormLabel>Last Name</FormLabel>
-        <Input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Enter last name"
-        />
-      </FormControl>
-
-      <FormControl isRequired mt={4}>
-        <FormLabel>Email</FormLabel>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email"
-        />
-      </FormControl>
-
-      <FormControl isRequired mt={4}>
-        <FormLabel>Password</FormLabel>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
-        />
-      </FormControl>
-
-      <FormControl isRequired mt={4}>
-        <FormLabel>Confirm Password</FormLabel>
-        <Input
-          type="password"
-          value={confirmedPassword}
-          onChange={(e) => setConfirmedPassword(e.target.value)}
-          placeholder="Confirm password"
-        />
-      </FormControl>
-
-      <Button colorScheme="green" mt={4} onClick={handleSubmit} width="full">
-        Submit
+    <Box textAlign="right">
+      <Button 
+        colorScheme="teal" 
+        my={8}
+        mr={8}
+        leftIcon={<IoAddCircleOutline />}
+        onClick={() => setIsModalOpen(true)}
+      >
+        Create New User
       </Button>
+
+      {/* Modal */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create a New User</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box>
+              <FormControl isRequired mt={4}>
+                <FormLabel>First Name</FormLabel>
+                <Input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Enter first name"
+                />
+              </FormControl>
+
+              <FormControl isRequired mt={4}>
+                <FormLabel>Last Name</FormLabel>
+                <Input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Enter last name"
+                />
+              </FormControl>
+
+              <FormControl isRequired mt={4}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter email"
+                />
+              </FormControl>
+
+              <FormControl isRequired mt={4}>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                />
+              </FormControl>
+
+              <FormControl isRequired mt={4}>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  type="password"
+                  value={confirmedPassword}
+                  onChange={(e) => setConfirmedPassword(e.target.value)}
+                  placeholder="Confirm password"
+                />
+              </FormControl>
+            </Box>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="green" onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Button colorScheme="red" onClick={() => setIsModalOpen(false)} ml={3}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
