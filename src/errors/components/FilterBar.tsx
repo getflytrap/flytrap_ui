@@ -120,7 +120,7 @@ const FilterBar = ({
                 key={status}
                 borderRadius="2px"
                 borderBottom={
-                  selectedHandled === status
+                  selectedResolved === status
                     ? "4px solid #186A4A"
                     : "4px solid transparent"
                 }
@@ -136,7 +136,7 @@ const FilterBar = ({
                   color={selectedResolved === status ? "brand.600" : "gray.900"}
                   transition="all 0.2s ease"
                   _hover={
-                    selectedHandled === status
+                    selectedResolved === status
                       ? {
                           bg: "gray.200",
                           color: "brand.600",
