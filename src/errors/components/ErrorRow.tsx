@@ -2,7 +2,12 @@ import { Box, Td, Link, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ErrorData, Rejection } from "../../types";
 import { Project } from "../../types";
-import { IoWarningOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import { 
+  IoWarningOutline, 
+  IoCheckmarkCircleOutline, 
+  IoShieldCheckmarkOutline, 
+  IoHourglassOutline 
+} from "react-icons/io5";
 
 interface ErrorRowProps {
   issue: ErrorData | Rejection;
@@ -27,7 +32,7 @@ const ErrorRow = ({
   return (
     <Tr key={issue.uuid} mb={2}>
       {/* Render Issue Name only on small screens */}
-      <Td>
+      <Td minW="250px" maxW="250px" whiteSpace="normal">
         <Link
           as={RouterLink}
           to={
@@ -55,7 +60,7 @@ const ErrorRow = ({
           display="inline-flex"
           gap={1}
         >
-          {issue.handled ? <IoCheckmarkCircleOutline /> : <IoWarningOutline />}
+          {issue.handled ? <IoShieldCheckmarkOutline /> : <IoWarningOutline />}
           {issue.handled ? "Handled" : "Unhandled"}
         </Box>
       </Td>
@@ -63,8 +68,18 @@ const ErrorRow = ({
       {/* Conditionally render time and resolved status only on larger screens */}
       {!isSmallScreen && (
         <>
-          <Td>{new Date(issue.created_at).toLocaleString()}</Td>
-          <Td>{issue.resolved ? "Resolved" : "Unresolved"}</Td>
+          <Td>
+            {new Date(issue.created_at).toLocaleString([], {
+              year: '2-digit',
+              month: 'short',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Td>
+          <Td>{(issue as ErrorData).total_occurrences ?? ""}</Td>
+          <Td>{(issue as ErrorData).distinct_users ?? ""}</Td>
+          <Td>{issue.resolved ? <IoCheckmarkCircleOutline /> : <IoHourglassOutline />}</Td>
         </>
       )}
     </Tr>

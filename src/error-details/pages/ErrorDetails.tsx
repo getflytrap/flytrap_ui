@@ -26,11 +26,11 @@ import LoadingSpinner from "../../shared/LoadingSpinner";
 import CodeContextDisplay from "../components/ContextDisplay";
 import {
   IoTrashOutline,
-  IoCloseOutline,
-  IoCheckmarkOutline,
   IoArrowBackOutline,
   IoWarningOutline,
   IoCheckmarkCircleOutline,
+  IoShieldCheckmarkOutline, 
+  IoHourglassOutline
 } from "react-icons/io5";
 
 const ErrorDetails = () => {
@@ -176,7 +176,7 @@ const ErrorDetails = () => {
 
   return (
     <Box p={4}>
-      <Flex justify="space-between" align="center" mb={4}>
+      <Flex justify="space-between" align="center" mb={4} px={4}>
         {/* Return to Errors Button */}
         <Button
           size="md"
@@ -194,7 +194,7 @@ const ErrorDetails = () => {
           <Button
             size="md"
             onClick={handleToggleResolved}
-            leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
+            leftIcon={resolved ? <IoHourglassOutline /> : <IoCheckmarkCircleOutline />}
             fontWeight="light"
             bg={resolved ? "red.400" : "green.400"}
             _hover={{
@@ -239,13 +239,13 @@ const ErrorDetails = () => {
               </Text>
           </Flex>
           <Flex justify="space-between" align="center" mb={4} px={4}>
-            <HStack>
+            <HStack flex="2">
               <Text>{errorData.message}</Text>
               <Icon
                   as={
                     errorData.handled === false
                       ? IoWarningOutline
-                      : IoCheckmarkCircleOutline
+                      : IoShieldCheckmarkOutline
                   }
                   color={errorData.handled === false ? "red.500" : "green.500"}
                 />
@@ -257,8 +257,22 @@ const ErrorDetails = () => {
                 {errorData.handled === false ? "Unhandled" : "Handled"}
               </Text>
             </HStack>
+            <Flex gap={12}>
+              <Flex direction="column" align="center">
+                <Text>Events</Text>
+                <Text as="span" fontSize="xl" color="blue.500">
+                  {errorData.total_occurrences}
+                </Text>
+              </Flex>
+              <Flex direction="column" align="center">
+                <Text>Users</Text>
+                <Text as="span" fontSize="xl" color="blue.500">
+                  {errorData.distinct_users}
+                </Text>
+              </Flex>
+            </Flex>
           </Flex>
-          <Table>
+          <Table my={8}>
             <Tbody>
               <Tr>
                 <Th fontSize="sm" fontWeight="bold" maxW="500px">
@@ -267,8 +281,23 @@ const ErrorDetails = () => {
                 <Th fontSize="sm" fontWeight="bold">
                   Line
                 </Th>
+                {errorData.col_number && (
+                  <Th fontSize="sm" fontWeight="bold">
+                    Column
+                  </Th>
+                )}
+                {errorData.browser && errorData.browser !== "unknown" && (
+                  <Th fontSize="sm" fontWeight="bold">
+                    Browser
+                  </Th>
+                )}
+                {errorData.runtime && errorData.runtime !== "unknown" && (
+                  <Th fontSize="sm" fontWeight="bold">
+                    Runtime
+                  </Th>
+                )}
                 <Th fontSize="sm" fontWeight="bold">
-                  Column
+                  OS
                 </Th>
               </Tr>
               <Tr>
@@ -284,8 +313,23 @@ const ErrorDetails = () => {
                 <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
                   {errorData.line_number}
                 </Td>
+                {errorData.col_number && (
+                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                    {errorData.col_number}
+                  </Td>
+                )}
+                {errorData.browser && errorData.browser !== "unknown" && (
+                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                    {errorData.browser}
+                  </Td>
+                )}
+                {errorData.runtime && errorData.runtime !== "unknown" && (
+                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                    {errorData.runtime}
+                  </Td>
+                )}
                 <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
-                  {errorData.col_number}
+                  {errorData.os && errorData.os !== "unknown" ? errorData.os : "unknown"}
                 </Td>
               </Tr>
             </Tbody>
