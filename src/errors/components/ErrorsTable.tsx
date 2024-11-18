@@ -9,7 +9,13 @@ import {
   Text,
   Center,
   useToast,
+  Button,
+  IconButton,
+  Flex,
 } from "@chakra-ui/react";
+import { MdRefresh } from "react-icons/md"; // Import the refresh icon
+import { eventBus } from "../../hooks/eventBus";
+
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import PaginationControls from "../../shared/Pagination";
@@ -64,22 +70,17 @@ const ErrorsTable = ({
   }, [projects, projectUuid]);
 
   useEffect(() => {
-    // Check if window width is below 768px to set mobile state
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Initial check on component mount
     handleResize();
 
-    // Add resize listener
     window.addEventListener("resize", handleResize);
 
-    // Clean up the resize listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // whenever project changes, currentPage is reset to 1
   useEffect(() => {
     if (selectedProject) {
       setCurrentPage(1);
@@ -95,7 +96,7 @@ const ErrorsTable = ({
 
   useEffect(() => {
     if (selectedProject) {
-      fetchIssues(1); // Reset to page 1 when filters change
+      fetchIssues(1);
     }
   }, [selectedHandled, selectedTime, selectedResolved]);
 
@@ -108,7 +109,7 @@ const ErrorsTable = ({
         convertResolvedToBoolean(selectedResolved), // null for "All"
         convertToTimeStamp(selectedTime), // null for "Forever"
         page,
-        ERROR_LIMIT_PER_PAGE,
+        ERROR_LIMIT_PER_PAGE
       );
 
       setIssues(data.issues);
@@ -118,8 +119,8 @@ const ErrorsTable = ({
       }
     } catch (e) {
       console.error(e);
-      toast({ 
-        title: "Failed to load error data.", 
+      toast({
+        title: "Failed to load error data.",
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -129,6 +130,11 @@ const ErrorsTable = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    // Refresh the current page's issues
+    fetchIssues(currentPage);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -152,6 +158,23 @@ const ErrorsTable = ({
 
   return (
     <Box>
+      {/* Flex container for filter buttons and refresh button */}
+      <Flex align="center" justify="space-between" mb={4}>
+        <Box>
+          {/* Here, we assume you have "resolved", "unresolved", "all" buttons */}
+          {/* Add your filter buttons here (not shown in the original code) */}
+        </Box>
+        <IconButton
+          icon={<MdRefresh />}
+          aria-label="Refresh Issues"
+          onClick={handleRefresh}
+          colorScheme="teal"
+          variant="outline"
+          size="sm"
+          ml={4} // Space it out from the other buttons
+        />
+      </Flex>
+
       <Table variant="striped" colorScheme="gray" width="100%" mx="auto">
         <Thead>
           <Tr>
@@ -174,6 +197,7 @@ const ErrorsTable = ({
           ))}
         </Tbody>
       </Table>
+
       <PaginationControls
         currentPage={currentPage}
         totalPages={totalPages}
