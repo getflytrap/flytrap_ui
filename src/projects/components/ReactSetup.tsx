@@ -24,8 +24,8 @@ const ReactSetup: React.FC = () => {
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxW="1200px" mx="auto">
         <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
-          <Heading as="h1" size="xl" mb={6}>
-            React SDK Instructions
+          <Heading as="h2" fontSize="1.5rem" mb={6}>
+            Configure React SDK
           </Heading>
           <Divider />
           <br />
@@ -121,11 +121,13 @@ const ReactSetup: React.FC = () => {
           <Button
             colorScheme="teal"
             size="lg"
-            width="100%"
+            width="30%"
             onClick={handleButtonClick}
             borderRadius="md"
             boxShadow="lg"
             _hover={{ bg: "teal.700" }}
+            mt={8}
+            mb={12}
           >
             Take me to Dashboard
           </Button>

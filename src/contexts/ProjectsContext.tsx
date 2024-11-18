@@ -45,7 +45,14 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       setTotalPages(data.total_pages);
     } catch {
       // setLoadingError("Failed to load projects");
-      toast({ title: "Failed to load projects", status: "error" });
+      toast({ 
+        title: "Failed to load projects", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }

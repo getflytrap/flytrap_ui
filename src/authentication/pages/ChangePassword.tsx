@@ -10,7 +10,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  Divider,
+  Flex,
   useToast,
 } from "@chakra-ui/react";
 
@@ -30,18 +30,22 @@ const ChangePassword = () => {
     if (newPassword.length < 8) {
       toast({
         title: "Invalid Password",
-        description: "Password must be at least 8 characters long",
+        description: "Password must be at least 8 characters long.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
     } else if (newPassword !== confirmNewPassword) {
       toast({
         title: "Invalid Password",
-        description: "Password values do not match",
+        description: "Password values do not match.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
       return false;
@@ -58,13 +62,12 @@ const ChangePassword = () => {
     if (userUuid) {
       try {
         await updatePassword(userUuid, newPassword);
-        console.log("New password submitted:", newPassword);
-
         toast({
-          title: "Successfully Changed Password",
-          description: "You have successfully changed your password",
+          title: "Successfully Changed Password.",
           status: "success",
-          duration: 4000,
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
           isClosable: true,
         });
 
@@ -72,10 +75,11 @@ const ChangePassword = () => {
         navigate("/login");
       } catch {
         toast({
-          title: "Error Changing Password",
-          description: "Could not change password",
+          title: "Error Changing Password.",
           status: "error",
-          duration: 4000,
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
           isClosable: true,
         });
       }
@@ -84,8 +88,8 @@ const ChangePassword = () => {
 
   return (
     <Box bg="gray.100" px={6} height="100%" textAlign="center">
-      <Heading as="h2" fontSize="2rem" my="30px">
-        Change Password{" "}
+      <Heading as="h2" fontSize="1.5rem" my="30px">
+        Change Your Password{" "}
       </Heading>
       <Box
         borderWidth="1px"
@@ -117,20 +121,25 @@ const ChangePassword = () => {
           />
         </FormControl>
 
-        <Button
-          colorScheme="green"
-          mt={4}
-          onClick={handleSubmitNewPassword}
-          width="full"
-        >
-          Confirm Password Change
-        </Button>
-
-        <Divider my={4} />
-
-        <Button colorScheme="blue" onClick={handleCancel} width="full">
-          Cancel
-        </Button>
+        <Flex alignItems="center" justifyContent="space-around" mt={8} gap={4}>
+          <Button
+            colorScheme="teal"
+            onClick={handleSubmitNewPassword}
+            flex="1"
+            maxWidth="200px"
+          >
+            Change Password
+          </Button>
+  
+          <Button 
+            colorScheme="red"
+            onClick={handleCancel} 
+            flex="1"
+            maxWidth="200px"
+          >
+            Cancel
+          </Button>
+        </Flex>
       </Box>
     </Box>
   );

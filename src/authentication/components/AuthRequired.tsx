@@ -3,9 +3,9 @@ import { useAuth } from "../../hooks/useAuth";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const AuthRequired = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, loading } = useAuth();
 
-  if (isLoggedIn === null) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 

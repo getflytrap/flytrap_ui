@@ -118,7 +118,14 @@ const ErrorsTable = ({
       }
     } catch (e) {
       console.error(e);
-      toast({ title: "Failed to load error data.", status: "error" });
+      toast({ 
+        title: "Failed to load error data.", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -148,8 +155,8 @@ const ErrorsTable = ({
       <Table variant="striped" colorScheme="gray" width="100%" mx="auto">
         <Thead>
           <Tr>
-            <Th fontSize="sm">Error Title</Th>
-            <Th fontSize="sm">Handled</Th>
+            <Th fontSize="sm"></Th>
+            <Th fontSize="sm"></Th>
             {/* Conditionally render the 'Time' and 'Status' columns */}
             {!isMobile && <Th fontSize="sm">Time</Th>}
             {!isMobile && <Th fontSize="sm">Status</Th>}

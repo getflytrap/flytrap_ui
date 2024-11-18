@@ -37,18 +37,21 @@ const Login = () => {
       login(data.userUuid, data.firstName, data.lastName, data.isRoot);
       toast({
         title: "Successful Login",
-        description: "You are successfully logged in",
+        description: `Welcome, ${data.firstName} ${data.lastName}!`,
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch (e) {
-      console.log("error logging in: ", e);
       toast({
-        title: "Login error",
-        description: "User could not be logged in - check your inputs",
+        title: "Failed Login",
+        description: "Email or password incorrect.",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }
@@ -58,13 +61,13 @@ const Login = () => {
     <Box
       width="100vw"
       height="100vh"
-      bg="brand.500"
+      bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
     >
-      <Image src={transparent_logo} alt="Flytrap Logo" height="150px" />
+      <Image src={transparent_logo} alt="Flytrap Logo" height="200px" />
       <Box
         borderWidth="1px"
         borderColor="lightgray"
@@ -76,11 +79,8 @@ const Login = () => {
         my={50}
         bg="gray.100"
       >
-        <Heading as="h2" size="lg" mb={4} textAlign="center">
+        <Heading as="h2" fontSize="1.5rem" mb={4} textAlign="center">
           Login
-        </Heading>
-        <Heading as="h3" size="md" mb={4} textAlign="center">
-          Sign in as:
         </Heading>
 
         <FormControl isRequired mt={4}>
@@ -106,16 +106,12 @@ const Login = () => {
         </FormControl>
 
         <Button
-          bg="brand.500"
-          color="white"
-          _hover={{
-            bg: "brand.700",
-          }}
-          mt={4}
+          colorScheme="teal"
+          mt={8}
           onClick={handleSubmit}
           width="full"
         >
-          Submit
+          Continue
         </Button>
       </Box>
     </Box>

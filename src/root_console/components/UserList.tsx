@@ -9,7 +9,6 @@ import {
   Th,
   Tbody,
   IconButton,
-  Heading,
   Text,
   useDisclosure,
   Modal,
@@ -47,15 +46,19 @@ const UserList = ({ users, setUsers }: UserListProps) => {
         title: "Successful Deletion",
         description: "User Successfully Deleted",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     } catch (e) {
       toast({
-        title: "Deletion error",
+        title: "Deletion Error",
         description: "User could not be deleted",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }
@@ -72,9 +75,6 @@ const UserList = ({ users, setUsers }: UserListProps) => {
       overflowY="auto"
       p={6}
     >
-      <Heading as="h3" fontSize="1.5rem" mb={4} textAlign="center">
-        Users
-      </Heading>
       <Table variant="simple">
         <Thead>
           <Tr>

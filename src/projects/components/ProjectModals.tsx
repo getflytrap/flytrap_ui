@@ -54,16 +54,25 @@ const ProjectModals = ({
   const handleNewProjectSubmit = async () => {
     if (newProjectName.length < 8) {
       toast({
-        title: "Project name must be at least 8 characters",
+        title: "Invalid ProjectName",
+        description: "Project name must be at least 8 characters.",
         status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
       });
       return;
     }
 
     if (!selectedPlatform) {
       toast({
-        title: "Must select a platform",
+        title: "You Must Select a Platform",
         status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
       });
       return;
     }
@@ -80,12 +89,27 @@ const ProjectModals = ({
         },
       ]);
       onNewProjectClose();
-      toast({ title: "Project created", status: "success" });
+      toast({ 
+        title: "Success", 
+        description: `Successfully created project ${newProjectName}`,
+        status: "success",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
       navigate(`/projects/${data.uuid}/setup`, {
         state: { platform: selectedPlatform },
       });
     } catch {
-      toast({ title: "Error creating project", status: "error" });
+      toast({ 
+        title: "Error creating project", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+       });
     }
   };
 
@@ -101,9 +125,23 @@ const ProjectModals = ({
       );
       onEditClose();
       selectProject(null);
-      toast({ title: "Project renamed", status: "success" });
+      toast({ 
+        title: "Project Renamed", 
+        status: "success",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+       });
     } catch {
-      toast({ title: "Error renaming project", status: "error" });
+      toast({ 
+        title: "Error Renaming Project", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     }
   };
 
@@ -115,9 +153,23 @@ const ProjectModals = ({
       );
       onDeleteClose();
       selectProject(null);
-      toast({ title: "Project deleted", status: "success" });
+      toast({ 
+        title: "Project Deleted", 
+        status: "success",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     } catch {
-      toast({ title: "Error deleting project", status: "error" });
+      toast({ 
+        title: "Error Deleting Project", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     }
   };
 
@@ -134,7 +186,7 @@ const ProjectModals = ({
       <Modal isOpen={isNewProjectOpen} onClose={onNewProjectClose} size="lg">
         <ModalOverlay />
         <ModalContent maxWidth="700px" width="90%">
-          <ModalHeader>Create New Project</ModalHeader>
+          <ModalHeader>Create a New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
@@ -180,7 +232,7 @@ const ProjectModals = ({
             </Flex>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleNewProjectSubmit}>
+            <Button colorScheme="teal" mr={3} onClick={handleNewProjectSubmit}>
               Submit
             </Button>
             <Button variant="ghost" onClick={onNewProjectClose}>
@@ -207,7 +259,7 @@ const ProjectModals = ({
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleEditSubmit}>
+            <Button colorScheme="teal" mr={3} onClick={handleEditSubmit}>
               Submit
             </Button>
             <Button variant="ghost" onClick={onEditClose}>

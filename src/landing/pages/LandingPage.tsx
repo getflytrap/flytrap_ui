@@ -9,12 +9,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { BsFolder, BsUnlock } from "react-icons/bs";
 // import transparent_logo from "../../assets/transparent_logo.png";
 import transparent_logo_animated from "../../assets/transparent_logo_animated.png";
 import { AuthContext } from "../../contexts/AuthContext";
 
-const LandingPage = ({ bgColor = "brand.500" }) => {
+const LandingPage = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const developers = [
     {
@@ -36,13 +35,18 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
   ];
 
   return (
-    <Box bg={bgColor} minH="100vh" minW="100vw" color="white">
+    <Box 
+      bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
+      minH="100vh" 
+      minW="100vw" 
+      color="white"
+    >
       <Container maxWidth="1280px" centerContent>
-        <Flex justify="center" my={8}>
+        <Flex justify="center" my={12}>
           {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
-          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="400px" />
+          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="500px" />
         </Flex>
-        <Text
+        {/* <Text
           fontSize="lg"
           variant="light"
           textAlign="center"
@@ -55,36 +59,49 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
           Flytrap is lightweight, easy to set up, and focused solely on what
           matters most: identifying and resolving errors before they disrupt
           your application.
+        </Text> */}
+        <Text 
+          fontSize="2rem" 
+          fontWeight="bold"
+          color="brand.800"
+          // my={2}
+        >
+          Catching Bugs So You Don't Have To
         </Text>
-        <Flex justify="center">
+        <Text fontSize="1.2rem" color="brand.800" my={2} fontWeight="300">
+          Lightweight Error Monitoring You Own, Trust, and Control.
+        </Text>
+        <Flex justify="center" mt={12}>
           {isLoggedIn ? (
             <Link to="/projects">
               <Button
-                leftIcon={<BsFolder />}
-                size="2xl"
-                bg="brand.400"
+                bg="rgba(233, 246, 216, 0.7)"
+                color="brand.800"
                 px={8}
                 py={6}
-                mt="50px"
-                mb="70px"
-                // borderRadius="full"
-                fontWeight="light"
+                my={12}
+                _hover={{ 
+                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  border: "none",
+                  fontWeight: "bold",
+                }}
               >
-                Go to Projects
+                Dashboard
               </Button>
             </Link>
           ) : (
             <Link to="/login">
               <Button
-                leftIcon={<BsUnlock />}
-                size="2xl"
-                bg="brand.400"
+                bg="rgba(233, 246, 216, 0.7)"
+                color="brand.800"
                 px={8}
                 py={6}
-                mt="50px"
-                mb="70px"
-                // borderRadius="full"
-                fontWeight="light"
+                my={12}
+                _hover={{ 
+                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  border: "none",
+                  fontWeight: "bold",
+                }}
               >
                 Login
               </Button>
@@ -93,9 +110,9 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
         </Flex>
 
         <VStack spacing={6} my={8}>
-          <Text fontSize="lg" variant="light">
+          {/* <Text fontSize="lg" variant="light">
             Developed By
-          </Text>
+          </Text> */}
           <Flex
             justify="space-between"
             width="100%"
@@ -121,7 +138,7 @@ const LandingPage = ({ bgColor = "brand.500" }) => {
                   boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
-                <Text variant="light" noOfLines={1} isTruncated>
+                <Text variant="light" noOfLines={1} isTruncated color="brand.900">
                   {developer.name}
                 </Text>
               </Box>

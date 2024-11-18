@@ -38,10 +38,7 @@ const MainLayout = () => {
       height="100vh"
       display="flex"
       flexDirection="column"
-      // maxWidth={1280}
-      // padding="0 2rem"
-      backgroundColor="#1D7D55"
-    >
+      >
       <Flex
         as="header"
         direction="row"
@@ -50,6 +47,7 @@ const MainLayout = () => {
         padding="1rem"
         whiteSpace="nowrap"
         alignItems="center"
+        bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
       >
         <Heading size="2xl" textAlign="center">
           <Image
@@ -57,7 +55,7 @@ const MainLayout = () => {
             alt="Flytrap Logo"
             height="auto"
             maxWidth="100%"
-            maxHeight="120px"
+            maxHeight="100px"
           />
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">

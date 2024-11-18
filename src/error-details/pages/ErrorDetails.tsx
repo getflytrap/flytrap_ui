@@ -119,9 +119,10 @@ const ErrorDetails = () => {
       await deleteError(projectUuid, errorUuid);
       toast({
         title: "Successful Deletion",
-        description: "Error successfully deleted",
         status: "success",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
 
@@ -129,9 +130,10 @@ const ErrorDetails = () => {
     } catch (e) {
       toast({
         title: "Deletion Error",
-        description: "Error could not be created",
         status: "error",
-        duration: 4000,
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
         isClosable: true,
       });
     }
@@ -194,9 +196,9 @@ const ErrorDetails = () => {
             onClick={handleToggleResolved}
             leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
             fontWeight="light"
-            bg={resolved ? "red.400" : "brand.400"}
+            bg={resolved ? "red.400" : "green.400"}
             _hover={{
-              bg: resolved ? "red.300" : "green.200",
+              bg: resolved ? "red.500" : "green.500",
             }}
           >
             {resolved ? <>Mark As Unresolved</> : <>Mark As Resolved</>}
@@ -209,7 +211,7 @@ const ErrorDetails = () => {
             leftIcon={<IoTrashOutline />}
             fontWeight="light"
             bg="red.400"
-            _hover={{ bg: "red.300" }}
+            _hover={{ bg: "red.500" }}
           >
             Delete Issue
           </Button>

@@ -5,7 +5,7 @@ import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
 import RejectionDetails from "./error-details/pages/RejectionDetails.tsx";
 import Login from "./authentication/pages/Login.tsx";
 // import WarningModal from "./shared/WarningModal";
-import RootConsole from "./root_console/pages/RootConsole.tsx";
+// import RootConsole from "./root_console/pages/RootConsole.tsx";
 import ManageUsers from "./root_console/pages/ManageUsers.tsx";
 import AuthRequired from "./authentication/components/AuthRequired.tsx";
 import MainLayout from "./shared/MainLayout.tsx";
@@ -19,8 +19,8 @@ import AdminRequired from "./authentication/components/AdminRequired.tsx";
 const App = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
       <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Login />} />
 
       <Route element={<AuthRequired />}>
         <Route element={<MainLayout />}>
@@ -49,9 +49,9 @@ const App = () => {
             </Route>
           </Route>
           <Route element={<AdminRequired />}>
-            <Route path="/root-console" element={<RootConsole />} />
+            <Route path="/root-console" element={<ManageUsers />} />
           </Route>
-          <Route path="/manage-users" element={<ManageUsers />} />
+          {/* <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Route>
