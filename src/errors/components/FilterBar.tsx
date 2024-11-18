@@ -58,8 +58,8 @@ const FilterBar = ({
           </Select>
         </Box>
 
-        <Flex gap={2}>
-          <Flex align="center" gap={2}>
+        <Flex gap={2} flexWrap="wrap">
+          <Flex align="center" gap={2} width="286px">
             {["Handled", "Unhandled", "All"].map((status) => (
               <Box
                 key={status}
@@ -110,11 +110,14 @@ const FilterBar = ({
             orientation="vertical"
             height="40px"
             borderColor="gray.400"
-            mx={2}
+            display={{ base: "none", lg: "block" }}
+            mt={5}
+            mb={2}
+            mx={5}
           />
 
           {/* Resolved Filter */}
-          <Flex align="center" gap={2}>
+          <Flex align="center" gap={2} width="286px">
             {["Resolved", "Unresolved", "All"].map((status) => (
               <Box
                 key={status}
