@@ -125,9 +125,23 @@ const ProjectModals = ({
       );
       onEditClose();
       selectProject(null);
-      toast({ title: "Project renamed", status: "success" });
+      toast({ 
+        title: "Project Renamed", 
+        status: "success",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+       });
     } catch {
-      toast({ title: "Error renaming project", status: "error" });
+      toast({ 
+        title: "Error Renaming Project", 
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     }
   };
 

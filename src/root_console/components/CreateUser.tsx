@@ -63,6 +63,7 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
       setUsers((prevUsers) => [...prevUsers, newUser]);
 
       resetForm();
+      setIsModalOpen(false);
 
       toast({
         title: "Success",

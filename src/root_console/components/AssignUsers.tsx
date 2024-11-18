@@ -2,16 +2,25 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Select,
-  VStack,
-  Text,
-  HStack,
   IconButton,
   Button,
   useToast,
-  Heading,
-  Flex
+  Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Divider,
+  useDisclosure
 } from "@chakra-ui/react";
-import { FaTrash } from "react-icons/fa";
 import { User, Project } from "../../types/index";
 import {
   getAllProjects,
@@ -19,17 +28,20 @@ import {
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
+import { IoAddCircleOutline, IoTrashOutline } from "react-icons/io5";
 
 interface AssignUsersProps {
   users: User[];
 }
 
-const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
+const AssignUsers = ({ users }: AssignUsersProps ) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentUsers, setCurrentUsers] = useState<User[]>([]);
   const [selectedProjectUuid, setSelectedProjectUuid] = useState<string>("");
   const [selectedUserUuid, setSelectedUserUuid] = useState<string>("");
   const toast = useToast();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -39,17 +51,25 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     try {
       fetchProjects();
     } catch {
-      alert("Could not fetch projects");
+      toast({
+        title: "Error",
+        description: "Could not fetch projects.",
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     }
   }, []);
 
-  const handleProjectSelection = (uuid: string) => {
-    fetchUsersForProject(uuid);
-  };
+  // const handleProjectSelection = (uuid: string) => {
+  //   fetchUsersForProject(uuid);
+  // };
 
-  const handleUserSelection = (uuid: string) => {
-    setSelectedUserUuid(uuid);
-  };
+  // const handleUserSelection = (uuid: string) => {
+  //   setSelectedUserUuid(uuid);
+  // };
 
   const fetchUsersForProject = async (uuid: string) => {
     try {
@@ -57,7 +77,15 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
       setCurrentUsers(users.filter((user) => data.includes(user.uuid)));
       setSelectedProjectUuid(uuid);
     } catch {
-      alert("Could not fetch users for selected project");
+      toast({
+        title: "Error",
+        description: "Could not fetch users for the selected project.",
+        status: "error",
+        duration: 3000,
+        position: "bottom-right",
+        variant: "left-accent",
+        isClosable: true,
+      });
     }
   };
 
@@ -73,7 +101,7 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
 
       toast({
         title: "Success.",
-        description: "User has been removed from the project.",
+        description: "User was removed from the project.",
         status: "success",
         duration: 3000,
         position: "bottom-right",
@@ -95,21 +123,22 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
     try {
       await addUserToProject(selectedProjectUuid, selectedUserUuid);
 
-      setCurrentUsers((prevUsers) => {
-        const newUser = users.find((user) => user.uuid === selectedUserUuid);
-        return newUser ? [...prevUsers, newUser] : prevUsers;
-      });
+      const newUser = users.find((user) => user.uuid === selectedUserUuid);
+      if (newUser) {
+        setCurrentUsers((prevUsers) => [...prevUsers, newUser]);
+      }  
 
       setSelectedUserUuid("");
       toast({
-        title: "Success.",
-        description: "Users have been added to the project.",
+        title: "Success",
+        description: "User was added to the project.",
         status: "success",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
+      onClose();
     } catch {
       toast({
         title: "Failed to add users.",
@@ -128,83 +157,99 @@ const AssignUsers: React.FC<AssignUsersProps> = ({ users }) => {
   );
 
   return (
-    <Box
-      padding={5}
-      minHeight="600px"
-      px={12}
-      mx={12}
-    >
-      <Heading as="h2" fontSize="1.5rem" mb={4} textAlign="center">
-        Project Assignments
-      </Heading>
-      <Flex justifyContent="center" gap={8} pt={8}>
-        {/* Project Selection Column */}
-        <VStack align="start" spacing={4} flex="1">
-          <Text fontWeight="bold" fontSize="lg">
-            Project
-          </Text>
+    <Box>
+      <Box textAlign="right">
+        <Button 
+          colorScheme="teal"
+          my={8}
+          mr={8}
+          leftIcon={<IoAddCircleOutline />} 
+          onClick={onOpen}>
+          Assign User to Project
+        </Button>
+      </Box>
+      <Divider />
+
+      {/* Project Selection */}
+      <Flex gap={12} p={6}>
+        <Box flex="1">
           <Select
             placeholder="Select a project"
-            onChange={(e) => {
-              handleProjectSelection(e.target.value);
-            }}
+            size="lg"
+            onChange={(e) => fetchUsersForProject(e.target.value)}
           >
+            <option value="" disabled hidden>
+              Select a project
+            </option>
             {projects.map((project) => (
               <option key={project.uuid} value={project.uuid}>
                 {project.name}
               </option>
             ))}
           </Select>
-        </VStack>
+        </Box>
 
-        {/* Current Users Column */}
-        <VStack align="start" flex="1" spacing={4}>
-          <Text fontWeight="bold" fontSize="lg">
-            Current Users
-          </Text>
-          <VStack spacing={2}>
-            {currentUsers.map((user) => (
-              <HStack key={user.uuid} justify="space-between" width="full">
-                <Text>{`${user.first_name} ${user.last_name}`}</Text>
-                <IconButton
-                  icon={<FaTrash />}
-                  aria-label="Remove User"
-                  size="sm"
-                  onClick={() =>
-                    deleteUserFromProject(selectedProjectUuid, user.uuid)
-                  }
-                />
-              </HStack>
-            ))}
-          </VStack>
-        </VStack>
-
-        {/* Add User Column */}
-        <VStack align="start" flex="1" spacing={4}>
-          <Text fontWeight="bold" fontSize="lg">
-            Add User
-          </Text>
-          <Select
-            placeholder="Select users to add"
-            multiple
-            size="lg"
-            height="300px"
-            minWidth="300px"
-            onChange={(e) => {
-              handleUserSelection(e.target.value);
-            }}
-          >
-            {availableUsers.map((user) => (
-              <option key={user.uuid} value={user.uuid}>
-                {`${user.first_name} ${user.last_name}`}
-              </option>
-            ))}
-          </Select>
-          <Button mt={2} onClick={addNewUserToProject} colorScheme="teal">
-            Add
-          </Button>
-        </VStack>
+        {/* User Management */}
+        <Box flex="3" overflowY="auto">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th isNumeric>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {currentUsers.map((user) => (
+                <Tr key={user.uuid}>
+                  <Td>{`${user.first_name} ${user.last_name}`}</Td>
+                  <Td>{user.email}</Td>
+                  <Td isNumeric>
+                    <IconButton
+                      icon={<IoTrashOutline />}
+                      aria-label="Remove User"
+                      size="sm"
+                      colorScheme="red"
+                      onClick={() =>
+                        deleteUserFromProject(selectedProjectUuid, user.uuid)
+                      }
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
       </Flex>
+
+      {/* Add User Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Assign User to Project</ModalHeader>
+          <ModalBody>
+            <Select
+              placeholder="Select a user"
+              onChange={(e) => setSelectedUserUuid(e.target.value)}
+              value={selectedUserUuid}
+            >
+              {availableUsers.map((user) => (
+                <option key={user.uuid} value={user.uuid}>
+                  {`${user.first_name} ${user.last_name}`}
+                </option>
+              ))}
+            </Select>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="teal" onClick={addNewUserToProject}>
+              Add
+            </Button>
+            <Button onClick={onClose} ml={2}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
