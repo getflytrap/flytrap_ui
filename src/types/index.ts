@@ -36,6 +36,11 @@ export interface ErrorData {
   contexts: CodeContext[];
   method?: string;
   path?: string;
+  os?: string;
+  browser?: string;
+  runtime?: string;
+  total_occurrences?: number;
+  distinct_users?: number;
 }
 
 export interface FrameWithContext {
@@ -52,6 +57,9 @@ export interface Rejection {
   resolved: boolean;
   method?: string;
   path?: string;
+  os?: string;
+  browser?: string;
+  runtime?: string;
 }
 
 export type HandledFilter = "All" | "Handled" | "Unhandled";
