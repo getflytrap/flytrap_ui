@@ -10,14 +10,19 @@ import {
   Flex,
   Text,
   useToast,
+  Table,
+  Tbody,
+  Tr,
+  Th,
+  Td
 } from "@chakra-ui/react";
 import {
   IoTrashOutline,
-  IoCloseOutline,
-  IoCheckmarkOutline,
   IoArrowBackOutline,
   IoWarningOutline,
   IoCheckmarkCircleOutline,
+  IoShieldCheckmarkOutline, 
+  IoHourglassOutline
 } from "react-icons/io5";
 import WarningModal from "../../shared/WarningModal";
 import { deleteRejection, getRejection, toggleRejection } from "../../services";
@@ -163,7 +168,7 @@ const RejectionDetails = () => {
           <Button
             size="md"
             onClick={handleToggleResolved}
-            leftIcon={resolved ? <IoCloseOutline /> : <IoCheckmarkOutline />}
+            leftIcon={resolved ?  <IoHourglassOutline /> : <IoCheckmarkCircleOutline />}
             fontWeight="light"
             bg={resolved ? "red.400" : "brand.400"}
             _hover={{
@@ -213,7 +218,7 @@ const RejectionDetails = () => {
                   as={
                     rejectionData.handled === false
                       ? IoWarningOutline
-                      : IoCheckmarkCircleOutline
+                      : IoShieldCheckmarkOutline
                   }
                   color={rejectionData.handled === false ? "red.500" : "green.500"}
                 />
@@ -227,6 +232,40 @@ const RejectionDetails = () => {
             </HStack>
           </Flex>
         </Stack>
+        <Table my={8}>
+            <Tbody>
+              <Tr>
+                {rejectionData.browser && rejectionData.browser !== "unknown" && (
+                  <Th fontSize="sm" fontWeight="bold">
+                    Browser
+                  </Th>
+                )}
+                {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
+                  <Th fontSize="sm" fontWeight="bold">
+                    Runtime
+                  </Th>
+                )}
+                <Th fontSize="sm" fontWeight="bold">
+                  OS
+                </Th>
+              </Tr>
+              <Tr>
+                {rejectionData.browser && rejectionData.browser !== "unknown" && (
+                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                    {rejectionData.browser}
+                  </Td>
+                )}
+                {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
+                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                    {rejectionData.runtime}
+                  </Td>
+                )}
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                  {rejectionData.os && rejectionData.os !== "unknown" ? rejectionData.os : "unknown"}
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
       </Box>
     </Box>
   );

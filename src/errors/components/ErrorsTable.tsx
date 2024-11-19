@@ -74,12 +74,13 @@ const ErrorsTable = ({
 
   return (
     <Box>
-      <Table variant="striped" colorScheme="gray" width="100%" mx="auto">
+      <Table variant="simple" colorScheme="gray" width="100%" mx="auto">
         <Thead>
           <Tr>
-            <Th fontSize="sm"></Th>
-            <Th fontSize="sm"></Th>
+            <Th fontSize="sm" maxW="250px" whiteSpace="normal"></Th>
             {!isMobile && <Th fontSize="sm">Time</Th>}
+            {!isMobile && <Th fontSize="sm">Events</Th>}
+            {!isMobile && <Th fontSize="sm">Users</Th>}
             {!isMobile && <Th fontSize="sm">Status</Th>}
           </Tr>
         </Thead>
