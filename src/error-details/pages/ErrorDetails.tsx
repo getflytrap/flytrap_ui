@@ -34,8 +34,13 @@ import {
 } from "react-icons/io5";
 
 const ErrorDetails = () => {
-  const { projects, selectProject, selectedProject, fetchProjectsForUser } =
-    useProjects();
+  const {
+    projects,
+    setProjects,
+    selectProject,
+    selectedProject,
+    fetchProjectsForUser,
+  } = useProjects();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -74,7 +79,7 @@ const ErrorDetails = () => {
         if (data.stack_trace && selectedProject) {
           const frames = parseStackTrace(
             data.stack_trace,
-            selectedProject.platform,
+            selectedProject.platform
           );
           const contexts = data.contexts || [];
 
@@ -117,6 +122,19 @@ const ErrorDetails = () => {
   const removeError = async () => {
     try {
       await deleteError(projectUuid, errorUuid);
+
+      setProjects((prevProjects) => {
+        const newProjects = prevProjects.slice();
+        newProjects.map((project) => {
+          if (project.uuid === projectUuid) {
+            project.issue_count -= 1;
+          } else {
+            return project;
+          }
+        });
+        return newProjects;
+      });
+
       toast({
         title: "Successful Deletion",
         status: "success",
@@ -141,7 +159,7 @@ const ErrorDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
     );
 
     if (confirmAction) {

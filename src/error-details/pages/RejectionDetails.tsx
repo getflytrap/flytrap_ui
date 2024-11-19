@@ -31,8 +31,13 @@ import { Rejection } from "../../types";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const RejectionDetails = () => {
-  const { projects, selectProject, selectedProject, fetchProjectsForUser } =
-    useProjects();
+  const {
+    projects,
+    setProjects,
+    selectProject,
+    selectedProject,
+    fetchProjectsForUser,
+  } = useProjects();
   const [rejectionData, setRejectionData] = useState<Rejection | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -91,6 +96,18 @@ const RejectionDetails = () => {
   const removeRejection = async () => {
     try {
       await deleteRejection(projectUuid, rejectionUuid);
+
+      setProjects((prevProjects) => {
+        const newProjects = prevProjects.slice();
+        newProjects.map((project) => {
+          if (project.uuid === projectUuid) {
+            project.issue_count -= 1;
+          } else {
+            return project;
+          }
+        });
+        return newProjects;
+      });
       toast({
         title: "Successful Deletion",
         status: "success",
@@ -115,7 +132,7 @@ const RejectionDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?",
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
     );
 
     if (confirmAction) {
