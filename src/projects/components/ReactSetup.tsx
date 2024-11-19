@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -9,10 +9,24 @@ import {
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
+import { useProjects } from "../../hooks/useProjects";
 
-const ReactSetup: React.FC = () => {
+const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+  const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
+  const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      setCurrentApiKey(apiKey);
+    } else if (project_uuid) {
+      const project = projects.find((p) => p.uuid === project_uuid);
+      if (project) {
+        setCurrentApiKey(project.api_key);
+      }
+    }
+  }, [apiKey, project_uuid, projects]);
 
   const handleButtonClick = () => {
     if (project_uuid) {
@@ -57,13 +71,13 @@ const ReactSetup: React.FC = () => {
 
           <CodeDisplay
             language="typescript"
-            code={`import Flytrap from "flytrap_react";
+            code={`import flytrap from "flytrap_react";
   
   // Initialize Flytrap with your project credentials
-  const flytrap = new Flytrap({
+  flytrap.init({
     projectId: ${project_uuid},
     apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
+    apiKey: ${currentApiKey}
   });`}
           />
 
@@ -75,7 +89,7 @@ const ReactSetup: React.FC = () => {
           <CodeDisplay
             language="tsx"
             code={`createRoot(document.getElementById("root")!).render(
-    <Flytrap.ErrorBoundary flytrap={flytrap}>
+    <Flytrap.ErrorBoundary>
       <App />
     </Flytrap.ErrorBoundary>
   );

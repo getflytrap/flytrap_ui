@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -10,10 +10,24 @@ import {
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
+import { useProjects } from "../../hooks/useProjects";
 
-const JavaScriptSetup: React.FC = () => {
+const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+  const { projects } = useProjects(); 
   const { project_uuid } = useParams();
   const navigate = useNavigate();
+  const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      setCurrentApiKey(apiKey);
+    } else if (project_uuid) {
+      const project = projects.find((p) => p.uuid === project_uuid);
+      if (project) {
+        setCurrentApiKey(project.api_key);
+      }
+    }
+  }, [apiKey, project_uuid, projects]);
 
   const handleButtonClick = () => {
     if (project_uuid) {
@@ -43,12 +57,6 @@ const JavaScriptSetup: React.FC = () => {
             <Text mb={4}>
               To use Flytrap, simply include the SDK in your project.
             </Text>
-            <Divider />
-            <br />
-
-            <Text fontSize="lg" mb={2} fontWeight="bold">
-              Via Script Tag:
-            </Text>
             <Text mb={4}>
               The SDK is distributed in UMD format, allowing it to be imported
               directly in the browser with a <Code>&lt;script&gt;</Code> tag:
@@ -57,18 +65,6 @@ const JavaScriptSetup: React.FC = () => {
               language="html"
               code={`<script src="scripts/flytrap/index.js"></script>`}
             />
-            <Divider />
-            <br />
-
-            <Text fontSize="lg" mt={4} fontWeight="bold">
-              Development:
-            </Text>
-            <Text mt={4}>
-              Run <Code>npm build</Code> to create the bundled version. Then,
-              copy the bundled <Code>dist/index.debug.js</Code> and{" "}
-              <Code>index.debug.js.map</Code> file into a{" "}
-              <Code>scripts/flytrap</Code> directory.
-            </Text>
           </Box>
 
           <Divider />
@@ -85,10 +81,10 @@ const JavaScriptSetup: React.FC = () => {
             </Text>
             <CodeDisplay
               language="javascript"
-              code={`const flytrap = new Flytrap({
+              code={`flytrap.init({
     projectId: ${project_uuid},
     apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
+    apiKey: ${currentApiKey}
   });`}
             />
           </Box>

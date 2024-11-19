@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -8,11 +8,25 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-import CodeDisplay from "./CodeDisplay"; // Make sure to import CodeDisplay
+import CodeDisplay from "./CodeDisplay";
+import { useProjects } from "../../hooks/useProjects";
 
-const ExpressSetup: React.FC = () => {
+const ExpressSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+  const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
+  const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      setCurrentApiKey(apiKey);
+    } else if (project_uuid) {
+      const project = projects.find((p) => p.uuid === project_uuid);
+      if (project) {
+        setCurrentApiKey(project.api_key);
+      }
+    }
+  }, [apiKey, project_uuid, projects]);
 
   const handleButtonClick = () => {
     if (project_uuid) {
@@ -56,20 +70,39 @@ const ExpressSetup: React.FC = () => {
           </Text>
           <Text mb={4}>
             In your main application file (e.g., `app.js` or `index.js`), import
-            the Flytrap SDK and initialize it with your Project ID, API Key, and
+            the Flytrap module and initialize it with your Project ID, API Key, and
             Endpoint.
           </Text>
           <CodeDisplay
             language="javascript"
-            code={`import Flytrap from 'flytrap_express';
+            code={`// CommonJS
+  const flytrap = require("flytrap_express");
+
+  // ES6 Modules
+  import flytrap from 'flytrap_express';
   
   // Initialize Flytrap with your project credentials
-  const flytrap = new Flytrap({
+  flytrap.init({
     projectId: ${project_uuid},
     apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
+    apiKey: ${currentApiKey}
   });`}
           />
+          <Text>
+            By default, Flytrap will attempt to capture snippets of your source code 
+            around the location of errors (e.g., the file, line number, and surrounding
+            lines). This feature can provide more meaningful debugging information but 
+            may require source files to be available at runtime. 
+            If you don't want flytrap to do this, you can pass an additional property to
+            the Flytrap configuration, `includeContext: false`.
+          </Text>
+          <CodeDisplay language="javascript" code={
+            ` flytrap.init({
+    projectId: ${project_uuid},
+    apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+    apiKey: ${currentApiKey},
+    includeContext: false
+  });`} />
 
           <Divider my={4} />
           <br />
@@ -79,20 +112,18 @@ const ExpressSetup: React.FC = () => {
           </Text>
           <Text mb={4}>
             Use the Flytrap middleware in your Express app to capture unhandled
-            errors automatically:
+            errors and Promise rejections in your routes automatically.
           </Text>
           <CodeDisplay
             language="javascript"
             code={`import express from 'express';
   const app = express();
   
-  // Set up the Flytrap error handling middleware
+  // Set up the Flytrap error handling middleware:
+  // Add this after all routes,
+  // but before any and other error-handling middlewares are defined
   flytrap.setUpExpressErrorHandler(app);`}
           />
-          <Text mb={4}>
-            This middleware will intercept any unhandled errors in your Express
-            routes and log them to Flytrap.
-          </Text>
 
           <Divider my={4} />
           <br />
@@ -112,8 +143,16 @@ const ExpressSetup: React.FC = () => {
           </Text>
           <CodeDisplay
             language="javascript"
-            code={`flytrap.setUpExpressErrorHandler(app, false);`}
+            code={`flytrap.setUpExpressErrorHandler(app, { wrapAsync: false });`}
           />
+          <Text>
+            About wrapAsync:
+            When wrapAsync is set to true (default), Flytrap will wrap asynchronous route 
+            handlers to ensure that unhandled promise rejections are properly captured. 
+            If you disable this feature (wrapAsync: false), you'll need to handle promise 
+            rejections manually by ensuring all async route handlers are properly wrapped 
+            with try-catch or .catch() logic.
+          </Text>
 
           <Divider my={4} />
           <br />
@@ -130,7 +169,8 @@ const ExpressSetup: React.FC = () => {
             code={`try {  
     // Your code here
   } catch (error) {  
-    flytrap.captureException(error);
+    flytrap.captureException(error, req); // Optionally pass the 'req' object for 
+    additional context
   }`}
           />
           <Text mb={4}>
