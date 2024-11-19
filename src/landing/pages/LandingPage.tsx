@@ -67,12 +67,17 @@ const LandingPage = () => {
         <Text
           fontSize="2rem"
           fontWeight="bold"
-          color="brand.800"
+          color="rgba(233, 246, 216, 0.7)"
           // my={2}
         >
           Catching Bugs So You Don't Have To
         </Text>
-        <Text fontSize="1.2rem" color="brand.800" my={2} fontWeight="300">
+        <Text
+          fontSize="1.2rem"
+          color="rgba(233, 246, 216, 0.7)"
+          my={2}
+          fontWeight="300"
+        >
           Lightweight Error Monitoring You Own, Trust, and Control.
         </Text>
         <Flex justify="center" mt={12}>
@@ -85,8 +90,7 @@ const LandingPage = () => {
                 py={6}
                 my={12}
                 _hover={{
-                  bgGradient:
-                    "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  bg: "#83A05E",
                   border: "none",
                   fontWeight: "bold",
                 }}
@@ -103,8 +107,7 @@ const LandingPage = () => {
                 py={6}
                 my={12}
                 _hover={{
-                  bgGradient:
-                    "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                  bg: "#83A05E",
                   border: "none",
                   fontWeight: "bold",
                 }}
@@ -148,7 +151,7 @@ const LandingPage = () => {
                   variant="light"
                   noOfLines={1}
                   isTruncated
-                  color="brand.900"
+                  color="rgba(255, 255, 255, 0.7)"
                 >
                   {developer.name}
                 </Text>
