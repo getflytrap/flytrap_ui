@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -10,10 +10,24 @@ import {
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
+import { useProjects } from "../../hooks/useProjects";
 
-const FlaskSetup: React.FC = () => {
+const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+  const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
+  const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      setCurrentApiKey(apiKey);
+    } else if (project_uuid) {
+      const project = projects.find((p) => p.uuid === project_uuid);
+      if (project) {
+        setCurrentApiKey(project.api_key);
+      }
+    }
+  }, [apiKey, project_uuid, projects]);
 
   const handleButtonClick = () => {
     if (project_uuid) {
@@ -51,7 +65,7 @@ const FlaskSetup: React.FC = () => {
             </Text>
             <CodeDisplay
               language="python"
-              code={`from flytrap import Flytrap`}
+              code={`import flytrap`}
             />
           </Box>
 
@@ -66,9 +80,9 @@ const FlaskSetup: React.FC = () => {
             </Text>
             <CodeDisplay
               language="python"
-              code={`error_monitor = Flytrap({
+              code={`flytrap.init({
     api_endpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    api_key: ${"WILL_BE_SENT_FROM_BACKEND"},
+    api_key: ${currentApiKey},
     project_id: ${project_uuid}'
   })`}
             />
@@ -85,7 +99,7 @@ const FlaskSetup: React.FC = () => {
             </Text>
             <CodeDisplay
               language="python"
-              code={`flytrap.setup_flask_error_handler()`}
+              code={`flytrap.setup_flask_error_handler(app)`}
             />
             <Text mt={4} fontSize="md">
               Now, all unhandled exceptions that occur while your app is running
@@ -104,8 +118,8 @@ const FlaskSetup: React.FC = () => {
             <CodeDisplay
               language="python"
               code={`try:
-      # Some code that might raise an exception
-  except Exception as e:
+    # Some code that might raise an exception
+except Exception as e:
       flytrap.capture_exception(e)`}
             />
           </Box>

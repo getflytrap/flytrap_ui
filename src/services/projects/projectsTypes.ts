@@ -11,9 +11,11 @@ export interface getAllProjectsResponse {
 }
 
 export interface createProjectResponse {
+  status: string;
   data: {
     uuid: string;
     name: string;
     platform: string;
+    api_key: string;
   };
 }

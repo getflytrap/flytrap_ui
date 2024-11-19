@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   issue_count: number;
   platform: string;
+  api_key: string;
 }
 
 export interface User {

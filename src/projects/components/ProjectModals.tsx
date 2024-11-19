@@ -86,6 +86,7 @@ const ProjectModals = ({
           name: data.name,
           issue_count: 0,
           platform: data.platform,
+          api_key: data.api_key
         },
       ]);
       onNewProjectClose();
@@ -99,7 +100,7 @@ const ProjectModals = ({
         isClosable: true,
       });
       navigate(`/projects/${data.uuid}/setup`, {
-        state: { platform: selectedPlatform },
+        state: { platform: selectedPlatform, apiKey: data.api_key },
       });
     } catch {
       toast({

@@ -8,23 +8,22 @@ import ExpressSetup from "../components/ExpressSetup";
 
 const ProjectSetup: React.FC = () => {
   const location = useLocation();
-  const { platform } = location.state || {};
-  console.log("in ProjectSetup", platform);
+  const { platform, apiKey } = location.state || {};
 
   let platformComponent: React.ReactNode;
 
   switch (platform) {
     case "React":
-      platformComponent = <ReactSetup />;
+      platformComponent = <ReactSetup apiKey={apiKey}/>;
       break;
     case "JavaScript":
-      platformComponent = <JavaScriptSetup />;
+      platformComponent = <JavaScriptSetup apiKey={apiKey}/>;
       break;
     case "Flask":
-      platformComponent = <FlaskSetup />;
+      platformComponent = <FlaskSetup apiKey={apiKey}/>;
       break;
     case "Express.js":
-      platformComponent = <ExpressSetup />;
+      platformComponent = <ExpressSetup apiKey={apiKey}/>;
       break;
     default:
       platformComponent = <Text>No platform selected</Text>;
