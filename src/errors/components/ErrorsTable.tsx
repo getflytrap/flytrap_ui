@@ -78,6 +78,8 @@ const ErrorsTable = ({
         <Thead>
           <Tr>
             <Th fontSize="sm" maxW="250px" whiteSpace="normal"></Th>
+            <Th fontSize="sm"></Th>
+            {/* Conditionally render the 'Time' and 'Status' columns */}
             {!isMobile && <Th fontSize="sm">Time</Th>}
             {!isMobile && <Th fontSize="sm">Events</Th>}
             {!isMobile && <Th fontSize="sm">Users</Th>}
