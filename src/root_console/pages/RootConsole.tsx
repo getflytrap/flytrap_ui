@@ -6,7 +6,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  Container
+  Container,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const RootConsole = () => {
         <Heading as="h2" fontSize="3rem" textAlign="center" mb={8}>
           Admin Console
         </Heading>
-  
+
         <Stack direction={direction} spacing={10} align="center">
           <Box flex="1" p={5} textAlign="center">
             <Heading as="h2" size="lg" mb={4}>
@@ -40,7 +40,7 @@ const RootConsole = () => {
               </Button>
             </Link>
           </Box>
-  
+
           {/* Divider between the columns, only visible on larger screens */}
           {direction === "row" && (
             <Box>
@@ -51,13 +51,13 @@ const RootConsole = () => {
               />
             </Box>
           )}
-  
+
           <Box flex="1" p={5} textAlign="center">
             <Heading as="h2" size="lg" mb={4}>
               Manage Users
             </Heading>
             <Text mb={4}>Create or remove users here.</Text>
-  
+
             <Link to="/manage-users">
               <Button
                 bg="brand.500"

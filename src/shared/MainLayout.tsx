@@ -33,12 +33,7 @@ const MainLayout = () => {
   };
 
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      >
+    <Box width="100vw" height="100vh" display="flex" flexDirection="column">
       <Flex
         as="header"
         direction="row"

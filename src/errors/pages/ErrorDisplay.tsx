@@ -92,7 +92,7 @@ const ErrorDisplay = () => {
         convertResolvedToBoolean(selectedResolved),
         convertToTimeStamp(selectedTime),
         page,
-        ERROR_LIMIT_PER_PAGE
+        ERROR_LIMIT_PER_PAGE,
       );
 
       setIssues(data.issues);

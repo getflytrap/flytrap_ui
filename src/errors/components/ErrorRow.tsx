@@ -2,11 +2,11 @@ import { Box, Td, Link, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ErrorData, Rejection } from "../../types";
 import { Project } from "../../types";
-import { 
-  IoWarningOutline, 
-  IoCheckmarkCircleOutline, 
-  IoShieldCheckmarkOutline, 
-  IoHourglassOutline 
+import {
+  IoWarningOutline,
+  IoCheckmarkCircleOutline,
+  IoShieldCheckmarkOutline,
+  IoHourglassOutline,
 } from "react-icons/io5";
 
 interface ErrorRowProps {
@@ -70,16 +70,22 @@ const ErrorRow = ({
         <>
           <Td>
             {new Date(issue.created_at).toLocaleString([], {
-              year: '2-digit',
-              month: 'short',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
+              year: "2-digit",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
             })}
           </Td>
           <Td>{(issue as ErrorData).total_occurrences ?? ""}</Td>
           <Td>{(issue as ErrorData).distinct_users ?? ""}</Td>
-          <Td>{issue.resolved ? <IoCheckmarkCircleOutline /> : <IoHourglassOutline />}</Td>
+          <Td>
+            {issue.resolved ? (
+              <IoCheckmarkCircleOutline />
+            ) : (
+              <IoHourglassOutline />
+            )}
+          </Td>
         </>
       )}
     </Tr>

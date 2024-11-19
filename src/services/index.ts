@@ -26,7 +26,7 @@ import {
   toggleRejection,
   deleteError,
   deleteRejection,
-  getDailyCounts
+  getDailyCounts,
 } from "./projectsIssues/projectsIssues";
 export {
   login,
@@ -52,5 +52,5 @@ export {
   deleteAccount,
   updatePassword,
   getProjectsForUser,
-  getDailyCounts
+  getDailyCounts,
 };

@@ -23,32 +23,38 @@ const ReactSetup: React.FC = () => {
   return (
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxW="1200px" mx="auto">
-        <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
+        <Box
+          textAlign="left"
+          bg="gray.50"
+          borderRadius="md"
+          p={6}
+          boxShadow="xl"
+        >
           <Heading as="h2" fontSize="1.5rem" mb={6}>
             Configure React SDK
           </Heading>
           <Divider />
           <br />
-  
+
           <Text fontSize="lg" mb={4}>
             <b>Installation</b>
           </Text>
           <Text mb={4}>
             In your project directory, install the Flytrap SDK via npm:
           </Text>
-  
+
           <CodeDisplay language="bash" code="npm install flytrap_react" />
-  
+
           <Divider />
           <br />
           <Text fontSize="lg" mb={4}>
             <b>Usage</b>
           </Text>
           <Text fontSize="lg" mb={4} mt={6}>
-            In the file where your top-level component is rendered (usually named
-            `main.tsx` or `index.jsx`), add the following code snippet:
+            In the file where your top-level component is rendered (usually
+            named `main.tsx` or `index.jsx`), add the following code snippet:
           </Text>
-  
+
           <CodeDisplay
             language="typescript"
             code={`import Flytrap from "flytrap_react";
@@ -60,12 +66,12 @@ const ReactSetup: React.FC = () => {
     apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
   });`}
           />
-  
+
           <Text fontSize="lg" mb={4} mt={6}>
-            In the same file (main.tsx or index.js), wrap your top-level component{" "}
-            {`<App />`} in the {`<ErrorBoundary>`} tags:
+            In the same file (main.tsx or index.js), wrap your top-level
+            component {`<App />`} in the {`<ErrorBoundary>`} tags:
           </Text>
-  
+
           <CodeDisplay
             language="tsx"
             code={`createRoot(document.getElementById("root")!).render(
@@ -77,16 +83,16 @@ const ReactSetup: React.FC = () => {
           />
           <Divider />
           <br />
-  
+
           <Text fontSize="lg" mb={4} mt={6}>
             <b>Optional:</b> Insert these JSX tags into the return statement of
             any component to test:
           </Text>
-  
+
           <Text mb={4}>
             <b>Throw a test error</b>
           </Text>
-  
+
           <CodeDisplay
             language="tsx"
             code={`<button
@@ -99,11 +105,11 @@ const ReactSetup: React.FC = () => {
   </button>
   `}
           />
-  
+
           <Text mb={4} mt={6}>
             <b>Throw an unhandled rejected promise</b>
           </Text>
-  
+
           <CodeDisplay
             language="tsx"
             code={`<button
@@ -115,9 +121,9 @@ const ReactSetup: React.FC = () => {
   </button>
   `}
           />
-  
+
           <Divider my={6} />
-  
+
           <Button
             colorScheme="teal"
             size="lg"

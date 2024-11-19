@@ -11,9 +11,8 @@ interface CodeDisplayProps {
 }
 
 const CodeDisplay: React.FC<CodeDisplayProps> = ({ language, code }) => {
-
   const handleCopy = () => {
-    navigator.clipboard.writeText(code)
+    navigator.clipboard.writeText(code);
   };
 
   return (

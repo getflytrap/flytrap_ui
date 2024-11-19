@@ -24,31 +24,40 @@ const FlaskSetup: React.FC = () => {
   return (
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxW="1200px" mx="auto">
-        <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
+        <Box
+          textAlign="left"
+          bg="gray.50"
+          borderRadius="md"
+          p={6}
+          boxShadow="xl"
+        >
           <Heading as="h2" fontSize="1.5rem" mb={6}>
             Configure Flask SDK
           </Heading>
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2}>
               Run this command in your project directory or virtual environment:
             </Text>
             <CodeDisplay language="bash" code={`pip install flytrap_flask`} />
           </Box>
-  
+
           <Divider />
           <br />
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2}>
               In your project's main app file, import flytrap:
             </Text>
-            <CodeDisplay language="python" code={`from flytrap import Flytrap`} />
+            <CodeDisplay
+              language="python"
+              code={`from flytrap import Flytrap`}
+            />
           </Box>
-  
+
           <Divider />
           <br />
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2}>
               Instantiate the Flytrap class at the top of the main app file,
@@ -64,10 +73,10 @@ const FlaskSetup: React.FC = () => {
   })`}
             />
           </Box>
-  
+
           <Divider />
           <br />
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2}>
               Call the <Code>setup_flask_error_handler</Code> instance method,
@@ -83,10 +92,10 @@ const FlaskSetup: React.FC = () => {
               will automatically be sent to your Flytrap AWS architecture!
             </Text>
           </Box>
-  
+
           <Divider />
           <br />
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2}>
               To capture handled exceptions too, follow this pattern in each of
@@ -102,7 +111,7 @@ const FlaskSetup: React.FC = () => {
           </Box>
 
           <Divider my={4} />
-          
+
           <Button
             colorScheme="teal"
             size="lg"

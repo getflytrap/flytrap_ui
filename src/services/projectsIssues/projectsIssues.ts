@@ -94,8 +94,10 @@ export const deleteRejection = async (
 };
 
 export const getDailyCounts = async (
-  projectUuid: string | undefined
-): Promise<{ status: string, data: number[]}> => {
-  const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues/summary`);
+  projectUuid: string | undefined,
+): Promise<{ status: string; data: number[] }> => {
+  const { data } = await apiClient.get(
+    `/api/projects/${projectUuid}/issues/summary`,
+  );
   return data;
-}
+};

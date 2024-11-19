@@ -35,16 +35,20 @@ const LandingPage = () => {
   ];
 
   return (
-    <Box 
+    <Box
       bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
-      minH="100vh" 
-      minW="100vw" 
+      minH="100vh"
+      minW="100vw"
       color="white"
     >
       <Container maxWidth="1280px" centerContent>
         <Flex justify="center" my={12}>
           {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
-          <Image src={transparent_logo_animated} alt="FlyTrap Logo" maxW="500px" />
+          <Image
+            src={transparent_logo_animated}
+            alt="FlyTrap Logo"
+            maxW="500px"
+          />
         </Flex>
         {/* <Text
           fontSize="lg"
@@ -60,15 +64,20 @@ const LandingPage = () => {
           matters most: identifying and resolving errors before they disrupt
           your application.
         </Text> */}
-        <Text 
-          fontSize="2rem" 
+        <Text
+          fontSize="2rem"
           fontWeight="bold"
-          color="brand.800"
+          color="rgba(233, 246, 216, 0.7)"
           // my={2}
         >
           Catching Bugs So You Don't Have To
         </Text>
-        <Text fontSize="1.2rem" color="brand.800" my={2} fontWeight="300">
+        <Text
+          fontSize="1.2rem"
+          color="rgba(233, 246, 216, 0.7)"
+          my={2}
+          fontWeight="300"
+        >
           Lightweight Error Monitoring You Own, Trust, and Control.
         </Text>
         <Flex justify="center" mt={12}>
@@ -80,8 +89,8 @@ const LandingPage = () => {
                 px={8}
                 py={6}
                 my={12}
-                _hover={{ 
-                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                _hover={{
+                  bg: "#83A05E",
                   border: "none",
                   fontWeight: "bold",
                 }}
@@ -97,8 +106,8 @@ const LandingPage = () => {
                 px={8}
                 py={6}
                 my={12}
-                _hover={{ 
-                  bgGradient: "linear(120deg, rgba(106,191,146,1) 1%, rgba(146,190,118,1) 48%, rgba(176,189,98,1) 100%);",
+                _hover={{
+                  bg: "#83A05E",
                   border: "none",
                   fontWeight: "bold",
                 }}
@@ -138,7 +147,12 @@ const LandingPage = () => {
                   boxSize={["60px", "80px", "100px"]}
                   mb={2}
                 />
-                <Text variant="light" noOfLines={1} isTruncated color="brand.900">
+                <Text
+                  variant="light"
+                  noOfLines={1}
+                  isTruncated
+                  color="rgba(255, 255, 255, 0.7)"
+                >
                   {developer.name}
                 </Text>
               </Box>

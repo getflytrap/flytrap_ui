@@ -29,8 +29,8 @@ import {
   IoArrowBackOutline,
   IoWarningOutline,
   IoCheckmarkCircleOutline,
-  IoShieldCheckmarkOutline, 
-  IoHourglassOutline
+  IoShieldCheckmarkOutline,
+  IoHourglassOutline,
 } from "react-icons/io5";
 
 const ErrorDetails = () => {
@@ -51,6 +51,19 @@ const ErrorDetails = () => {
   const toast = useToast();
 
   useEffect(() => {
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjectsForUser();
+      }
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
+      }
+    };
+
+    loadProject();
+  }, [projects]);
+
+  useEffect(() => {
     const fetchErrorData = async () => {
       try {
         setIsLoading(true);
@@ -58,8 +71,11 @@ const ErrorDetails = () => {
         setErrorData(data);
         setResolved(data.resolved);
 
-        if (data.stack_trace) {
-          const frames = parseStackTrace(data.stack_trace);
+        if (data.stack_trace && selectedProject) {
+          const frames = parseStackTrace(
+            data.stack_trace,
+            selectedProject.platform,
+          );
           const contexts = data.contexts || [];
 
           const framesWithContext = frames.map((frame) => {
@@ -81,23 +97,7 @@ const ErrorDetails = () => {
     };
 
     fetchErrorData();
-  }, []);
-
-  useEffect(() => {
-    const loadProject = async () => {
-      if (projects.length === 0) {
-        await fetchProjectsForUser();
-      }
-
-      if (!selectedProject && projectUuid && projects.length > 0) {
-        selectProject(projectUuid);
-      }
-    };
-
-    loadProject();
-  }, [projects, selectedProject]);
-
-  // const existingProperties = renameAndFilterProperties(errorData);
+  }, [selectedProject]);
 
   const handleFrameClick = (index: number) => {
     setExpandedFrameIndex(index);
@@ -194,7 +194,9 @@ const ErrorDetails = () => {
           <Button
             size="md"
             onClick={handleToggleResolved}
-            leftIcon={resolved ? <IoHourglassOutline /> : <IoCheckmarkCircleOutline />}
+            leftIcon={
+              resolved ? <IoHourglassOutline /> : <IoCheckmarkCircleOutline />
+            }
             fontWeight="light"
             bg={resolved ? "red.400" : "green.400"}
             _hover={{
@@ -231,24 +233,28 @@ const ErrorDetails = () => {
               <Heading as="h2" fontSize="2rem" mr={2}>
                 {errorData.name}
               </Heading>
-              <Text fontSize="1.5rem" color="gray">{errorData.method ? errorData.method.toUpperCase() : ""}</Text>
-              <Text fontSize="1.5rem" color="gray">{errorData.path ? errorData.path : ""}</Text>
-            </HStack>
-              <Text fontSize="sm" color="gray.500">
-                {new Date(errorData.created_at).toLocaleString()}
+              <Text fontSize="1.5rem" color="gray">
+                {errorData.method ? errorData.method.toUpperCase() : ""}
               </Text>
+              <Text fontSize="1.5rem" color="gray">
+                {errorData.path ? errorData.path : ""}
+              </Text>
+            </HStack>
+            <Text fontSize="sm" color="gray.500">
+              {new Date(errorData.created_at).toLocaleString()}
+            </Text>
           </Flex>
           <Flex justify="space-between" align="center" mb={4} px={4}>
             <HStack flex="2">
               <Text>{errorData.message}</Text>
               <Icon
-                  as={
-                    errorData.handled === false
-                      ? IoWarningOutline
-                      : IoShieldCheckmarkOutline
-                  }
-                  color={errorData.handled === false ? "red.500" : "green.500"}
-                />
+                as={
+                  errorData.handled === false
+                    ? IoWarningOutline
+                    : IoShieldCheckmarkOutline
+                }
+                color={errorData.handled === false ? "red.500" : "green.500"}
+              />
               <Text
                 fontSize="md"
                 fontWeight="bold"
@@ -329,7 +335,9 @@ const ErrorDetails = () => {
                   </Td>
                 )}
                 <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
-                  {errorData.os && errorData.os !== "unknown" ? errorData.os : "unknown"}
+                  {errorData.os && errorData.os !== "unknown"
+                    ? errorData.os
+                    : "unknown"}
                 </Td>
               </Tr>
             </Tbody>

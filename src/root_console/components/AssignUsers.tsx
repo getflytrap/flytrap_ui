@@ -91,12 +91,12 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const deleteUserFromProject = async (
     projectUuid: string,
-    userUuid: string
+    userUuid: string,
   ) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid)
+        prevUsers.filter((user) => user.uuid !== userUuid),
       );
 
       toast({
@@ -153,7 +153,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
   const availableUsers = users.filter(
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
-      !user.is_root
+      !user.is_root,
   );
 
   return (

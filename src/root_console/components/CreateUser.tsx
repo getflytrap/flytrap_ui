@@ -28,7 +28,7 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const toast = useToast();
 
@@ -161,8 +161,8 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
 
   return (
     <Box textAlign="right">
-      <Button 
-        colorScheme="teal" 
+      <Button
+        colorScheme="teal"
         my={8}
         mr={8}
         leftIcon={<IoAddCircleOutline />}
@@ -235,7 +235,11 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
             <Button colorScheme="green" onClick={handleSubmit}>
               Submit
             </Button>
-            <Button colorScheme="red" onClick={() => setIsModalOpen(false)} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={() => setIsModalOpen(false)}
+              ml={3}
+            >
               Cancel
             </Button>
           </ModalFooter>

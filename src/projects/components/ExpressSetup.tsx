@@ -23,13 +23,19 @@ const ExpressSetup: React.FC = () => {
   return (
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxW="1200px" mx="auto">
-        <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl">
+        <Box
+          textAlign="left"
+          bg="gray.50"
+          borderRadius="md"
+          p={6}
+          boxShadow="xl"
+        >
           <Heading as="h2" fontSize="1.5rem" mb={6}>
             Configure Express SDK
           </Heading>
-  
+
           <Divider my={4} />
-  
+
           <Text fontSize="lg" mb={4}>
             <strong>Installation</strong>
           </Text>
@@ -37,14 +43,14 @@ const ExpressSetup: React.FC = () => {
             In your project directory, install the Flytrap SDK via npm:
           </Text>
           <CodeDisplay language="bash" code="npm install flytrap_express" />
-  
+
           <Divider my={4} />
-  
+
           <Text fontSize="lg" mb={4}>
             <br />
             <strong>Usage</strong>
           </Text>
-  
+
           <Text mb={4}>
             <strong>Import and Initialize the Flytrap SDK</strong>
           </Text>
@@ -64,10 +70,10 @@ const ExpressSetup: React.FC = () => {
     apiKey: ${"WILL_BE_SENT_FROM_BACKEND"}
   });`}
           />
-  
+
           <Divider my={4} />
           <br />
-  
+
           <Text mb={4}>
             <strong>Set Up Express Middleware</strong>
           </Text>
@@ -87,10 +93,10 @@ const ExpressSetup: React.FC = () => {
             This middleware will intercept any unhandled errors in your Express
             routes and log them to Flytrap.
           </Text>
-  
+
           <Divider my={4} />
           <br />
-  
+
           <Text mb={4}>
             <strong>
               Optional: Disabling Automatic Promise Rejection Wrapping
@@ -99,8 +105,8 @@ const ExpressSetup: React.FC = () => {
           <Text mb={4}>
             By default, the Flytrap middleware will automatically wrap your
             asynchronous route handlers, ensuring that any unhandled promise
-            rejections are captured and logged. However, if you prefer not to have
-            your promise rejections automatically passed to the Express
+            rejections are captured and logged. However, if you prefer not to
+            have your promise rejections automatically passed to the Express
             middleware, you can disable this behavior by passing{" "}
             <strong>false</strong> as an option:
           </Text>
@@ -108,10 +114,10 @@ const ExpressSetup: React.FC = () => {
             language="javascript"
             code={`flytrap.setUpExpressErrorHandler(app, false);`}
           />
-  
+
           <Divider my={4} />
           <br />
-  
+
           <Text mb={4}>
             <strong>Manually Capture Exceptions</strong>
           </Text>
@@ -131,9 +137,9 @@ const ExpressSetup: React.FC = () => {
             This method allows you to manually send errors to Flytrap, even if
             they're caught outside of the Express middleware.
           </Text>
-  
+
           <Divider my={4} />
-  
+
           <Button
             colorScheme="teal"
             size="lg"

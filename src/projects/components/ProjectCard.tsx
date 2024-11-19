@@ -42,12 +42,12 @@ const ProjectCard = ({
         const { data } = await getDailyCounts(project.uuid);
         setDailyCounts(data);
       } catch (e) {
-        console.error("Failed to load summary.")
+        console.error("Failed to load summary.");
       }
-    }
+    };
 
     getSummary();
-  }, [])
+  }, []);
 
   const handleProjectClick = () => {
     selectProject(project.uuid);

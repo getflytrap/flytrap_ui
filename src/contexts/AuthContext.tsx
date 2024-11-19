@@ -11,7 +11,7 @@ interface AuthContextType {
     uuid: string,
     firstName: string,
     lastName: string,
-    isRoot: boolean
+    isRoot: boolean,
   ) => void;
   logout: () => void;
   loading: boolean;
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     uuid: string,
     firstName: string,
     lastName: string,
-    isRoot: boolean
+    isRoot: boolean,
   ) => {
     setUserUuid(uuid);
     setName(`${firstName} ${lastName}`);

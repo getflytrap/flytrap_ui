@@ -20,7 +20,7 @@ interface ProjectsContextType {
 }
 
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
@@ -63,7 +63,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       const { data } = await getProjectsForUser(
         userUuid,
         page,
-        PROJECT_LIMIT_PER_PAGE
+        PROJECT_LIMIT_PER_PAGE,
       );
       setProjects(data.projects);
       setCurrentPage(data.current_page);
