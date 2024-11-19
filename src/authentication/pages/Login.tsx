@@ -105,12 +105,7 @@ const Login = () => {
           />
         </FormControl>
 
-        <Button
-          colorScheme="teal"
-          mt={8}
-          onClick={handleSubmit}
-          width="full"
-        >
+        <Button colorScheme="teal" mt={8} onClick={handleSubmit} width="full">
           Continue
         </Button>
       </Box>

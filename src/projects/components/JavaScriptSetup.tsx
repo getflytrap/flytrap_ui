@@ -24,11 +24,18 @@ const JavaScriptSetup: React.FC = () => {
   return (
     <Box bg="gray.100" textAlign="left" px={6} overflowY="auto" width="100%">
       <Container maxWidth="1200px" mx="auto">
-        <Box textAlign="left" bg="gray.50" borderRadius="md" p={6} boxShadow="xl" maxWidth="1200px">
+        <Box
+          textAlign="left"
+          bg="gray.50"
+          borderRadius="md"
+          p={6}
+          boxShadow="xl"
+          maxWidth="1200px"
+        >
           <Heading as="h2" fontSize="1.5rem" mb={6}>
             Configure JavaScript SDK
           </Heading>
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mb={2} fontWeight="bold">
               Installation
@@ -38,7 +45,7 @@ const JavaScriptSetup: React.FC = () => {
             </Text>
             <Divider />
             <br />
-  
+
             <Text fontSize="lg" mb={2} fontWeight="bold">
               Via Script Tag:
             </Text>
@@ -52,21 +59,21 @@ const JavaScriptSetup: React.FC = () => {
             />
             <Divider />
             <br />
-  
+
             <Text fontSize="lg" mt={4} fontWeight="bold">
               Development:
             </Text>
             <Text mt={4}>
-              Run <Code>npm build</Code> to create the bundled version. Then, copy
-              the bundled <Code>dist/index.debug.js</Code> and{" "}
+              Run <Code>npm build</Code> to create the bundled version. Then,
+              copy the bundled <Code>dist/index.debug.js</Code> and{" "}
               <Code>index.debug.js.map</Code> file into a{" "}
               <Code>scripts/flytrap</Code> directory.
             </Text>
           </Box>
-  
+
           <Divider />
           <br />
-  
+
           <Box textAlign="left" w="full">
             <Text fontSize="lg" mt={4} fontWeight="bold">
               Usage
@@ -85,7 +92,7 @@ const JavaScriptSetup: React.FC = () => {
   });`}
             />
           </Box>
-  
+
           <Divider />
           <br />
           <Box textAlign="left" w="full">
@@ -93,9 +100,9 @@ const JavaScriptSetup: React.FC = () => {
               Capturing Errors
             </Text>
             <Text mb={4}>
-              Flytrap automatically listens for uncaught exceptions and unhandled
-              promise rejections. You can also manually capture errors by calling{" "}
-              <Code>captureException</Code>:
+              Flytrap automatically listens for uncaught exceptions and
+              unhandled promise rejections. You can also manually capture errors
+              by calling <Code>captureException</Code>:
             </Text>
             <CodeDisplay
               language="javascript"
@@ -106,7 +113,7 @@ const JavaScriptSetup: React.FC = () => {
   }`}
             />
           </Box>
-  
+
           <Divider my={4} />
 
           <Button

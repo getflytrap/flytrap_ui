@@ -130,10 +130,10 @@ const ChangePassword = () => {
           >
             Change Password
           </Button>
-  
-          <Button 
+
+          <Button
             colorScheme="red"
-            onClick={handleCancel} 
+            onClick={handleCancel}
             flex="1"
             maxWidth="200px"
           >

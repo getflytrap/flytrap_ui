@@ -14,15 +14,15 @@ import {
   Tbody,
   Tr,
   Th,
-  Td
+  Td,
 } from "@chakra-ui/react";
 import {
   IoTrashOutline,
   IoArrowBackOutline,
   IoWarningOutline,
   IoCheckmarkCircleOutline,
-  IoShieldCheckmarkOutline, 
-  IoHourglassOutline
+  IoShieldCheckmarkOutline,
+  IoHourglassOutline,
 } from "react-icons/io5";
 import WarningModal from "../../shared/WarningModal";
 import { deleteRejection, getRejection, toggleRejection } from "../../services";
@@ -168,7 +168,9 @@ const RejectionDetails = () => {
           <Button
             size="md"
             onClick={handleToggleResolved}
-            leftIcon={resolved ?  <IoHourglassOutline /> : <IoCheckmarkCircleOutline />}
+            leftIcon={
+              resolved ? <IoHourglassOutline /> : <IoCheckmarkCircleOutline />
+            }
             fontWeight="light"
             bg={resolved ? "red.400" : "brand.400"}
             _hover={{
@@ -177,7 +179,7 @@ const RejectionDetails = () => {
           >
             {resolved ? <>Mark As Unresolved</> : <>Mark As Resolved</>}
           </Button>
-  
+
           {/* Delete Rejection Button */}
           <Button
             size="md"
@@ -204,8 +206,12 @@ const RejectionDetails = () => {
               <Heading as="h2" fontSize="2rem">
                 Rejected Promise
               </Heading>
-              <Text fontSize="1.5rem" color="gray">{rejectionData.method ? rejectionData.method.toUpperCase() : ""}</Text>
-              <Text fontSize="1.5rem" color="gray">{rejectionData.path ? rejectionData.path : ""}</Text>
+              <Text fontSize="1.5rem" color="gray">
+                {rejectionData.method ? rejectionData.method.toUpperCase() : ""}
+              </Text>
+              <Text fontSize="1.5rem" color="gray">
+                {rejectionData.path ? rejectionData.path : ""}
+              </Text>
             </HStack>
             <Text fontSize="sm" color="gray.500">
               {new Date(rejectionData.created_at).toLocaleString()}
@@ -215,57 +221,63 @@ const RejectionDetails = () => {
             <HStack>
               <Text>{rejectionData.value}</Text>
               <Icon
-                  as={
-                    rejectionData.handled === false
-                      ? IoWarningOutline
-                      : IoShieldCheckmarkOutline
-                  }
-                  color={rejectionData.handled === false ? "red.500" : "green.500"}
-                />
-                <Text
-                  fontSize="md"
-                  fontWeight="bold"
-                  color={rejectionData.handled === false ? "red.500" : "green.500"}
-                >
-                  {rejectionData.handled === false ? "Unhandled" : "Handled"}
-                </Text>
+                as={
+                  rejectionData.handled === false
+                    ? IoWarningOutline
+                    : IoShieldCheckmarkOutline
+                }
+                color={
+                  rejectionData.handled === false ? "red.500" : "green.500"
+                }
+              />
+              <Text
+                fontSize="md"
+                fontWeight="bold"
+                color={
+                  rejectionData.handled === false ? "red.500" : "green.500"
+                }
+              >
+                {rejectionData.handled === false ? "Unhandled" : "Handled"}
+              </Text>
             </HStack>
           </Flex>
         </Stack>
         <Table my={8}>
-            <Tbody>
-              <Tr>
-                {rejectionData.browser && rejectionData.browser !== "unknown" && (
-                  <Th fontSize="sm" fontWeight="bold">
-                    Browser
-                  </Th>
-                )}
-                {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
-                  <Th fontSize="sm" fontWeight="bold">
-                    Runtime
-                  </Th>
-                )}
+          <Tbody>
+            <Tr>
+              {rejectionData.browser && rejectionData.browser !== "unknown" && (
                 <Th fontSize="sm" fontWeight="bold">
-                  OS
+                  Browser
                 </Th>
-              </Tr>
-              <Tr>
-                {rejectionData.browser && rejectionData.browser !== "unknown" && (
-                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
-                    {rejectionData.browser}
-                  </Td>
-                )}
-                {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
-                  <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
-                    {rejectionData.runtime}
-                  </Td>
-                )}
+              )}
+              {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
+                <Th fontSize="sm" fontWeight="bold">
+                  Runtime
+                </Th>
+              )}
+              <Th fontSize="sm" fontWeight="bold">
+                OS
+              </Th>
+            </Tr>
+            <Tr>
+              {rejectionData.browser && rejectionData.browser !== "unknown" && (
                 <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
-                  {rejectionData.os && rejectionData.os !== "unknown" ? rejectionData.os : "unknown"}
+                  {rejectionData.browser}
                 </Td>
-              </Tr>
-            </Tbody>
-          </Table>
+              )}
+              {rejectionData.runtime && rejectionData.runtime !== "unknown" && (
+                <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                  {rejectionData.runtime}
+                </Td>
+              )}
+              <Td fontSize="xs" fontWeight="light" fontFamily="monospace">
+                {rejectionData.os && rejectionData.os !== "unknown"
+                  ? rejectionData.os
+                  : "unknown"}
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
       </Box>
     </Box>
   );

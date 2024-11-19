@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Heading, Flex, Divider, Container, Tabs,
+import {
+  Box,
+  Button,
+  Heading,
+  Flex,
+  Divider,
+  Container,
+  Tabs,
   TabList,
   TabPanels,
   Tab,
   TabPanel,
-TabIndicator } from "@chakra-ui/react";
+  TabIndicator,
+} from "@chakra-ui/react";
 import { User } from "../../types/index";
 import { getUsers } from "../../services/index";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -30,7 +38,7 @@ const ManageUsers = () => {
   }, []);
 
   return (
-    <Box  bg="gray.100" height="100vh">
+    <Box bg="gray.100" height="100vh">
       <Container maxWidth="1200px" mx="auto">
         <Flex mb={6} alignItems="center" justifyContent="space-between">
           <Box flex="1">
@@ -53,19 +61,19 @@ const ManageUsers = () => {
           </Flex>
           <Box flex="1"></Box>
         </Flex>
-  
-        <Flex
-          direction="column"
-          bg="white"
-          borderRadius="md"
-          p={4}
-        >
+
+        <Flex direction="column" bg="white" borderRadius="md" p={4}>
           <Tabs isFitted variant="unstyled" colorScheme="teal">
             <TabList>
               <Tab>User Management</Tab>
               <Tab>Project Assignments</Tab>
             </TabList>
-            <TabIndicator mt='-1.5px' height='2px' bg='teal.500' borderRadius='1px' />
+            <TabIndicator
+              mt="-1.5px"
+              height="2px"
+              bg="teal.500"
+              borderRadius="1px"
+            />
 
             <TabPanels>
               <TabPanel>

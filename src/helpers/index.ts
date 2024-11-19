@@ -84,7 +84,7 @@ export const parseStackTrace = (stackTrace: string, platform: string) => {
   const lines = stackTrace.split("\n");
 
   let frames;
-  if (platform === 'Flask') {
+  if (platform === "Flask") {
     frames = lines.reverse();
     const stackRegex = /^\s*File\s+"([^"]+)",\s+line\s+\d+/;
     frames = lines.filter((line) => stackRegex.test(line));

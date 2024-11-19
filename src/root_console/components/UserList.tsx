@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Table, 
+  Table,
   Thead,
   Tr,
   Td,
@@ -63,18 +63,15 @@ const UserList = ({ users, setUsers }: UserListProps) => {
       });
     }
     onClose();
-  }
+  };
 
   const handleOpenDeleteModal = (user: User) => {
     setselectedUser(user);
-    onOpen(); 
+    onOpen();
   };
 
   return (
-    <Box
-      overflowY="auto"
-      p={6}
-    >
+    <Box overflowY="auto" p={6}>
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -106,7 +103,10 @@ const UserList = ({ users, setUsers }: UserListProps) => {
         <ModalContent>
           <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalBody>
-            <Text>Are you sure you want to delete {`${selectedUser?.first_name} ${selectedUser?.last_name}`}?</Text>
+            <Text>
+              Are you sure you want to delete{" "}
+              {`${selectedUser?.first_name} ${selectedUser?.last_name}`}?
+            </Text>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="red" onClick={deleteUser}>

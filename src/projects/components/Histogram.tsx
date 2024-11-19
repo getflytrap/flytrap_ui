@@ -10,7 +10,14 @@ import {
 } from "chart.js";
 import { Box } from "@chakra-ui/react";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 type HistogramProps = {
   dailyCounts: number[];
@@ -18,7 +25,7 @@ type HistogramProps = {
 
 const Histogram = ({ dailyCounts }: HistogramProps) => {
   const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
         label: "Issues",
@@ -33,7 +40,7 @@ const Histogram = ({ dailyCounts }: HistogramProps) => {
 
   const options = {
     responsive: true,
-    aspectRatio: 4, 
+    aspectRatio: 4,
     plugins: {
       legend: { display: false },
     },
@@ -41,7 +48,7 @@ const Histogram = ({ dailyCounts }: HistogramProps) => {
       x: {
         grid: { display: false },
         title: { display: true, text: "Day" },
-        ticks: { display: false }
+        ticks: { display: false },
       },
       y: {
         grid: { display: false },

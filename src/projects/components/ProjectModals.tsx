@@ -89,8 +89,8 @@ const ProjectModals = ({
         },
       ]);
       onNewProjectClose();
-      toast({ 
-        title: "Success", 
+      toast({
+        title: "Success",
         description: `Successfully created project ${newProjectName}`,
         status: "success",
         duration: 3000,
@@ -102,14 +102,14 @@ const ProjectModals = ({
         state: { platform: selectedPlatform },
       });
     } catch {
-      toast({ 
-        title: "Error creating project", 
+      toast({
+        title: "Error creating project",
         status: "error",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
-       });
+      });
     }
   };
 
@@ -125,17 +125,17 @@ const ProjectModals = ({
       );
       onEditClose();
       selectProject(null);
-      toast({ 
-        title: "Project Renamed", 
+      toast({
+        title: "Project Renamed",
         status: "success",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
-       });
+      });
     } catch {
-      toast({ 
-        title: "Error Renaming Project", 
+      toast({
+        title: "Error Renaming Project",
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -153,8 +153,8 @@ const ProjectModals = ({
       );
       onDeleteClose();
       selectProject(null);
-      toast({ 
-        title: "Project Deleted", 
+      toast({
+        title: "Project Deleted",
         status: "success",
         duration: 3000,
         position: "bottom-right",
@@ -162,8 +162,8 @@ const ProjectModals = ({
         isClosable: true,
       });
     } catch {
-      toast({ 
-        title: "Error Deleting Project", 
+      toast({
+        title: "Error Deleting Project",
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -174,8 +174,8 @@ const ProjectModals = ({
   };
 
   const platforms = [
-    { name: "JavaScript", icon: <FaJsSquare size={40} color="#F7DF1E"/> },
-    { name: "React", icon: <FaReact size={40} color="#61DAFB"/> },
+    { name: "JavaScript", icon: <FaJsSquare size={40} color="#F7DF1E" /> },
+    { name: "React", icon: <FaReact size={40} color="#61DAFB" /> },
     { name: "Express.js", icon: <FaNodeJs size={40} color="#339933" /> },
     { name: "Flask", icon: <FaPython size={40} color="#3776AB" /> },
   ];
