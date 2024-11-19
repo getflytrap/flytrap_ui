@@ -80,12 +80,20 @@ export const renameAndFilterProperties = (
   return result;
 };
 
-export const parseStackTrace = (stackTrace: string) => {
+export const parseStackTrace = (stackTrace: string, platform: string) => {
   const lines = stackTrace.split("\n");
-  // Skip the first line if it contains the error message
-  const frames = lines
-    .slice(1)
-    .map((line) => line.trim())
-    .filter(Boolean);
+
+  let frames;
+  if (platform === 'Flask') {
+    frames = lines.reverse();
+    const stackRegex = /^\s*File\s+"([^"]+)",\s+line\s+\d+/;
+    frames = lines.filter((line) => stackRegex.test(line));
+  } else {
+    frames = lines
+      .slice(1)
+      .map((line) => line.trim())
+      .filter(Boolean);
+  }
+
   return frames;
 };

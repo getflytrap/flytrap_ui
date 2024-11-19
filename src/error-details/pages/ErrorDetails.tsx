@@ -51,6 +51,19 @@ const ErrorDetails = () => {
   const toast = useToast();
 
   useEffect(() => {
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjectsForUser();
+      }
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
+      }
+    };
+
+    loadProject();
+  }, [projects]);
+
+  useEffect(() => {
     const fetchErrorData = async () => {
       try {
         setIsLoading(true);
@@ -58,8 +71,8 @@ const ErrorDetails = () => {
         setErrorData(data);
         setResolved(data.resolved);
 
-        if (data.stack_trace) {
-          const frames = parseStackTrace(data.stack_trace);
+        if (data.stack_trace && selectedProject) {
+          const frames = parseStackTrace(data.stack_trace, selectedProject.platform);
           const contexts = data.contexts || [];
 
           const framesWithContext = frames.map((frame) => {
@@ -81,23 +94,7 @@ const ErrorDetails = () => {
     };
 
     fetchErrorData();
-  }, []);
-
-  useEffect(() => {
-    const loadProject = async () => {
-      if (projects.length === 0) {
-        await fetchProjectsForUser();
-      }
-
-      if (!selectedProject && projectUuid && projects.length > 0) {
-        selectProject(projectUuid);
-      }
-    };
-
-    loadProject();
-  }, [projects, selectedProject]);
-
-  // const existingProperties = renameAndFilterProperties(errorData);
+  }, [selectedProject]);
 
   const handleFrameClick = (index: number) => {
     setExpandedFrameIndex(index);
