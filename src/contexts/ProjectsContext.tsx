@@ -3,6 +3,8 @@ import { getProjectsForUser } from "../services/users/users";
 import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
 import { useToast } from "@chakra-ui/react";
+import { eventBus } from "../hooks/eventBus";
+import { WebSocketDataType } from "../types";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
@@ -18,7 +20,7 @@ interface ProjectsContextType {
 }
 
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
@@ -31,6 +33,29 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   // const [loadingError, setLoadingError] = useState<string | null>(null);
   const toast = useToast();
 
+  useEffect(() => {
+    // Event listener to handle new notifications
+    const handleNewNotification = (data: WebSocketDataType) => {
+      setProjects((prevProjects) => {
+        const newProjects = prevProjects.slice();
+        newProjects.map((project) => {
+          if (project.uuid === data.project_uuid) {
+            project.issue_count += 1;
+          } else {
+            return project;
+          }
+        });
+        return newProjects;
+      });
+    };
+
+    eventBus.on("newIssueNotification", handleNewNotification);
+
+    return () => {
+      eventBus.off("newIssueNotification", handleNewNotification);
+    };
+  }, [setProjects]);
+
   const fetchProjectsForUser = async (page: number = 1) => {
     setIsLoading(true);
     // setLoadingError(null);
@@ -38,15 +63,15 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       const { data } = await getProjectsForUser(
         userUuid,
         page,
-        PROJECT_LIMIT_PER_PAGE,
+        PROJECT_LIMIT_PER_PAGE
       );
       setProjects(data.projects);
       setCurrentPage(data.current_page);
       setTotalPages(data.total_pages);
     } catch {
       // setLoadingError("Failed to load projects");
-      toast({ 
-        title: "Failed to load projects", 
+      toast({
+        title: "Failed to load projects",
         status: "error",
         duration: 3000,
         position: "bottom-right",

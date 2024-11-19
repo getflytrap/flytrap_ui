@@ -19,7 +19,7 @@ import {
   Th,
   Td,
   Divider,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { User, Project } from "../../types/index";
 import {
@@ -34,7 +34,7 @@ interface AssignUsersProps {
   users: User[];
 }
 
-const AssignUsers = ({ users }: AssignUsersProps ) => {
+const AssignUsers = ({ users }: AssignUsersProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentUsers, setCurrentUsers] = useState<User[]>([]);
   const [selectedProjectUuid, setSelectedProjectUuid] = useState<string>("");
@@ -91,12 +91,12 @@ const AssignUsers = ({ users }: AssignUsersProps ) => {
 
   const deleteUserFromProject = async (
     projectUuid: string,
-    userUuid: string,
+    userUuid: string
   ) => {
     try {
       await removeUserFromProject(projectUuid, userUuid);
       setCurrentUsers((prevUsers) =>
-        prevUsers.filter((user) => user.uuid !== userUuid),
+        prevUsers.filter((user) => user.uuid !== userUuid)
       );
 
       toast({
@@ -115,7 +115,7 @@ const AssignUsers = ({ users }: AssignUsersProps ) => {
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
-      })
+      });
     }
   };
 
@@ -126,7 +126,7 @@ const AssignUsers = ({ users }: AssignUsersProps ) => {
       const newUser = users.find((user) => user.uuid === selectedUserUuid);
       if (newUser) {
         setCurrentUsers((prevUsers) => [...prevUsers, newUser]);
-      }  
+      }
 
       setSelectedUserUuid("");
       toast({
@@ -146,25 +146,26 @@ const AssignUsers = ({ users }: AssignUsersProps ) => {
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
-      })
+      });
     }
   };
 
   const availableUsers = users.filter(
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
-      !user.is_root,
+      !user.is_root
   );
 
   return (
     <Box>
       <Box textAlign="right">
-        <Button 
+        <Button
           colorScheme="teal"
           my={8}
           mr={8}
-          leftIcon={<IoAddCircleOutline />} 
-          onClick={onOpen}>
+          leftIcon={<IoAddCircleOutline />}
+          onClick={onOpen}
+        >
           Assign User to Project
         </Button>
       </Box>

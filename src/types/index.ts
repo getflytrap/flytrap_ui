@@ -73,3 +73,9 @@ export type TimeFilter =
   | "Last 90 days"
   | "Forever";
 export type FilteredProperty = [string, string | number | boolean];
+
+export interface WebSocketDataType {
+  project_uuid: string;
+  project_name: string;
+  issue_data: object;
+}

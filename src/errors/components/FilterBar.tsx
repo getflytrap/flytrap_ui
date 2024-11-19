@@ -1,5 +1,6 @@
-import { Box, Select, Flex, Text, Divider } from "@chakra-ui/react";
+import { Box, Select, Flex, Text, Divider, IconButton } from "@chakra-ui/react";
 import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
+import { MdRefresh } from "react-icons/md";
 
 interface FilterBarProps {
   selectedHandled: HandledFilter;
@@ -7,6 +8,7 @@ interface FilterBarProps {
   setSelectedTime: React.Dispatch<React.SetStateAction<TimeFilter>>;
   selectedResolved: ResolvedFilter;
   setSelectedResolved: React.Dispatch<React.SetStateAction<ResolvedFilter>>;
+  handleRefresh: () => void;
 }
 
 const FilterBar = ({
@@ -15,6 +17,7 @@ const FilterBar = ({
   setSelectedTime,
   selectedResolved,
   setSelectedResolved,
+  handleRefresh,
 }: FilterBarProps) => {
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value as TimeFilter);
@@ -55,8 +58,8 @@ const FilterBar = ({
           </Select>
         </Box>
 
-        <Flex gap={2}>
-          <Flex align="center" gap={2}>
+        <Flex gap={2} flexWrap="wrap">
+          <Flex align="center" gap={2} width="286px">
             {["Handled", "Unhandled", "All"].map((status) => (
               <Box
                 key={status}
@@ -107,17 +110,20 @@ const FilterBar = ({
             orientation="vertical"
             height="40px"
             borderColor="gray.400"
-            mx={2}
+            display={{ base: "none", lg: "block" }}
+            mt={5}
+            mb={2}
+            mx={5}
           />
 
           {/* Resolved Filter */}
-          <Flex align="center" gap={2}>
+          <Flex align="center" gap={2} width="286px">
             {["Resolved", "Unresolved", "All"].map((status) => (
               <Box
                 key={status}
                 borderRadius="2px"
                 borderBottom={
-                  selectedHandled === status
+                  selectedResolved === status
                     ? "4px solid #186A4A"
                     : "4px solid transparent"
                 }
@@ -133,7 +139,7 @@ const FilterBar = ({
                   color={selectedResolved === status ? "brand.600" : "gray.900"}
                   transition="all 0.2s ease"
                   _hover={
-                    selectedHandled === status
+                    selectedResolved === status
                       ? {
                           bg: "gray.200",
                           color: "brand.600",
@@ -157,6 +163,17 @@ const FilterBar = ({
               </Box>
             ))}
           </Flex>
+          <IconButton
+            icon={<MdRefresh />}
+            aria-label="Refresh Issues"
+            onClick={handleRefresh}
+            colorScheme="teal"
+            size="md"
+            bg="brand.500"
+            color="white"
+            ml={4}
+            margin="30px"
+          />
         </Flex>
       </Flex>
     </Box>

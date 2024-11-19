@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import io from "socket.io-client";
+import { eventBus } from "./eventBus";
 
 export const useWebSocket = (isLoggedIn: boolean | null) => {
   const toast = useToast();
@@ -23,11 +24,13 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
         title: "New Issue Logged",
         description: data.project_name,
         status: "info",
-        duration: 3000,
+        duration: 5000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
+
+      eventBus.emit("newIssueNotification", data);
     });
 
     socket.on("disconnect", () => {
