@@ -12,8 +12,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
-const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
-  const { projects } = useProjects(); 
+const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
+  const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
   const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
@@ -56,15 +56,18 @@ const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             Installation
           </Text>
           <Text mb={4}>
-            The Flytrap JavaScript SDK is designed to work with vanillaJS applications.
-            To use Flytrap, simply include the SDK via a <Code>{"<script>"}</Code> tag in your HTML file.
+            The Flytrap JavaScript SDK is designed to work with vanillaJS
+            applications. To use Flytrap, simply include the SDK via a{" "}
+            <Code>{"<script>"}</Code> tag in your HTML file.
           </Text>
           <CodeDisplay
             language="html"
-            code={"<script src='https://cdn.flytrap.com/sdk/flytrap.js'></script>"}
+            code={
+              "<script src='https://cdn.flytrap.com/sdk/flytrap.js'></script>"
+            }
           />
 
-          <Divider my={4}/>
+          <Divider my={4} />
 
           <Text fontSize="lg" mb={2} fontWeight="bold">
             Usage
@@ -86,12 +89,13 @@ const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             promise rejections.
           </Text>
           <Text>
-            By default, Flytrap will attempt to capture snippets of your source code 
-            around the location of errors (e.g., the file, line number, and surrounding
-            lines). This feature can provide more meaningful debugging information but 
-            may require source files to be available at runtime. 
-            If you don't want flytrap to do this, you can pass an additional property to
-            the Flytrap configuration, <Code>includeContext: false</Code>.
+            By default, Flytrap will attempt to capture snippets of your source
+            code around the location of errors (e.g., the file, line number, and
+            surrounding lines). This feature can provide more meaningful
+            debugging information but may require source files to be available
+            at runtime. If you don't want flytrap to do this, you can pass an
+            additional property to the Flytrap configuration,{" "}
+            <Code>includeContext: false</Code>.
           </Text>
           <CodeDisplay
             language="javascript"
@@ -109,9 +113,9 @@ const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             Capturing Errors
           </Text>
           <Text mb={4}>
-            Flytrap automatically listens for uncaught exceptions and
-            unhandled promise rejections. You can also manually capture errors
-            by calling <Code>captureException</Code>:
+            Flytrap automatically listens for uncaught exceptions and unhandled
+            promise rejections. You can also manually capture errors by calling{" "}
+            <Code>captureException</Code>:
           </Text>
           <CodeDisplay
             language="javascript"
@@ -126,11 +130,10 @@ const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
           />
           <Text mb={4}>
             This method allows you to provide additional metadata about the
-            error, such as the HTTP method and URL, for better debugging. 
-            When using axios, this metadata will automatically be captured. 
-            You don't need to pass it in explicitly.
+            error, such as the HTTP method and URL, for better debugging. When
+            using axios, this metadata will automatically be captured. You don't
+            need to pass it in explicitly.
           </Text>
-
 
           <Divider my={4} />
 

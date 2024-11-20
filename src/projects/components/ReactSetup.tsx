@@ -6,13 +6,13 @@ import {
   Button,
   Divider,
   Container,
-  Code
+  Code,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
-const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+const ReactSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
   const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
@@ -59,14 +59,14 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
 
           <CodeDisplay language="bash" code="npm install flytrap_react" />
 
-          <Divider my={4}/>
+          <Divider my={4} />
           <Text fontSize="lg" mb={4}>
             <strong>Usage</strong>
           </Text>
-          <Text mb={4} >
+          <Text mb={4}>
             In the file where your top-level component is rendered (usually
-            named <Code>main.tsx</Code> or <Code>index.jsx</Code>), import the Flytrap module and initialize it
-            with your project credentials:
+            named <Code>main.tsx</Code> or <Code>index.jsx</Code>), import the
+            Flytrap module and initialize it with your project credentials:
           </Text>
 
           <CodeDisplay
@@ -81,25 +81,29 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
   });`}
           />
           <Text>
-            The Flytrap SDK automatically sets up global error and unhandled promise rejection 
-            handlers. These handlers ensure any uncaught exceptions or rejections are captured and logged.
+            The Flytrap SDK automatically sets up global error and unhandled
+            promise rejection handlers. These handlers ensure any uncaught
+            exceptions or rejections are captured and logged.
           </Text>
           <br></br>
           <Text>
-            By default, Flytrap will attempt to capture snippets of your source code 
-            around the location of errors (e.g., the file, line number, and surrounding
-            lines). This feature can provide more meaningful debugging information but 
-            may require source files to be available at runtime. 
-            If you don't want flytrap to do this, you can pass an additional property to
-            the Flytrap configuration, <Code>includeContext: false</Code>.
+            By default, Flytrap will attempt to capture snippets of your source
+            code around the location of errors (e.g., the file, line number, and
+            surrounding lines). This feature can provide more meaningful
+            debugging information but may require source files to be available
+            at runtime. If you don't want flytrap to do this, you can pass an
+            additional property to the Flytrap configuration,{" "}
+            <Code>includeContext: false</Code>.
           </Text>
-          <CodeDisplay language="javascript" code={
-            ` flytrap.init({
+          <CodeDisplay
+            language="javascript"
+            code={` flytrap.init({
     projectId: ${project_uuid},
     apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
     apiKey: ${currentApiKey},
     includeContext: false
-  });`} />
+  });`}
+          />
 
           <Divider my={4} />
 
@@ -107,8 +111,9 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             <strong>Set Up the Flytrap Error Boundary</strong>
           </Text>
           <Text mb={4}>
-            In the same file, wrap your top-level
-            component <Code>{`<App />`}</Code> in the <Code>{`<ErrorBoundary>`}</Code> tags:
+            In the same file, wrap your top-level component{" "}
+            <Code>{`<App />`}</Code> in the <Code>{`<ErrorBoundary>`}</Code>{" "}
+            tags:
           </Text>
 
           <CodeDisplay
@@ -120,11 +125,11 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
   );
   `}
           />
-          <Divider my={4}/>
+          <Divider my={4} />
 
           <Text>
-            You can also manually capture errors
-            by calling <Code>captureException</Code>:
+            You can also manually capture errors by calling{" "}
+            <Code>captureException</Code>:
           </Text>
           <CodeDisplay
             language="javascript"
@@ -139,12 +144,10 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
           />
           <Text mb={4}>
             This method allows you to provide additional metadata about the
-            error, such as the HTTP method and URL, for better debugging. 
-            When using axios, this metadata will automatically be captured. 
-            You don't need to pass it in explicitly.
+            error, such as the HTTP method and URL, for better debugging. When
+            using axios, this metadata will automatically be captured. You don't
+            need to pass it in explicitly.
           </Text>
-
-
 
           <Divider my={4} />
 

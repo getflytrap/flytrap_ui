@@ -12,7 +12,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
-const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
+const FlaskSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
   const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
@@ -70,18 +70,13 @@ const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             <strong>Import and Initialize the Flytrap SDK</strong>
           </Text>
 
-          <Text mb={4}>
-            In your project's main app file, import flytrap:
-          </Text>
-          <CodeDisplay
-            language="python"
-            code={`import flytrap`}
-          />
+          <Text mb={4}>In your project's main app file, import flytrap:</Text>
+          <CodeDisplay language="python" code={`import flytrap`} />
 
           <Divider my={4} />
           <Text mb={2}>
-            Initialize the flytrap module at the top of the main app file,
-            with your Project ID, API Key, and Endpoint.
+            Initialize the flytrap module at the top of the main app file, with
+            your Project ID, API Key, and Endpoint.
           </Text>
           <CodeDisplay
             language="python"
@@ -95,7 +90,9 @@ const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
           <Divider my={4} />
 
           <Text mb={2}>
-            Call the <Code>flytrap.setup_flask_error_handler</Code> method and pass it your Flask app instance to capture unhandled errors in your routes automatically.
+            Call the <Code>flytrap.setup_flask_error_handler</Code> method and
+            pass it your Flask app instance to capture unhandled errors in your
+            routes automatically.
           </Text>
           <CodeDisplay
             language="python"
@@ -110,7 +107,10 @@ const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
 
           <Text mb={2}>
             For capturing specific exceptions in your code, you can use the{" "}
-            <Code><strong>capture_exception</strong></Code> method provided by Flytrap:
+            <Code>
+              <strong>capture_exception</strong>
+            </Code>{" "}
+            method provided by Flytrap:
           </Text>
           <CodeDisplay
             language="python"
@@ -120,7 +120,8 @@ except Exception as e:
     flytrap.capture_exception(e)`}
           />
           <Text mb={4}>
-            This method allows you to manually send errors to Flytrap, such as in <Code>try/except</Code> blocks.
+            This method allows you to manually send errors to Flytrap, such as
+            in <Code>try/except</Code> blocks.
           </Text>
 
           <Divider my={4} />

@@ -86,7 +86,7 @@ const ProjectModals = ({
           name: data.name,
           issue_count: 0,
           platform: data.platform,
-          api_key: data.api_key
+          api_key: data.api_key,
         },
       ]);
       onNewProjectClose();

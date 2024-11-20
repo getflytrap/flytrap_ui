@@ -14,16 +14,16 @@ const ProjectSetup: React.FC = () => {
 
   switch (platform) {
     case "React":
-      platformComponent = <ReactSetup apiKey={apiKey}/>;
+      platformComponent = <ReactSetup apiKey={apiKey} />;
       break;
     case "JavaScript":
-      platformComponent = <JavaScriptSetup apiKey={apiKey}/>;
+      platformComponent = <JavaScriptSetup apiKey={apiKey} />;
       break;
     case "Flask":
-      platformComponent = <FlaskSetup apiKey={apiKey}/>;
+      platformComponent = <FlaskSetup apiKey={apiKey} />;
       break;
     case "Express.js":
-      platformComponent = <ExpressSetup apiKey={apiKey}/>;
+      platformComponent = <ExpressSetup apiKey={apiKey} />;
       break;
     default:
       platformComponent = <Text>No platform selected</Text>;

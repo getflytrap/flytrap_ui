@@ -76,14 +76,14 @@ const ErrorDetails = () => {
         const response = await getError(projectUuid, errorUuid);
 
         const { data } = response;
-        
+
         setErrorData(data);
         setResolved(data.resolved);
 
         if (data.stack_trace && selectedProject) {
           const frames = parseStackTrace(
             data.stack_trace,
-            selectedProject.platform
+            selectedProject.platform,
           );
           const contexts = data.contexts || [];
 
@@ -163,7 +163,7 @@ const ErrorDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {
@@ -197,7 +197,7 @@ const ErrorDetails = () => {
           No Error Data Avaialable
         </Text>
       </Center>
-    )    
+    );
   }
 
   if (isLoading) return <LoadingSpinner />;

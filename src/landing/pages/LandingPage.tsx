@@ -42,11 +42,7 @@ const LandingPage = () => {
     >
       <Container maxWidth="1280px" centerContent>
         <Flex justify="center" my={12}>
-          <Image
-            src={transparent_logo}
-            alt="FlyTrap Logo"
-            maxW="500px"
-          />
+          <Image src={transparent_logo} alt="FlyTrap Logo" maxW="500px" />
         </Flex>
         <Text
           fontSize="2rem"

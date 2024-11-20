@@ -15,7 +15,7 @@ import {
   Tr,
   Th,
   Td,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import {
   IoTrashOutline,
@@ -133,7 +133,7 @@ const RejectionDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {
@@ -167,7 +167,7 @@ const RejectionDetails = () => {
           No Promise Rejection Data Avaialable
         </Text>
       </Center>
-    )  
+    );
   }
 
   if (isLoading) return <LoadingSpinner />;
