@@ -49,80 +49,79 @@ const FlaskSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             Configure Flask SDK
           </Heading>
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2}>
-              Run this command in your project directory or virtual environment:
-            </Text>
-            <CodeDisplay language="bash" code={`pip install flytrap_flask`} />
-          </Box>
+          <Divider my={4} />
 
-          <Divider />
-          <br />
+          <Text fontSize="lg" mb={4}>
+            <strong>Installation</strong>
+          </Text>
+          <Text mb={2}>
+            Run this command in your project directory or virtual environment:
+          </Text>
+          <CodeDisplay language="bash" code={`pip install flytrap_flask`} />
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2}>
-              In your project's main app file, import flytrap:
-            </Text>
-            <CodeDisplay
-              language="python"
-              code={`import flytrap`}
-            />
-          </Box>
+          <Divider my={4} />
 
-          <Divider />
-          <br />
+          <Text fontSize="lg" mb={4}>
+            <br />
+            <strong>Usage</strong>
+          </Text>
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2}>
-              Instantiate the Flytrap class at the top of the main app file,
-              passing in the config object containing api_endpoint, api_key, and
-              project_id, which is provided in the project dashboard:
-            </Text>
-            <CodeDisplay
-              language="python"
-              code={`flytrap.init({
-    api_endpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    api_key: ${currentApiKey},
-    project_id: ${project_uuid}'
-  })`}
-            />
-          </Box>
+          <Text mb={4}>
+            <strong>Import and Initialize the Flytrap SDK</strong>
+          </Text>
 
-          <Divider />
-          <br />
+          <Text mb={4}>
+            In your project's main app file, import flytrap:
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`import flytrap`}
+          />
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2}>
-              Call the <Code>setup_flask_error_handler</Code> instance method,
-              e.g. assuming you named your Flytrap instance as{" "}
-              <Code>flytrap</Code>:
-            </Text>
-            <CodeDisplay
-              language="python"
-              code={`flytrap.setup_flask_error_handler(app)`}
-            />
-            <Text mt={4} fontSize="md">
-              Now, all unhandled exceptions that occur while your app is running
-              will automatically be sent to your Flytrap AWS architecture!
-            </Text>
-          </Box>
+          <Divider my={4} />
+          <Text mb={2}>
+            Initialize the flytrap module at the top of the main app file,
+            with your Project ID, API Key, and Endpoint.
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`flytrap.init({
+  api_endpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  api_key: ${currentApiKey},
+  project_id: ${project_uuid}'
+})`}
+          />
 
-          <Divider />
-          <br />
+          <Divider my={4} />
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2}>
-              To capture handled exceptions too, follow this pattern in each of
-              your <Code>except</Code> blocks:
-            </Text>
-            <CodeDisplay
-              language="python"
-              code={`try:
-    # Some code that might raise an exception
+          <Text mb={2}>
+            Call the <Code>flytrap.setup_flask_error_handler</Code> method and pass it your Flask app instance to capture unhandled errors in your routes automatically.
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`flytrap.setup_flask_error_handler(app)`}
+          />
+          <Text mt={4} fontSize="md">
+            Now, all unhandled exceptions that occur while your app is running
+            will automatically be sent to your Flytrap AWS architecture!
+          </Text>
+
+          <Divider my={4} />
+
+          <Text mb={2}>
+            For capturing specific exceptions in your code, you can use the{" "}
+            <Code><strong>capture_exception</strong></Code> method provided by Flytrap:
+          </Text>
+          <CodeDisplay
+            language="python"
+            code={`try:
+  # Some code that might raise an exception
 except Exception as e:
-      flytrap.capture_exception(e)`}
-            />
-          </Box>
+    flytrap.capture_exception(e)`}
+          />
+          <Text mb={4}>
+            This method allows you to manually send errors to Flytrap, such as in <Code>try/except</Code> blocks.
+          </Text>
 
           <Divider my={4} />
 

@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Container,
+  Code
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
@@ -48,7 +49,6 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             Configure React SDK
           </Heading>
           <Divider />
-          <br />
 
           <Text fontSize="lg" mb={4}>
             <b>Installation</b>
@@ -59,18 +59,18 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
 
           <CodeDisplay language="bash" code="npm install flytrap_react" />
 
-          <Divider />
-          <br />
+          <Divider my={4}/>
           <Text fontSize="lg" mb={4}>
-            <b>Usage</b>
+            <strong>Usage</strong>
           </Text>
-          <Text fontSize="lg" mb={4} mt={6}>
+          <Text mb={4} >
             In the file where your top-level component is rendered (usually
-            named `main.tsx` or `index.jsx`), add the following code snippet:
+            named <Code>main.tsx</Code> or <Code>index.jsx</Code>), import the Flytrap module and initialize it
+            with your project credentials:
           </Text>
 
           <CodeDisplay
-            language="typescript"
+            language="javascript"
             code={`import flytrap from "flytrap_react";
   
   // Initialize Flytrap with your project credentials
@@ -80,63 +80,73 @@ const ReactSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
     apiKey: ${currentApiKey}
   });`}
           />
+          <Text>
+            The Flytrap SDK automatically sets up global error and unhandled promise rejection 
+            handlers. These handlers ensure any uncaught exceptions or rejections are captured and logged.
+          </Text>
+          <br></br>
+          <Text>
+            By default, Flytrap will attempt to capture snippets of your source code 
+            around the location of errors (e.g., the file, line number, and surrounding
+            lines). This feature can provide more meaningful debugging information but 
+            may require source files to be available at runtime. 
+            If you don't want flytrap to do this, you can pass an additional property to
+            the Flytrap configuration, <Code>includeContext: false</Code>.
+          </Text>
+          <CodeDisplay language="javascript" code={
+            ` flytrap.init({
+    projectId: ${project_uuid},
+    apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+    apiKey: ${currentApiKey},
+    includeContext: false
+  });`} />
 
-          <Text fontSize="lg" mb={4} mt={6}>
-            In the same file (main.tsx or index.js), wrap your top-level
-            component {`<App />`} in the {`<ErrorBoundary>`} tags:
+          <Divider my={4} />
+
+          <Text mb={4}>
+            <strong>Set Up the Flytrap Error Boundary</strong>
+          </Text>
+          <Text mb={4}>
+            In the same file, wrap your top-level
+            component <Code>{`<App />`}</Code> in the <Code>{`<ErrorBoundary>`}</Code> tags:
           </Text>
 
           <CodeDisplay
             language="tsx"
             code={`createRoot(document.getElementById("root")!).render(
-    <Flytrap.ErrorBoundary>
+    <flytrap.ErrorBoundary fallback={<div>Something went wrong!</div>}>
       <App />
-    </Flytrap.ErrorBoundary>
+    </flytrap.ErrorBoundary>
   );
   `}
           />
-          <Divider />
-          <br />
+          <Divider my={4}/>
 
-          <Text fontSize="lg" mb={4} mt={6}>
-            <b>Optional:</b> Insert these JSX tags into the return statement of
-            any component to test:
+          <Text>
+            You can also manually capture errors
+            by calling <Code>captureException</Code>:
           </Text>
-
+          <CodeDisplay
+            language="javascript"
+            code={`try {
+  throw new Error('An example error');
+} catch (error) {
+    flytrap.captureException(error, {
+    method: "GET", // Optional: HTTP method, if applicable
+    url: "https://example.com/api", // Optional: URL, if applicable
+  });
+}`}
+          />
           <Text mb={4}>
-            <b>Throw a test error</b>
+            This method allows you to provide additional metadata about the
+            error, such as the HTTP method and URL, for better debugging. 
+            When using axios, this metadata will automatically be captured. 
+            You don't need to pass it in explicitly.
           </Text>
 
-          <CodeDisplay
-            language="tsx"
-            code={`<button
-     onClick={() => {
-       let number = 42;
-       number.toUpperCase();
-   }}
-   >
-    Throw a test error
-  </button>
-  `}
-          />
 
-          <Text mb={4} mt={6}>
-            <b>Throw an unhandled rejected promise</b>
-          </Text>
 
-          <CodeDisplay
-            language="tsx"
-            code={`<button
-    onClick={() => {
-      throw Promise.reject("for testing: unhandled rejected promise");
-    }}
-  >
-    Throw an unhandled rejected promise
-  </button>
-  `}
-          />
-
-          <Divider my={6} />
+          <Divider my={4} />
 
           <Button
             colorScheme="teal"
