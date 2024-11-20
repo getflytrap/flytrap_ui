@@ -15,6 +15,7 @@ import {
   Tr,
   Th,
   Td,
+  Center
 } from "@chakra-ui/react";
 import {
   IoTrashOutline,
@@ -59,7 +60,7 @@ const RejectionDetails = () => {
         setRejectionData(data);
         setResolved(data.resolved);
       } catch (e) {
-        setLoadingError(e instanceof Error ? e.message : "Unknown error");
+        setLoadingError("No promise rejection data available.");
       } finally {
         setIsLoading(false);
       }
@@ -149,10 +150,6 @@ const RejectionDetails = () => {
     });
   };
 
-  if (!rejectionData) {
-    return <Heading>No Data</Heading>;
-  }
-
   if (loadingError) {
     return (
       <WarningModal
@@ -161,6 +158,16 @@ const RejectionDetails = () => {
         errorMessage={loadingError}
       />
     );
+  }
+
+  if (!rejectionData) {
+    return (
+      <Center>
+        <Text fontSize="2rem" p={8}>
+          No Promise Rejection Data Avaialable
+        </Text>
+      </Center>
+    )  
   }
 
   if (isLoading) return <LoadingSpinner />;

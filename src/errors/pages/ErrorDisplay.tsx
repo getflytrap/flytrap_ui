@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Box, Heading, useToast } from "@chakra-ui/react";
+import { Box, Heading, Text, useToast } from "@chakra-ui/react";
 
 import ErrorsTable from "../components/ErrorsTable";
 import FilterBar from "../components/FilterBar";
@@ -27,6 +27,7 @@ const ErrorDisplay = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInvalidProject, setIsInvalidProject] = useState(false);
 
   const [selectedHandled, setSelectedHandled] = useState<HandledFilter>("All");
   const [selectedResolved, setSelectedResolved] =
@@ -42,6 +43,13 @@ const ErrorDisplay = () => {
   useEffect(() => {
     const loadProject = async () => {
       if (projects.length === 0) await fetchProjectsForUser();
+
+      if (!projectUuid || !projects.some((p) => p.uuid === projectUuid)) {
+        setIsInvalidProject(true);
+        return;
+      }
+
+      setIsInvalidProject(false);
 
       if (!selectedProject && projectUuid && projects.length > 0) {
         selectProject(projectUuid);
@@ -114,6 +122,20 @@ const ErrorDisplay = () => {
       setIsLoading(false);
     }
   };
+
+  if (isInvalidProject) {
+    return (
+      <Box mx={4} my={6}>
+        <Heading as="h2" fontSize="2rem" my="30px">
+          Invalid Project
+        </Heading>
+        <Text>
+          The project you're trying to access does not exist or you don't have
+          permission to view it.
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box overflowY="auto" mx={4}>

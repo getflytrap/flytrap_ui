@@ -15,6 +15,7 @@ import {
   Td,
   Th,
   Flex,
+  Center,
   useToast,
 } from "@chakra-ui/react";
 import WarningModal from "../../shared/WarningModal";
@@ -72,7 +73,10 @@ const ErrorDetails = () => {
     const fetchErrorData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getError(projectUuid, errorUuid);
+        const response = await getError(projectUuid, errorUuid);
+
+        const { data } = response;
+        
         setErrorData(data);
         setResolved(data.resolved);
 
@@ -95,7 +99,7 @@ const ErrorDetails = () => {
           setStackFrames(framesWithContext);
         }
       } catch (e) {
-        setLoadingError(e instanceof Error ? e.message : "Unknown error");
+        setLoadingError("No error data available.");
       } finally {
         setIsLoading(false);
       }
@@ -176,10 +180,6 @@ const ErrorDetails = () => {
     });
   };
 
-  if (!errorData) {
-    return <Heading>No Data</Heading>;
-  }
-
   if (loadingError) {
     return (
       <WarningModal
@@ -188,6 +188,16 @@ const ErrorDetails = () => {
         errorMessage={loadingError}
       />
     );
+  }
+
+  if (!errorData) {
+    return (
+      <Center>
+        <Text fontSize="2rem" p={8}>
+          No Error Data Avaialable
+        </Text>
+      </Center>
+    )    
   }
 
   if (isLoading) return <LoadingSpinner />;

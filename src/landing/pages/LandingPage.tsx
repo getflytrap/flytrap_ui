@@ -42,32 +42,16 @@ const LandingPage = () => {
     >
       <Container maxWidth="1280px" centerContent>
         <Flex justify="center" my={12}>
-          {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
           <Image
             src={transparent_logo}
             alt="FlyTrap Logo"
             maxW="500px"
           />
         </Flex>
-        {/* <Text
-          fontSize="lg"
-          variant="light"
-          textAlign="center"
-          maxW="lg"
-          mt={8}
-        >
-          Flytrap is the ultimate error monitoring solution for developers,
-          offering real-time detection and detailed insights into your code's
-          issues—so you can fix bugs faster and improve your user experience.
-          Flytrap is lightweight, easy to set up, and focused solely on what
-          matters most: identifying and resolving errors before they disrupt
-          your application.
-        </Text> */}
         <Text
           fontSize="2rem"
           fontWeight="bold"
           color="rgba(233, 246, 216, 0.7)"
-          // my={2}
         >
           Catching Bugs So You Don't Have To
         </Text>
