@@ -9,8 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-// import transparent_logo from "../../assets/transparent_logo.png";
-import transparent_logo_animated from "../../assets/transparent_logo_animated.png";
+import transparent_logo from "../../assets/transparent_logo.png";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const LandingPage = () => {
@@ -45,7 +44,7 @@ const LandingPage = () => {
         <Flex justify="center" my={12}>
           {/* <Image src={transparent_logo} alt="FlyTrap Logo" maxW="400px" /> */}
           <Image
-            src={transparent_logo_animated}
+            src={transparent_logo}
             alt="FlyTrap Logo"
             maxW="500px"
           />
