@@ -4,8 +4,7 @@ import ErrorDisplay from "./errors/pages/ErrorDisplay.tsx";
 import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
 import RejectionDetails from "./error-details/pages/RejectionDetails.tsx";
 import Login from "./authentication/pages/Login.tsx";
-// import WarningModal from "./shared/WarningModal";
-// import RootConsole from "./root_console/pages/RootConsole.tsx";
+import NotFound from "./shared/NotFound.tsx";
 import ManageUsers from "./root_console/pages/ManageUsers.tsx";
 import AuthRequired from "./authentication/components/AuthRequired.tsx";
 import MainLayout from "./shared/MainLayout.tsx";
@@ -51,8 +50,8 @@ const App = () => {
           <Route element={<AdminRequired />}>
             <Route path="/root-console" element={<ManageUsers />} />
           </Route>
-          {/* <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
     </Routes>

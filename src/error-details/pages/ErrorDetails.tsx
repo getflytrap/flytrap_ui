@@ -15,6 +15,7 @@ import {
   Td,
   Th,
   Flex,
+  Center,
   useToast,
 } from "@chakra-ui/react";
 import WarningModal from "../../shared/WarningModal";
@@ -72,14 +73,17 @@ const ErrorDetails = () => {
     const fetchErrorData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getError(projectUuid, errorUuid);
+        const response = await getError(projectUuid, errorUuid);
+
+        const { data } = response;
+
         setErrorData(data);
         setResolved(data.resolved);
 
         if (data.stack_trace && selectedProject) {
           const frames = parseStackTrace(
             data.stack_trace,
-            selectedProject.platform
+            selectedProject.platform,
           );
           const contexts = data.contexts || [];
 
@@ -95,7 +99,7 @@ const ErrorDetails = () => {
           setStackFrames(framesWithContext);
         }
       } catch (e) {
-        setLoadingError(e instanceof Error ? e.message : "Unknown error");
+        setLoadingError("No error data available.");
       } finally {
         setIsLoading(false);
       }
@@ -159,7 +163,7 @@ const ErrorDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this error as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {
@@ -176,10 +180,6 @@ const ErrorDetails = () => {
     });
   };
 
-  if (!errorData) {
-    return <Heading>No Data</Heading>;
-  }
-
   if (loadingError) {
     return (
       <WarningModal
@@ -187,6 +187,16 @@ const ErrorDetails = () => {
         onClose={() => setLoadingError(null)}
         errorMessage={loadingError}
       />
+    );
+  }
+
+  if (!errorData) {
+    return (
+      <Center>
+        <Text fontSize="2rem" p={8}>
+          No Error Data Avaialable
+        </Text>
+      </Center>
     );
   }
 

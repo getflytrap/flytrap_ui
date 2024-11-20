@@ -15,6 +15,7 @@ import {
   Tr,
   Th,
   Td,
+  Center,
 } from "@chakra-ui/react";
 import {
   IoTrashOutline,
@@ -59,7 +60,7 @@ const RejectionDetails = () => {
         setRejectionData(data);
         setResolved(data.resolved);
       } catch (e) {
-        setLoadingError(e instanceof Error ? e.message : "Unknown error");
+        setLoadingError("No promise rejection data available.");
       } finally {
         setIsLoading(false);
       }
@@ -132,7 +133,7 @@ const RejectionDetails = () => {
 
   const handleDeleteClick = () => {
     const confirmAction = window.confirm(
-      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?"
+      "Marking this rejection as resolved will permanently remove it from the database. Would you like to continue?",
     );
 
     if (confirmAction) {
@@ -149,10 +150,6 @@ const RejectionDetails = () => {
     });
   };
 
-  if (!rejectionData) {
-    return <Heading>No Data</Heading>;
-  }
-
   if (loadingError) {
     return (
       <WarningModal
@@ -160,6 +157,16 @@ const RejectionDetails = () => {
         onClose={() => setLoadingError(null)}
         errorMessage={loadingError}
       />
+    );
+  }
+
+  if (!rejectionData) {
+    return (
+      <Center>
+        <Text fontSize="2rem" p={8}>
+          No Promise Rejection Data Avaialable
+        </Text>
+      </Center>
     );
   }
 

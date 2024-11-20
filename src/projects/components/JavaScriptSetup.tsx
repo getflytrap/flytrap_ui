@@ -12,8 +12,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
-const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
-  const { projects } = useProjects(); 
+const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
+  const { projects } = useProjects();
   const { project_uuid } = useParams();
   const navigate = useNavigate();
   const [currentApiKey, setCurrentApiKey] = useState<string | null>(null);
@@ -50,65 +50,90 @@ const JavaScriptSetup: React.FC<{apiKey: string}> = ({ apiKey }) => {
             Configure JavaScript SDK
           </Heading>
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mb={2} fontWeight="bold">
-              Installation
-            </Text>
-            <Text mb={4}>
-              To use Flytrap, simply include the SDK in your project.
-            </Text>
-            <Text mb={4}>
-              The SDK is distributed in UMD format, allowing it to be imported
-              directly in the browser with a <Code>&lt;script&gt;</Code> tag:
-            </Text>
-            <CodeDisplay
-              language="html"
-              code={`<script src="scripts/flytrap/index.js"></script>`}
-            />
-          </Box>
+          <Divider my={4} />
 
-          <Divider />
-          <br />
+          <Text fontSize="lg" mb={2} fontWeight="bold">
+            Installation
+          </Text>
+          <Text mb={4}>
+            The Flytrap JavaScript SDK is designed to work with vanillaJS
+            applications. To use Flytrap, simply include the SDK via a{" "}
+            <Code>{"<script>"}</Code> tag in your HTML file.
+          </Text>
+          <CodeDisplay
+            language="html"
+            code={
+              "<script src='https://cdn.flytrap.com/sdk/flytrap.js'></script>"
+            }
+          />
 
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mt={4} fontWeight="bold">
-              Usage
-            </Text>
-            <br />
-            <Text mb={4}>
-              To begin using Flytrap, initialize it with your project
-              configuration:
-            </Text>
-            <CodeDisplay
-              language="javascript"
-              code={`flytrap.init({
-    projectId: ${project_uuid},
-    apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${currentApiKey}
-  });`}
-            />
-          </Box>
+          <Divider my={4} />
 
-          <Divider />
-          <br />
-          <Box textAlign="left" w="full">
-            <Text fontSize="lg" mt={4} fontWeight="bold">
-              Capturing Errors
-            </Text>
-            <Text mb={4}>
-              Flytrap automatically listens for uncaught exceptions and
-              unhandled promise rejections. You can also manually capture errors
-              by calling <Code>captureException</Code>:
-            </Text>
-            <CodeDisplay
-              language="javascript"
-              code={`try {
-    throw new Error('An example error');
-  } catch (error) {
-    flytrap.captureException(error);
-  }`}
-            />
-          </Box>
+          <Text fontSize="lg" mb={2} fontWeight="bold">
+            Usage
+          </Text>
+          <Text mb={4}>
+            Initialize Flytrap in your script by providing your Project ID, API
+            Key, and Endpoint:
+          </Text>
+          <CodeDisplay
+            language="javascript"
+            code={`flytrap.init({
+  projectId: ${project_uuid},
+  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  apiKey: ${currentApiKey}
+});`}
+          />
+          <Text mb={4}>
+            Flytrap automatically captures uncaught exceptions and unhandled
+            promise rejections.
+          </Text>
+          <Text>
+            By default, Flytrap will attempt to capture snippets of your source
+            code around the location of errors (e.g., the file, line number, and
+            surrounding lines). This feature can provide more meaningful
+            debugging information but may require source files to be available
+            at runtime. If you don't want flytrap to do this, you can pass an
+            additional property to the Flytrap configuration,{" "}
+            <Code>includeContext: false</Code>.
+          </Text>
+          <CodeDisplay
+            language="javascript"
+            code={`flytrap.init({
+  projectId: ${project_uuid},
+  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
+  apiKey: ${currentApiKey},
+  includeContext: false
+});`}
+          />
+
+          <Divider my={4} />
+
+          <Text fontSize="lg" mb={2} fontWeight="bold">
+            Capturing Errors
+          </Text>
+          <Text mb={4}>
+            Flytrap automatically listens for uncaught exceptions and unhandled
+            promise rejections. You can also manually capture errors by calling{" "}
+            <Code>captureException</Code>:
+          </Text>
+          <CodeDisplay
+            language="javascript"
+            code={`try {
+  throw new Error('An example error');
+} catch (error) {
+    flytrap.captureException(error, {
+    method: "GET", // Optional: HTTP method, if applicable
+    url: "https://example.com/api", // Optional: URL, if applicable
+  });
+}`}
+          />
+          <Text mb={4}>
+            This method allows you to provide additional metadata about the
+            error, such as the HTTP method and URL, for better debugging. When
+            using axios, this metadata will automatically be captured. You don't
+            need to pass it in explicitly.
+          </Text>
 
           <Divider my={4} />
 

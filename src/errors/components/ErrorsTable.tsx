@@ -58,15 +58,8 @@ const ErrorsTable = ({
   if (!issues?.length) {
     return (
       <Center>
-        <Text
-          fontSize="5xl"
-          p="50"
-          m={50}
-          border="1px solid gray"
-          backgroundColor="gray.200"
-          borderRadius="100px"
-        >
-          No Data
+        <Text p={4}>
+          No results found. Clear filters or modify your selection.
         </Text>
       </Center>
     );

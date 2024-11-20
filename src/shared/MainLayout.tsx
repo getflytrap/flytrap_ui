@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -21,15 +21,10 @@ import { AuthContext } from "../contexts/AuthContext";
 const MainLayout = () => {
   const { isRoot, logout, name } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleSignOut = () => {
     logout();
     navigate("/login");
-  };
-
-  const getButtonColor = (path: string) => {
-    return location.pathname === path ? "purple" : "gray";
   };
 
   return (
@@ -45,18 +40,20 @@ const MainLayout = () => {
         bgGradient="linear(200deg, rgba(36,195,173,1) 0%, rgba(39,167,138,1) 14%, rgba(29,125,85,1) 35%, rgba(19,85,57,1) 67%, rgba(10,46,30,1) 100%);"
       >
         <Heading size="2xl" textAlign="center">
-          <Image
-            src={transparent_logo}
-            alt="Flytrap Logo"
-            height="auto"
-            maxWidth="100%"
-            maxHeight="100px"
-          />
+          <Link to="/">
+            <Image
+              src={transparent_logo}
+              alt="Flytrap Logo"
+              height="auto"
+              maxWidth="100%"
+              maxHeight="100px"
+            />
+          </Link>
         </Heading>
         <Flex justifyContent="flex-end" alignItems="center" marginTop="1rem">
           <Link to="/projects">
             <Button
-              colorScheme={getButtonColor("/")}
+              colorScheme="gray"
               leftIcon={<BsFolder />}
               mx="10px"
               size={["sm", "md"]}
