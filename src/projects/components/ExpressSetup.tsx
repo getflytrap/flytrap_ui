@@ -83,9 +83,9 @@ const ExpressSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
   
   // Initialize Flytrap with your project credentials
   flytrap.init({
-    projectId: ${project_uuid},
-    apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${currentApiKey}
+    projectId: "${project_uuid}",
+    apiEndpoint: "${import.meta.env.VITE_FLYTRAP_SDK_URL}",
+    apiKey: "${currentApiKey}"
   });`}
           />
           <Text>
@@ -100,9 +100,9 @@ const ExpressSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
           <CodeDisplay
             language="javascript"
             code={` flytrap.init({
-    projectId: ${project_uuid},
-    apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-    apiKey: ${currentApiKey},
+    projectId: "${project_uuid}",
+    apiEndpoint: "${import.meta.env.VITE_FLYTRAP_SDK_URL}",
+    apiKey: "${currentApiKey}",
     includeContext: false
   });`}
           />
