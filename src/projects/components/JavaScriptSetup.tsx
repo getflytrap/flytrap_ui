@@ -79,9 +79,9 @@ const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
           <CodeDisplay
             language="javascript"
             code={`flytrap.init({
-  projectId: ${project_uuid},
-  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-  apiKey: ${currentApiKey}
+  projectId: "${project_uuid}",
+  apiEndpoint: "${import.meta.env.VITE_FLYTRAP_SDK_URL}",
+  apiKey: "${currentApiKey}"
 });`}
           />
           <Text mb={4}>
@@ -100,9 +100,9 @@ const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
           <CodeDisplay
             language="javascript"
             code={`flytrap.init({
-  projectId: ${project_uuid},
-  apiEndpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-  apiKey: ${currentApiKey},
+  projectId: "${project_uuid}",
+  apiEndpoint: "${import.meta.env.VITE_FLYTRAP_SDK_URL}",
+  apiKey: "${currentApiKey}",
   includeContext: false
 });`}
           />

@@ -81,9 +81,9 @@ const FlaskSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
           <CodeDisplay
             language="python"
             code={`flytrap.init({
-  api_endpoint: ${import.meta.env.VITE_FLYTRAP_SDK_URL},
-  api_key: ${currentApiKey},
-  project_id: ${project_uuid}'
+  api_endpoint: "${import.meta.env.VITE_FLYTRAP_SDK_URL}",
+  api_key: "${currentApiKey}",
+  project_id: "${project_uuid}"
 })`}
           />
 
