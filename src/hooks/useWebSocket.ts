@@ -10,7 +10,7 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     const accessToken = sessionStorage.getItem("access_token");
     if (!accessToken) return;
 
-    const socket = io(`${import.meta.env.VITE_BASEURL}/notifications`, {
+    const socket = io(`${import.meta.env.VITE_BASEURL}/api/notifications`, {
       query: { token: accessToken },
       transports: ["websocket"],
     });
