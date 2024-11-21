@@ -63,7 +63,7 @@ const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
           <CodeDisplay
             language="html"
             code={
-              "<script src='https://cdn.flytrap.com/sdk/flytrap.js'></script>"
+              "<script src='https://cdn.jsdelivr.net/npm/flytrap_javascript/dist/index.js'></script>"
             }
           />
 
