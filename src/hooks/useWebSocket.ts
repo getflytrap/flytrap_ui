@@ -10,10 +10,15 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     const accessToken = sessionStorage.getItem("access_token");
     if (!accessToken) return;
 
-    const socket = io(`${import.meta.env.VITE_BASEURL}/api/notifications`, {
+    const socket = io(
+      import.meta.env.VITE_BASEURL
+        ? `${import.meta.env.VITE_BASEURL}/api/notifications`
+        : '/api/notifications',
+      {
       query: { token: accessToken },
       transports: ["websocket"],
-    });
+      }
+    );
 
     socket.on("authenticated", () => {
       sessionStorage.removeItem("access_token");
