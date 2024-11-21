@@ -56,7 +56,7 @@ const ErrorDisplay = () => {
       }
     };
 
-    if (!selectedProject || projects.length === 0) loadProject();
+    loadProject();
   }, [
     projects,
     projectUuid,
