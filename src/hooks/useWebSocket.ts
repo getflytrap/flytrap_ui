@@ -20,6 +20,8 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
       }
     );
 
+    console.log("Socket:", socket);
+
     socket.on("authenticated", () => {
       sessionStorage.removeItem("access_token");
     });
