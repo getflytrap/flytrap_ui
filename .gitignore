@@ -5,3 +5,4 @@ dist/
 .git-coauthors
 .git-coauthors.save
 .vite
+update_ui.sh

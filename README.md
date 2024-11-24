@@ -1,8 +1,24 @@
-# React + Vite
+# Flytrap Dashboard
+Flytrap Dashboard is the web interface for our error monitoring software, Flytrap. This dashboard allows developers to view, filter, and analyze errors collected from their applications in one centralized location. It offers project-based access, nea real-time notifications, and intuitive navigation to streamline debugging and enhance software reliability.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+### Project-based Error Tracking
+Monitor errors specific to each project for focused debugging.
 
-Currently, two official plugins are available:
+### Near Real-Time Notifications
+Stay updated with live notifications when new errors are logged.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### User Access Control
+Restrict access to error data based on user permissions and project association.
+
+### Detailed Error Logs
+View comprehensive error details, including stack traces, timestamps, and context.
+
+### Filtering
+Quickly locate specific errors using filters.
+
+## Tech Stack
+Frontend: React (with Chakra UI for styling and React Router for navigation)
+Backend: Flask API hosted on AWS EC2, using PostgreSQL on AWS RDS for data storage
+Notifications: WebSockets for real-time updates
+Infrastructure: Dockerized services, AWS Lambda for error processing, and API Gateway for SDK interaction
