@@ -9,12 +9,10 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { ErrorData, Rejection, Project } from "../../types";
-
+import ErrorRow from "./ErrorRow";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import PaginationControls from "../../shared/Pagination";
-
-import ErrorRow from "./ErrorRow";
+import { ErrorData, Rejection, Project } from "../../types";
 
 interface ErrorsTableProps {
   issues: (ErrorData | Rejection)[];
@@ -29,6 +27,25 @@ interface ErrorsTableProps {
   selectedProject: Project | null;
 }
 
+/**
+ * ErrorsTable
+ *
+ * Displays a table of issues (errors or rejections) with support for responsive design
+ * and pagination controls.
+ *
+ * Props:
+ * - `issues`: The list of issues (errors or rejections) to display.
+ * - `currentPage`: The current page number in the paginated list.
+ * - `setCurrentPage`: A function to update the current page.
+ * - `totalPages`: The total number of pages available for pagination.
+ * - `isLoading`: A boolean indicating if the data is currently loading.
+ * - `selectedHandled`: The current filter for "handled" status.
+ * - `selectedTime`: The current filter for the time range.
+ * - `selectedResolved`: The current filter for "resolved" status.
+ * - `selectedProject`: The currently selected project.
+ *
+ * @param props - The component props.
+ */
 const ErrorsTable = ({
   issues,
   currentPage,
@@ -47,7 +64,6 @@ const ErrorsTable = ({
     };
 
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
@@ -72,7 +88,7 @@ const ErrorsTable = ({
           <Tr>
             <Th fontSize="sm" maxW="250px" whiteSpace="normal"></Th>
             <Th fontSize="sm"></Th>
-            {/* Conditionally render the 'Time' and 'Status' columns */}
+            {/* Conditionally render columns */}
             {!isMobile && <Th fontSize="sm">Time</Th>}
             {!isMobile && <Th fontSize="sm">Events</Th>}
             {!isMobile && <Th fontSize="sm">Users</Th>}

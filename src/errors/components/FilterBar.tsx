@@ -1,6 +1,6 @@
 import { Box, Select, Flex, Text, Divider, IconButton } from "@chakra-ui/react";
-import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
 import { MdRefresh } from "react-icons/md";
+import { HandledFilter, TimeFilter, ResolvedFilter } from "../../types";
 
 interface FilterBarProps {
   selectedHandled: HandledFilter;
@@ -11,6 +11,24 @@ interface FilterBarProps {
   handleRefresh: () => void;
 }
 
+/**
+ * FilterBar
+ *
+ * Renders a filter bar for the issues table.
+ * - Includes dropdown for selecting a time period.
+ * - Provides buttons to toggle "Handled" and "Resolved" filters.
+ * - Displays a refresh button to reload the current issue data.
+ *
+ * Props:
+ * - `selectedHandled`: Current selection for the "Handled" filter.
+ * - `setSelectedHandled`: Setter for the "Handled" filter.
+ * - `setSelectedTime`: Setter for the time filter.
+ * - `selectedResolved`: Current selection for the "Resolved" filter.
+ * - `setSelectedResolved`: Setter for the "Resolved" filter.
+ * - `handleRefresh`: Function to trigger data reload.
+ *
+ * @param props - The component props.
+ */
 const FilterBar = ({
   selectedHandled,
   setSelectedHandled,

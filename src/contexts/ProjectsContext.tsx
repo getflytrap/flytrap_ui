@@ -8,6 +8,10 @@ import { WebSocketDataType } from "../types";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
 
+/**
+ * ProjectsContextType defines the shape of the projects context,
+ * providing state and actions for managing projects.
+ */
 interface ProjectsContextType {
   projects: Project[];
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
@@ -19,10 +23,17 @@ interface ProjectsContextType {
   selectedProject: Project | null;
 }
 
+/**
+ * Context for managing projects-related state and actions.
+ */
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(
   undefined,
 );
 
+/**
+ * Provider component for ProjectsContext.
+ * Manages project data, pagination, loading state, and WebSocket notifications.
+ */
 export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const { userUuid } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
@@ -30,23 +41,27 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  // const [loadingError, setLoadingError] = useState<string | null>(null);
   const toast = useToast();
 
+  /**
+  * Automatically fetch projects on initial render.
+  */
   useEffect(() => {
-    // Event listener to handle new notifications
+    fetchProjectsForUser();
+  }, []);
+
+  /**
+  * Updates the project issue count when a new notification is received.
+  */
+  useEffect(() => {
     const handleNewNotification = (data: WebSocketDataType) => {
-      setProjects((prevProjects) => {
-        const newProjects = prevProjects.slice();
-        newProjects.map((project) => {
-          if (project.uuid === data.project_uuid) {
-            project.issue_count += 1;
-          } else {
-            return project;
-          }
-        });
-        return newProjects;
-      });
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.uuid === data.project_uuid
+            ? { ...project, issue_count: project.issue_count + 1 }
+            : project,
+        ),
+      );
     };
 
     eventBus.on("newIssueNotification", handleNewNotification);
@@ -56,22 +71,29 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [setProjects]);
 
+  /**
+   * Fetches the list of projects for the current user.
+   * Handles pagination and error scenarios.
+   */
   const fetchProjectsForUser = async (page: number = 1) => {
     setIsLoading(true);
-    // setLoadingError(null);
     try {
-      const { data } = await getProjectsForUser(
+      const data = await getProjectsForUser(
         userUuid,
         page,
         PROJECT_LIMIT_PER_PAGE,
       );
-      setProjects(data.projects);
-      setCurrentPage(data.current_page);
-      setTotalPages(data.total_pages || 1);
-    } catch {
-      // setLoadingError("Failed to load projects");
+      setProjects(data.projects || []);
+      setCurrentPage(data.currentPage || 1);
+      setTotalPages(data.totalPages || 1);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred while fetching projects.";
       toast({
-        title: "Failed to load projects",
+        title: "Error Loading Projects",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -83,14 +105,13 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  /**
+  * Selects a project by its UUID and updates the selected project state.
+  */
   const selectProject = (projectUuid: string | null) => {
     const project = projects.find((p) => p.uuid === projectUuid) || null;
     setSelectedProject(project);
   };
-
-  useEffect(() => {
-    fetchProjectsForUser();
-  }, []);
 
   return (
     <ProjectsContext.Provider

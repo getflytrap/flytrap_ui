@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Heading,
@@ -8,10 +9,17 @@ import {
   Container,
   Divider,
 } from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router-dom";
 import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
+/**
+ * A component for setting up the Flytrap JavaScript SDK. 
+ * It provides users with installation and setup instructions, 
+ * dynamically inserting their project details such as API Key and Project UUID.
+ *
+ * @param apiKey - The API Key for the current project.
+ * @returns A styled page with setup instructions for the JavaScript SDK.
+ */
 const JavaScriptSetup: React.FC<{ apiKey: string }> = ({ apiKey }) => {
   const { projects } = useProjects();
   const { project_uuid } = useParams();

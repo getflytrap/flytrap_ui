@@ -8,6 +8,17 @@ type PaginationControlsProps = {
   onNextPage: () => void;
 };
 
+/**
+ * The `PaginationControls` component provides a simple pagination UI
+ * with previous and next buttons and displays the current page number
+ * relative to the total number of pages.
+ *
+ * @param currentPage - The current active page number.
+ * @param totalPages - The total number of pages available.
+ * @param onPrevPage - Callback function to navigate to the previous page.
+ * @param onNextPage - Callback function to navigate to the next page.
+ * @returns A responsive pagination control component.
+ */
 const PaginationControls = ({
   currentPage,
   totalPages,

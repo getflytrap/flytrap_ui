@@ -1,5 +1,3 @@
-import { ErrorData, FilteredProperty } from "../types";
-
 export const convertHandledToBoolean = (handled: string): boolean | null => {
   if (handled === "Handled") return true;
   if (handled === "Unhandled") return false;
@@ -40,44 +38,6 @@ export const convertToTimeStamp = (period: string): string | null => {
   }
 
   return pastDate.toISOString();
-};
-
-export const renameAndFilterProperties = (
-  errorData: ErrorData | null,
-): FilteredProperty[] => {
-  if (!errorData) return []; // Handle null or undefined fetchedError by returning an empty array
-
-  const result: FilteredProperty[] = [];
-  for (const [key, value] of Object.entries(errorData)) {
-    if (!value) continue;
-    switch (key) {
-      case "error_uuid":
-        result.push(["Id", value]);
-        break;
-      case "name":
-        result.push(["Name", value]);
-        break;
-      case "message":
-        result.push(["Message", value]);
-        break;
-      case "created_at":
-        result.push(["Created At", new Date(value).toLocaleString()]);
-        break;
-      case "file":
-        result.push(["File", value]);
-        break;
-      case "line_number":
-        result.push(["Line Number", value]);
-        break;
-      case "col_number":
-        result.push(["Column Number", value]);
-        break;
-      case "handled":
-        result.push(["Handled", value]);
-        break;
-    }
-  }
-  return result;
 };
 
 export const parseStackTrace = (stackTrace: string, platform: string) => {

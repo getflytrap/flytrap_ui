@@ -9,15 +9,20 @@ interface CodeContextDisplayProps {
   codeContext: CodeContext | null;
 }
 
+/**
+ * A component that displays a snippet of code with syntax highlighting and line numbers.
+ * It highlights the line where an error occurred.
+ *
+ * @param {CodeContextDisplayProps} props - The props for the component.
+ * @param {CodeContext | null} props.codeContext - The code snippet and line number to display. 
+ * If null, a placeholder message is shown.
+ */
 const CodeContextDisplay = ({ codeContext }: CodeContextDisplayProps) => {
   if (!codeContext) {
     return <Text>No code context available.</Text>;
   }
 
   const { context, line } = codeContext;
-
-  // Split the context into lines
-  // const lines = context.split('\n');
 
   // Calculate the starting line number
   const startLineNumber = line - CONTEXT_LINES;

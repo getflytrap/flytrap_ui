@@ -1,9 +1,9 @@
+/**
+ * Login Page component.
+ * Provides a login form for users to authenticate. Redirects logged-in users to the projects page.
+ */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { login as postLoginData } from "../../services/auth/auth";
-import { useAuth } from "../../hooks/useAuth";
-import transparent_logo from "../../assets/transparent_logo.png";
-
 import {
   Box,
   Button,
@@ -14,40 +14,39 @@ import {
   Image,
   useToast,
 } from "@chakra-ui/react";
+import { useAuth } from "../../hooks/useAuth";
+import { login as postLoginData } from "../../services/auth/auth";
+import transparent_logo from "../../assets/transparent_logo.png";
+
 
 const Login = () => {
   const { login, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+   // Redirect if already logged in
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/projects");
     }
   }, [isLoggedIn, navigate]);
 
+  // Handle login form submission
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       const data = await postLoginData(email, password);
 
       login(data.userUuid, data.firstName, data.lastName, data.isRoot);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
-        title: "Successful Login",
-        description: `Welcome, ${data.firstName} ${data.lastName}!`,
-        status: "success",
-        duration: 3000,
-        position: "bottom-right",
-        variant: "left-accent",
-        isClosable: true,
-      });
-    } catch (e) {
-      toast({
-        title: "Failed Login",
-        description: "Email or password incorrect.",
+        title: "Login Failed",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -106,7 +105,7 @@ const Login = () => {
         </FormControl>
 
         <Button colorScheme="teal" mt={8} onClick={handleSubmit} width="full">
-          Continue
+          Submit
         </Button>
       </Box>
     </Box>

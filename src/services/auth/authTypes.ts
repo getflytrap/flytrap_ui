@@ -1,8 +1,8 @@
 import { JwtPayload } from "jwt-decode";
 
 export interface loginResponse {
-  status: string;
-  data: {
+  result: string;
+  payload: {
     access_token: string;
     user_uuid: string;
     first_name: string;

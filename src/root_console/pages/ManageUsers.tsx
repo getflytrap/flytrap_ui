@@ -13,28 +13,51 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
+  useToast
 } from "@chakra-ui/react";
-import { User } from "../../types/index";
-import { getUsers } from "../../services/index";
 import { IoArrowBackOutline } from "react-icons/io5";
-
+import { getUsers } from "../../services/index";
+import { User } from "../../types/index";
 import CreateUser from "../components/CreateUser";
 import UserList from "../components/UserList";
 import AssignUsers from "../components/AssignUsers";
 
+/**
+ * ManageUsers component allows admins to view and manage users, including:
+ * - Viewing the list of users.
+ * - Creating new users.
+ * - Assigning users to projects.
+ */
 const ManageUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const toast = useToast();
 
+  /**
+   * Fetches the list of users from the backend on component mount.
+   * Displays an error notification if the fetch fails.
+   */
   useEffect(() => {
     async function fetchUsers() {
-      const { data } = await getUsers();
-      setUsers(data);
+      try {
+        const usersData = await getUsers();
+        setUsers(usersData);
+      } catch (error) {
+        const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+  
+        toast({
+          title: "Error",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+      }
     }
-    try {
-      fetchUsers();
-    } catch {
-      alert("Could not fetch users");
-    }
+
+    fetchUsers();
   }, []);
 
   return (

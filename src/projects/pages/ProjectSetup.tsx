@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { Text } from "@chakra-ui/react";
 import ReactSetup from "../components/ReactSetup";
@@ -6,12 +5,18 @@ import JavaScriptSetup from "../components/JavaScriptSetup";
 import FlaskSetup from "../components/FlaskSetup";
 import ExpressSetup from "../components/ExpressSetup";
 
-const ProjectSetup: React.FC = () => {
+/**
+ * ProjectSetup component dynamically renders the setup instructions
+ * based on the selected platform.
+ */
+const ProjectSetup = () => {
   const location = useLocation();
+
+  // Extract platform and apiKey from location state
   const { platform, apiKey } = location.state || {};
 
+  // Determine which component to render based on the platform
   let platformComponent: React.ReactNode;
-
   switch (platform) {
     case "React":
       platformComponent = <ReactSetup apiKey={apiKey} />;

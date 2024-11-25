@@ -13,7 +13,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-// import flytrap_logo from "../assets/flytrap_logo.png";
 import transparent_logo from "../assets/transparent_logo.png";
 import { BsFolder, BsPerson } from "react-icons/bs";
 import { AuthContext } from "../contexts/AuthContext";

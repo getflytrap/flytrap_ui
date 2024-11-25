@@ -19,21 +19,30 @@ import {
   ModalFooter,
   useToast,
 } from "@chakra-ui/react";
-import { User } from "../../types";
-import { deleteAccount } from "../../services/index";
 import { IoTrashOutline } from "react-icons/io5";
+import { deleteAccount } from "../../services/index";
+import { User } from "../../types";
 
 interface UserListProps {
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
+/**
+ * Displays a list of users in a table format.
+ * Allows the admin to delete a user through a confirmation modal.
+ *
+ * @param users - List of users to display.
+ * @param setUsers - State updater for users list.
+ */
 const UserList = ({ users, setUsers }: UserListProps) => {
   const [selectedUser, setselectedUser] = useState<User | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const toast = useToast();
 
+  /**
+   * Deletes the selected user from the database and updates the user list.
+   */
   const deleteUser = async () => {
     try {
       if (!selectedUser) return;
@@ -51,20 +60,30 @@ const UserList = ({ users, setUsers }: UserListProps) => {
         variant: "left-accent",
         isClosable: true,
       });
-    } catch (e) {
+    } catch (error) {
+      const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Deletion Error",
-        description: "User could not be deleted",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
+    } finally {
+      onClose();
+      setselectedUser(null);
     }
-    onClose();
   };
 
+  /**
+   * Opens the delete confirmation modal for the specified user.
+   *
+   * @param user - The user to delete.
+   */
   const handleOpenDeleteModal = (user: User) => {
     setselectedUser(user);
     onOpen();

@@ -1,26 +1,33 @@
 import { Routes, Route, Outlet } from "react-router-dom";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
+import LandingPage from "./landing/pages/LandingPage.tsx";
+import Login from "./authentication/pages/Login.tsx";
+import MainLayout from "./shared/MainLayout.tsx";
+import AuthRequired from "./authentication/components/AuthRequired.tsx";
+import Projects from "./projects/pages/Projects";
+import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
 import ErrorDashboard from "./errors/pages/ErrorDashboard.tsx";
 import ErrorDisplay from "./errors/pages/ErrorDisplay.tsx";
 import ErrorDetails from "./error-details/pages/ErrorDetails.tsx";
 import RejectionDetails from "./error-details/pages/RejectionDetails.tsx";
-import Login from "./authentication/pages/Login.tsx";
-import NotFound from "./shared/NotFound.tsx";
-import ManageUsers from "./root_console/pages/ManageUsers.tsx";
-import AuthRequired from "./authentication/components/AuthRequired.tsx";
-import MainLayout from "./shared/MainLayout.tsx";
-import { ProjectsProvider } from "./contexts/ProjectsContext";
-import Projects from "./projects/pages/Projects";
-import ChangePassword from "./authentication/pages/ChangePassword.tsx";
-import ProjectSetup from "./projects/pages/ProjectSetup.tsx";
-import LandingPage from "./landing/pages/LandingPage.tsx";
 import AdminRequired from "./authentication/components/AdminRequired.tsx";
+import ManageUsers from "./root_console/pages/ManageUsers.tsx";
+import ChangePassword from "./authentication/pages/ChangePassword.tsx";
+import NotFound from "./shared/NotFound.tsx";
 
+/**
+ * Application routes configuration.
+ * Defines the structure and hierarchy of all routes, including authentication and role-based access.
+ */
 const App = () => {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<NotFound />} />
 
+      {/* Protected Routes */}
       <Route element={<AuthRequired />}>
         <Route element={<MainLayout />}>
           <Route
@@ -51,7 +58,6 @@ const App = () => {
             <Route path="/root-console" element={<ManageUsers />} />
           </Route>
           <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
     </Routes>

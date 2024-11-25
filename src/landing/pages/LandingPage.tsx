@@ -9,11 +9,18 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import transparent_logo from "../../assets/transparent_logo.png";
 import { AuthContext } from "../../contexts/AuthContext";
+import transparent_logo from "../../assets/transparent_logo.png";
 
+/**
+ * Landing Page component.
+ * Displays a welcoming interface with branding, a login/dashboard button based on authentication status, 
+ * and developer profiles.
+ */
 const LandingPage = () => {
   const { isLoggedIn } = useContext(AuthContext);
+
+  // Developer information
   const developers = [
     {
       name: "Rebecca Biancofiore",
@@ -98,9 +105,6 @@ const LandingPage = () => {
         </Flex>
 
         <VStack spacing={6} my={8}>
-          {/* <Text fontSize="lg" variant="light">
-            Developed By
-          </Text> */}
           <Flex
             justify="space-between"
             width="100%"

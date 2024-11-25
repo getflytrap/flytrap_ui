@@ -1,6 +1,6 @@
 import { Project } from "../../types";
 
-export interface CreateAccountRequest {
+export interface CreateAccountData {
   first_name: string;
   last_name: string;
   email: string;

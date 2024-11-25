@@ -1,4 +1,3 @@
-// eventBus.ts
 import mitt from "mitt";
 import { WebSocketDataType } from "../types";
 

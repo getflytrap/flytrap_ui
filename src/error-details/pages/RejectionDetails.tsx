@@ -25,12 +25,26 @@ import {
   IoShieldCheckmarkOutline,
   IoHourglassOutline,
 } from "react-icons/io5";
-import WarningModal from "../../shared/WarningModal";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 import { deleteRejection, getRejection, toggleRejection } from "../../services";
 import { useProjects } from "../../hooks/useProjects";
 import { Rejection } from "../../types";
-import LoadingSpinner from "../../shared/LoadingSpinner";
 
+/**
+ * RejectionDetails Component
+ *
+ * This component displays details about a specific promise rejection associated with a project.
+ * It provides functionality to:
+ * - View rejection metadata (browser, runtime, OS, method, path, etc.)
+ * - Toggle the resolution status of a rejection (mark as resolved/unresolved)
+ * - Delete the rejection from the system
+ *
+ * Features:
+ * - Fetches rejection data by project UUID and rejection UUID
+ * - Displays rejection-specific metadata
+ * - Allows users to mark rejections as resolved/unresolved
+ * - Supports deletion with confirmation
+ */
 const RejectionDetails = () => {
   const {
     projects,
@@ -39,28 +53,55 @@ const RejectionDetails = () => {
     selectedProject,
     fetchProjectsForUser,
   } = useProjects();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const toast = useToast();
   const [rejectionData, setRejectionData] = useState<Rejection | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loadingError, setLoadingError] = useState<string | null>(null);
   const [resolved, setResolved] = useState<boolean>(false);
-  const location = useLocation();
   const { handled, time } = location.state || {};
-
   const { project_uuid: projectUuid, rejection_uuid: rejectionUuid } =
     useParams();
 
-  const navigate = useNavigate();
-  const toast = useToast();
+   /**
+   * Load project data and select the project if not already selected.
+   */
+  useEffect(() => {
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjectsForUser();
+      }
+      if (!selectedProject && projectUuid && projects.length > 0) {
+        selectProject(projectUuid);
+      }
+    };
+
+    loadProject();
+  }, [projects]);
 
   useEffect(() => {
     const fetchRejectionData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getRejection(projectUuid, rejectionUuid);
-        setRejectionData(data);
-        setResolved(data.resolved);
-      } catch (e) {
-        setLoadingError("No promise rejection data available.");
+        
+        if (projectUuid && rejectionUuid) {
+          const rejectionData = await getRejection(projectUuid, rejectionUuid);
+          setRejectionData(rejectionData);
+          setResolved(rejectionData.resolved);
+        }
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
+        toast({
+          title: "Error Fetching Rejection Data",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -69,59 +110,64 @@ const RejectionDetails = () => {
     fetchRejectionData();
   }, []);
 
-  useEffect(() => {
-    const loadProject = async () => {
-      if (projects.length === 0) {
-        await fetchProjectsForUser();
-      }
-
-      if (!selectedProject && projectUuid && projects.length > 0) {
-        selectProject(projectUuid);
-      }
-    };
-
-    loadProject();
-  }, [projects, selectedProject]);
-
   const handleToggleResolved = async () => {
     let resolvedPayload = resolved ? false : true;
 
     try {
-      await toggleRejection(projectUuid, rejectionUuid, resolvedPayload);
-      setResolved(resolvedPayload);
-    } catch (e) {
-      alert("Could not toggle resolved state of rejection");
-    }
-  };
+      if (projectUuid && rejectionUuid) {
+        await toggleRejection(projectUuid, rejectionUuid, resolvedPayload);
+        setResolved(resolvedPayload);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
 
-  const removeRejection = async () => {
-    try {
-      await deleteRejection(projectUuid, rejectionUuid);
-
-      setProjects((prevProjects) => {
-        const newProjects = prevProjects.slice();
-        newProjects.map((project) => {
-          if (project.uuid === projectUuid) {
-            project.issue_count -= 1;
-          } else {
-            return project;
-          }
-        });
-        return newProjects;
-      });
       toast({
-        title: "Successful Deletion",
-        status: "success",
+        title: "Error Updating Resolved Status",
+        description: errorMessage,
+        status: "error",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
+    }
+  };
 
-      navigate(`/projects/${projectUuid}/issues`);
-    } catch (e) {
+  const removeRejection = async () => {
+    try {
+      if (projectUuid && rejectionUuid) {
+        await deleteRejection(projectUuid, rejectionUuid);
+  
+        setProjects((prevProjects) => {
+          const newProjects = prevProjects.slice();
+          newProjects.map((project) => {
+            if (project.uuid === projectUuid) {
+              project.issue_count -= 1;
+            } else {
+              return project;
+            }
+          });
+          return newProjects;
+        });
+        toast({
+          title: "Successful Deletion",
+          status: "success",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+  
+        navigate(`/projects/${projectUuid}/issues`);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Deletion Error",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -149,16 +195,6 @@ const RejectionDetails = () => {
       },
     });
   };
-
-  if (loadingError) {
-    return (
-      <WarningModal
-        isOpen={true}
-        onClose={() => setLoadingError(null)}
-        errorMessage={loadingError}
-      />
-    );
-  }
 
   if (!rejectionData) {
     return (
