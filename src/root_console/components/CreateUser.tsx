@@ -14,14 +14,21 @@ import {
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { createAccount } from "../../services/index";
 import { User } from "../../types";
-import { IoAddCircleOutline } from "react-icons/io5";
 
 interface CreateUserProps {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
+/**
+ * Component for creating a new user account.
+ * Provides a modal form for entering user details
+ * and validates the input before submission.
+ *
+ * @param setUsers - State updater function for the list of users.
+ */
 const CreateUser = ({ setUsers }: CreateUserProps) => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -29,7 +36,6 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
   const [password, setPassword] = useState<string>("");
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const toast = useToast();
 
   const resetForm = () => {
@@ -40,9 +46,13 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
     setConfirmedPassword("");
   };
 
+  /**
+   * Sends the new user data to the server.
+   * On successful creation, updates the user list and resets the form.
+   */
   async function postNewUserData() {
     try {
-      const credentials = {
+      const accountData = {
         first_name: firstName,
         last_name: lastName,
         email,
@@ -50,10 +60,10 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         confirmed_password: confirmedPassword,
       };
 
-      const data = await createAccount(credentials);
+      const user = await createAccount(accountData);
 
       const newUser = {
-        uuid: data.uuid,
+        uuid: user.uuid,
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -74,10 +84,13 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         variant: "left-accent",
         isClosable: true,
       });
-    } catch (e) {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
-        title: "Creation Error",
-        description: "User could not be created",
+        title: "Error",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -87,6 +100,10 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
     }
   }
 
+  /**
+   * Validates user input fields.
+   * @returns true if inputs are valid, false otherwise.
+   */
   const validateInputs = () => {
     if (firstName.length === 0) {
       toast({
@@ -152,6 +169,12 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
     return true;
   };
 
+  /**
+   * Handles form submission.
+   * Validates the inputs and posts the new user data if valid.
+   *
+   * @param e - The form submission event.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateInputs()) return;

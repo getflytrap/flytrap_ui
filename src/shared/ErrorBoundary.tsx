@@ -12,6 +12,12 @@ interface ErrorBoundaryState {
   errorInfo: React.ErrorInfo | null;
 }
 
+/**
+ * The `ErrorBoundary` component is a class-based component that wraps
+ * its children in an error boundary to catch JavaScript errors
+ * in the component tree. When an error occurs, it displays fallback UI
+ * or an error message, ensuring the app remains functional.
+ */
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);

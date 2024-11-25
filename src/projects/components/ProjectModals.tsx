@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  renameProject,
-  deleteProject,
-  createProject,
-} from "../../services/projects/projects";
-import { useProjects } from "../../hooks/useProjects";
+import { FaJsSquare, FaReact, FaNodeJs, FaPython } from "react-icons/fa";
 import {
   Modal,
   ModalOverlay,
@@ -23,7 +18,12 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
-import { FaJsSquare, FaReact, FaNodeJs, FaPython } from "react-icons/fa";
+import { useProjects } from "../../hooks/useProjects";
+import {
+  renameProject,
+  deleteProject,
+  createProject,
+} from "../../services/projects/projects";
 
 type ProjectModalsProps = {
   isNewProjectOpen: boolean;
@@ -34,6 +34,19 @@ type ProjectModalsProps = {
   onDeleteClose: () => void;
 };
 
+/**
+ * ProjectModals Component
+ *
+ * Manages the modals for creating, editing, and deleting projects.
+ * Handles form input, state updates, and API requests for each modal action.
+ *
+ * @param isNewProjectOpen - Determines if the "New Project" modal is open.
+ * @param onNewProjectClose - Function to close the "New Project" modal.
+ * @param isEditOpen - Determines if the "Edit Project" modal is open.
+ * @param onEditClose - Function to close the "Edit Project" modal.
+ * @param isDeleteOpen - Determines if the "Delete Project" modal is open.
+ * @param onDeleteClose - Function to close the "Delete Project" modal.
+ */
 const ProjectModals = ({
   isNewProjectOpen,
   onNewProjectClose,
@@ -43,12 +56,10 @@ const ProjectModals = ({
   onDeleteClose,
 }: ProjectModalsProps) => {
   const navigate = useNavigate();
-
   const { setProjects, selectProject, selectedProject } = useProjects();
   const [newProjectName, setNewProjectName] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [editedProjectName, setEditedProjectName] = useState("");
-
   const toast = useToast();
 
   const handleNewProjectSubmit = async () => {
@@ -78,33 +89,28 @@ const ProjectModals = ({
     }
 
     try {
-      const { data } = await createProject(newProjectName, selectedPlatform);
-      setProjects((prev) => [
-        ...prev,
-        {
-          uuid: data.uuid,
-          name: data.name,
-          issue_count: 0,
-          platform: data.platform,
-          api_key: data.api_key,
-        },
-      ]);
+      const project = await createProject(newProjectName, selectedPlatform);
+      setProjects((prev) => [...prev, project]);
       onNewProjectClose();
       toast({
-        title: "Success",
-        description: `Successfully created project ${newProjectName}`,
+        title: "Successfully Created Project",
+        description: `New Project ${newProjectName} created.`,
         status: "success",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
-      navigate(`/projects/${data.uuid}/setup`, {
-        state: { platform: selectedPlatform, apiKey: data.api_key },
+      navigate(`/projects/${project.uuid}/setup`, {
+        state: { platform: selectedPlatform, apiKey: project.api_key },
       });
-    } catch {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
-        title: "Error creating project",
+        title: "Error Creating Project",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -116,27 +122,33 @@ const ProjectModals = ({
 
   const handleEditSubmit = async () => {
     try {
-      await renameProject(selectedProject?.uuid, editedProjectName);
-      setProjects((prev) =>
-        prev.map((p) =>
-          p.uuid === selectedProject?.uuid
-            ? { ...p, name: editedProjectName }
-            : p,
-        ),
-      );
-      onEditClose();
-      selectProject(null);
-      toast({
-        title: "Project Renamed",
-        status: "success",
-        duration: 3000,
-        position: "bottom-right",
-        variant: "left-accent",
-        isClosable: true,
-      });
-    } catch {
+      if (selectedProject) {
+        await renameProject(selectedProject.uuid, editedProjectName);
+        setProjects((prev) =>
+          prev.map((p) =>
+            p.uuid === selectedProject?.uuid
+              ? { ...p, name: editedProjectName }
+              : p,
+          ),
+        );
+        onEditClose();
+        selectProject(null);
+        toast({
+          title: "Successfully Renamed Project",
+          status: "success",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Error Renaming Project",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -148,23 +160,29 @@ const ProjectModals = ({
 
   const handleConfirmDeletion = async () => {
     try {
-      await deleteProject(selectedProject?.uuid);
-      setProjects((prev) =>
-        prev.filter((p) => p.uuid !== selectedProject?.uuid),
-      );
-      onDeleteClose();
-      selectProject(null);
-      toast({
-        title: "Project Deleted",
-        status: "success",
-        duration: 3000,
-        position: "bottom-right",
-        variant: "left-accent",
-        isClosable: true,
-      });
-    } catch {
+      if (selectedProject) {
+        await deleteProject(selectedProject.uuid);
+        setProjects((prev) =>
+          prev.filter((p) => p.uuid !== selectedProject?.uuid),
+        );
+        onDeleteClose();
+        selectProject(null);
+        toast({
+          title: "Project Deleted",
+          status: "success",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Error Deleting Project",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",

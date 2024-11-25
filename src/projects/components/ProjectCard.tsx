@@ -12,14 +12,16 @@ import {
   CardFooter,
   Flex,
   Box,
-  useBreakpointValue, // Import useBreakpointValue
+  useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
-import { Project } from "../../types";
-import { useProjects } from "../../hooks/useProjects";
 import { FaReact, FaNodeJs, FaPython, FaJsSquare } from "react-icons/fa";
-import { getDailyCounts } from "../../services";
 import Histogram from "./Histogram";
+import { useProjects } from "../../hooks/useProjects";
+import { useAuth } from "../../hooks/useAuth";
+import { getDailyCounts } from "../../services";
+import { Project } from "../../types";
 
 type ProjectCardProps = {
   project: Project;
@@ -27,6 +29,9 @@ type ProjectCardProps = {
   onDeleteOpen: (projectUuid: string) => void;
 };
 
+/**
+ * Displays project information in a card format with actions and a histogram.
+ */
 const ProjectCard = ({
   project,
   onEditOpen,
@@ -35,14 +40,29 @@ const ProjectCard = ({
   const [dailyCounts, setDailyCounts] = useState<number[]>([]);
   const navigate = useNavigate();
   const { selectProject } = useProjects();
+  const toast = useToast();
+
+  // Check if the current user has root permissions
+  const { isRoot } = useAuth();
 
   useEffect(() => {
     const getSummary = async () => {
       try {
-        const { data } = await getDailyCounts(project.uuid);
-        setDailyCounts(data);
-      } catch (e) {
-        console.error("Failed to load summary.");
+        const counts = await getDailyCounts(project.uuid);
+        setDailyCounts(counts);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
+        toast({
+          title: "Daily Summary Error",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
       }
     };
 
@@ -95,12 +115,10 @@ const ProjectCard = ({
       borderColor="brand.600"
       bg="white"
       cursor="pointer"
-      // width={["90%", "75%", "50%"]} // Adjust card width for different screen sizes
       onClick={handleProjectClick}
     >
       <CardHeader>
         <Flex justify="center" align="center" width="100%" position="relative">
-          {/* Render logo only if screen size is medium or larger */}
           {showLogo && (
             <Box position="absolute" left="0">
               {getPlatformLogo(project.platform)}
@@ -126,20 +144,24 @@ const ProjectCard = ({
 
       <CardFooter>
         <HStack justify="center" spacing={8} width="100%">
-          <Button
-            variant="ghost"
-            leftIcon={<EditIcon />}
-            onClick={handleEditClick}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="ghost"
-            leftIcon={<DeleteIcon />}
-            onClick={handleDeleteClick}
-          >
-            Delete
-          </Button>
+          {isRoot && (
+            <>
+              <Button
+                variant="ghost"
+                leftIcon={<EditIcon />}
+                onClick={handleEditClick}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="ghost"
+                leftIcon={<DeleteIcon />}
+                onClick={handleDeleteClick}
+              >
+                Delete
+              </Button>
+            </>
+          )}
           <Button
             variant="ghost"
             leftIcon={<InfoOutlineIcon />}

@@ -21,19 +21,23 @@ import {
   Divider,
   useDisclosure,
 } from "@chakra-ui/react";
-import { User, Project } from "../../types/index";
+import { IoAddCircleOutline, IoTrashOutline } from "react-icons/io5";
 import {
   getAllProjects,
   getUsersForProject,
   addUserToProject,
   removeUserFromProject,
 } from "../../services/index";
-import { IoAddCircleOutline, IoTrashOutline } from "react-icons/io5";
+import { User, Project } from "../../types/index";
 
 interface AssignUsersProps {
   users: User[];
 }
 
+/**
+ * Component to assign users to projects and manage existing assignments.
+ * @param users - List of all users available for assignment.
+ */
 const AssignUsers = ({ users }: AssignUsersProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentUsers, setCurrentUsers] = useState<User[]>([]);
@@ -43,43 +47,52 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  /**
+   * Fetches the list of all projects on component mount.
+   */
   useEffect(() => {
     const fetchProjects = async () => {
-      const { data } = await getAllProjects();
-      setProjects(data.projects);
+      try {
+        const projectData = await getAllProjects();
+        setProjects(projectData.projects);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
+        toast({
+          title: "Error",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+      }
     };
-    try {
-      fetchProjects();
-    } catch {
-      toast({
-        title: "Error",
-        description: "Could not fetch projects.",
-        status: "error",
-        duration: 3000,
-        position: "bottom-right",
-        variant: "left-accent",
-        isClosable: true,
-      });
-    }
+
+    fetchProjects();
   }, []);
 
-  // const handleProjectSelection = (uuid: string) => {
-  //   fetchUsersForProject(uuid);
-  // };
-
-  // const handleUserSelection = (uuid: string) => {
-  //   setSelectedUserUuid(uuid);
-  // };
-
+  /**
+   * Fetches users for the selected project and updates the state.
+   *
+   * @param uuid - The UUID of the selected project.
+   */
   const fetchUsersForProject = async (uuid: string) => {
     try {
-      const { data } = await getUsersForProject(uuid);
-      setCurrentUsers(users.filter((user) => data.includes(user.uuid)));
+      const usersForProject = await getUsersForProject(uuid);
+      setCurrentUsers(
+        users.filter((user) => usersForProject.includes(user.uuid)),
+      );
       setSelectedProjectUuid(uuid);
-    } catch {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Error",
-        description: "Could not fetch users for the selected project.",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -89,6 +102,12 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
     }
   };
 
+  /**
+   * Removes a user from the selected project.
+   *
+   * @param projectUuid - The UUID of the project.
+   * @param userUuid - The UUID of the user to remove.
+   */
   const deleteUserFromProject = async (
     projectUuid: string,
     userUuid: string,
@@ -108,9 +127,13 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
         variant: "left-accent",
         isClosable: true,
       });
-    } catch {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
-        title: "Failed to remove user.",
+        title: "Error",
+        description: errorMessage,
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
@@ -119,10 +142,12 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
     }
   };
 
+  /**
+   * Assigns a new user to the selected project.
+   */
   const addNewUserToProject = async () => {
     try {
       await addUserToProject(selectedProjectUuid, selectedUserUuid);
-
       const newUser = users.find((user) => user.uuid === selectedUserUuid);
       if (newUser) {
         setCurrentUsers((prevUsers) => [...prevUsers, newUser]);
@@ -139,9 +164,13 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
         isClosable: true,
       });
       onClose();
-    } catch {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
-        title: "Failed to add users.",
+        title: "Error",
+        description: errorMessage,
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
@@ -150,6 +179,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
     }
   };
 
+  // Filter out users already assigned to the current project and root users
   const availableUsers = users.filter(
     (user) =>
       !currentUsers.some((currentUser) => currentUser.uuid === user.uuid) &&
@@ -231,7 +261,9 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
           <ModalBody>
             <Select
               placeholder="Select a user"
-              onChange={(e) => setSelectedUserUuid(e.target.value)}
+              onChange={(e) => {
+                setSelectedUserUuid(e.target.value);
+              }}
               value={selectedUserUuid}
             >
               {availableUsers.map((user) => (

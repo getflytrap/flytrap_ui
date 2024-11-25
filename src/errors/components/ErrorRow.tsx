@@ -1,13 +1,12 @@
 import { Box, Td, Link, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { ErrorData, Rejection } from "../../types";
-import { Project } from "../../types";
 import {
   IoWarningOutline,
   IoCheckmarkCircleOutline,
   IoShieldCheckmarkOutline,
   IoHourglassOutline,
 } from "react-icons/io5";
+import { ErrorData, Rejection, Project } from "../../types";
 
 interface ErrorRowProps {
   issue: ErrorData | Rejection;
@@ -16,12 +15,28 @@ interface ErrorRowProps {
   selectedTime: string;
 }
 
+/**
+ * ErrorRow
+ *
+ * Displays a single issue row in the ErrorsTable, including issue name, handled status,
+ * creation time, and resolution status. Adapts to screen size and displays fewer columns
+ * on smaller screens.
+ *
+ * Props:
+ * - `issue`: The issue (ErrorData or Rejection) to display.
+ * - `selectedProject`: The currently selected project.
+ * - `selectedHandled`: The "Handled" filter applied in the table.
+ * - `selectedTime`: The "Time" filter applied in the table.
+ *
+ * @param props - The component props.
+ */
 const ErrorRow = ({
   issue,
   selectedProject,
   selectedHandled,
   selectedTime,
 }: ErrorRowProps) => {
+  // Type guard to distinguish between ErrorData and Rejection
   const isErrorData = (issue: ErrorData | Rejection): issue is ErrorData => {
     return "name" in issue;
   };

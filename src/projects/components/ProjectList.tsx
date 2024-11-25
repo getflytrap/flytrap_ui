@@ -8,16 +8,19 @@ type ProjectListProps = {
   onDeleteOpen: (projectUuid: string) => void;
 };
 
+/**
+ * Renders a list of projects or a message if no projects are available.
+ *
+ * @param projects - Array of project data
+ * @param onEditOpen - Function to handle opening the edit modal
+ * @param onDeleteOpen - Function to handle opening the delete modal
+ */
 const ProjectList = ({
   projects,
   onEditOpen,
   onDeleteOpen,
 }: ProjectListProps) => (
-  <Grid
-    templateColumns={["1fr", "repeat(2, 1fr)"]} // Responsive grid layout
-    gap={4}
-    width="100%"
-  >
+  <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={4} width="100%">
     {projects?.length ? (
       projects.map((project) => (
         <ProjectCard
@@ -28,14 +31,8 @@ const ProjectList = ({
         />
       ))
     ) : (
-      <Text
-        fontSize="lg"
-        my="30px"
-        borderRadius="20px"
-        border="solid 1px gray"
-        p="20px"
-      >
-        No Current Project Assignments
+      <Text fontSize="lg" my="30px" p="20px">
+        No Current Projects
       </Text>
     )}
   </Grid>

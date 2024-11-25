@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Stack, Text, Flex } from "@chakra-ui/react";
-import { useProjects } from "../../hooks/useProjects";
 import PaginationControls from "../../shared/Pagination";
+import { useProjects } from "../../hooks/useProjects";
 import { Project } from "../../types";
 
-export default function Sidebar() {
+/**
+ * Sidebar for navigating between projects and their associated issues.
+ */
+const Sidebar = () => {
   const navigate = useNavigate();
   const {
     projects,
@@ -69,4 +72,6 @@ export default function Sidebar() {
       </Box>
     </Flex>
   );
-}
+};
+
+export default Sidebar;

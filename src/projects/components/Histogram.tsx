@@ -23,7 +23,18 @@ type HistogramProps = {
   dailyCounts: number[];
 };
 
+/**
+ * The `Histogram` component renders a bar chart using Chart.js to display
+ * daily issue counts for the past 7 days. The chart automatically generates
+ * labels based on the current date and maps the data to those days.
+ *
+ * @param dailyCounts - An optional array of 7 numbers representing issue counts.
+ * @returns A responsive bar chart component.
+ */
 const Histogram = ({ dailyCounts }: HistogramProps) => {
+  /**
+   * Generates labels for the past 7 days based on the current date.
+   */
   const generateLabels = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const labels = [];

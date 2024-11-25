@@ -47,7 +47,7 @@ apiClient.interceptors.response.use(
 
       try {
         const { data } = await refreshClient.post("/api/auth/refresh");
-        const newAccessToken = data.access_token;
+        const newAccessToken = data.payload;
 
         // Update the Authorization header for future requests
         apiClient.defaults.headers.common["Authorization"] =
@@ -57,16 +57,13 @@ apiClient.interceptors.response.use(
         // Retry the original request with the new token
         return apiClient(originalRequest);
       } catch (refreshError) {
-        console.error("Error refreshing token:", refreshError);
         // Remove the Authorization header if refresh fails
         delete apiClient.defaults.headers.common["Authorization"];
-        // window.location.href = '/login';
         return Promise.reject(refreshError);
       }
     }
-    (error: AxiosError) => {
-      return Promise.reject(error);
-    };
+
+    return Promise.reject(error);
   },
 );
 

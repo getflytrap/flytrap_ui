@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { updatePassword } from "../../services/users/users";
-
 import {
   Box,
   Button,
@@ -14,11 +13,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+/**
+ * A component that allows users to change their password.
+ * It validates the new password and updates it via the `updatePassword` service.
+ * Users are logged out and redirected to the login page after a successful password change.
+ *
+ * @returns A password change form with validation and feedback messages.
+ */
 const ChangePassword = () => {
-  const { userUuid, logout } = useAuth();
+  const { userUuid } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
@@ -71,11 +76,14 @@ const ChangePassword = () => {
           isClosable: true,
         });
 
-        logout();
         navigate("/login");
-      } catch {
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
         toast({
-          title: "Error Changing Password.",
+          title: "Error Changing Password",
+          description: errorMessage,
           status: "error",
           duration: 3000,
           position: "bottom-right",

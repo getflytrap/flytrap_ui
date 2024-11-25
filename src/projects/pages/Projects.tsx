@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   Box,
   Heading,
@@ -7,14 +6,18 @@ import {
   Container,
   Flex,
 } from "@chakra-ui/react";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { useAuth } from "../../hooks/useAuth";
+import { useProjects } from "../../hooks/useProjects";
 import ProjectList from "../components/ProjectList";
+import ProjectModals from "../components/ProjectModals";
 import PaginationControls from "../../shared/Pagination";
 import LoadingSpinner from "../../shared/LoadingSpinner";
-import ProjectModals from "../components/ProjectModals";
-import { useProjects } from "../../hooks/useProjects";
-import { AuthContext } from "../../contexts/AuthContext";
-import { IoAddCircleOutline } from "react-icons/io5";
 
+/**
+ * Projects component renders the list of projects, pagination controls,
+ * and modals for project creation, editing, and deletion.
+ */
 const Projects = () => {
   const {
     projects,
@@ -25,9 +28,10 @@ const Projects = () => {
     selectProject,
   } = useProjects();
 
-  const { isRoot } = useContext(AuthContext);
+  // Check if the current user has root permissions
+  const { isRoot } = useAuth();
 
-  // Modal controls
+  // Modal controls for different actions
   const {
     isOpen: isEditOpen,
     onOpen: openEdit,

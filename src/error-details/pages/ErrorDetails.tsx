@@ -18,13 +18,6 @@ import {
   Center,
   useToast,
 } from "@chakra-ui/react";
-import WarningModal from "../../shared/WarningModal";
-import { deleteError, getError, toggleError } from "../../services";
-import { useProjects } from "../../hooks/useProjects";
-import { ErrorData, FrameWithContext } from "../../types";
-import { parseStackTrace } from "../../helpers";
-import LoadingSpinner from "../../shared/LoadingSpinner";
-import CodeContextDisplay from "../components/ContextDisplay";
 import {
   IoTrashOutline,
   IoArrowBackOutline,
@@ -33,7 +26,26 @@ import {
   IoShieldCheckmarkOutline,
   IoHourglassOutline,
 } from "react-icons/io5";
+import CodeContextDisplay from "../components/ContextDisplay";
+import LoadingSpinner from "../../shared/LoadingSpinner";
+import { useProjects } from "../../hooks/useProjects";
+import { deleteError, getError, toggleError } from "../../services";
+import { ErrorData, FrameWithContext, CodeContext } from "../../types";
+import { parseStackTrace } from "../../helpers";
 
+/**
+ * ErrorDetails Component
+ *
+ * This component displays detailed information about a specific error within a project,
+ * including metadata, stack trace, and resolution status. It also provides options to
+ * mark the error as resolved or delete it.
+ *
+ * Features:
+ * - Fetches error details based on the current project and error UUID.
+ * - Displays error metadata like name, file, line, browser, OS, and runtime.
+ * - Parses and displays stack trace frames with optional code context.
+ * - Allows users to toggle the resolved state of an error or delete it.
+ */
 const ErrorDetails = () => {
   const {
     projects,
@@ -42,20 +54,20 @@ const ErrorDetails = () => {
     selectedProject,
     fetchProjectsForUser,
   } = useProjects();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const toast = useToast();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loadingError, setLoadingError] = useState<string | null>(null);
   const [resolved, setResolved] = useState<boolean>(false);
   const [stackFrames, setStackFrames] = useState<FrameWithContext[]>([]);
   const [expandedFrameIndex, setExpandedFrameIndex] = useState(0);
-  const location = useLocation();
   const { handled, time } = location.state || {};
-
   const { project_uuid: projectUuid, error_uuid: errorUuid } = useParams();
 
-  const navigate = useNavigate();
-  const toast = useToast();
-
+  /**
+   * Load project data and select the project if not already selected.
+   */
   useEffect(() => {
     const loadProject = async () => {
       if (projects.length === 0) {
@@ -69,37 +81,53 @@ const ErrorDetails = () => {
     loadProject();
   }, [projects]);
 
+  /**
+   * Fetch error details and parse stack trace with optional code context.
+   */
   useEffect(() => {
     const fetchErrorData = async () => {
       try {
         setIsLoading(true);
-        const response = await getError(projectUuid, errorUuid);
+        if (projectUuid && errorUuid) {
+          const errorData = await getError(projectUuid, errorUuid);
 
-        const { data } = response;
+          setErrorData(errorData);
+          setResolved(errorData.resolved);
 
-        setErrorData(data);
-        setResolved(data.resolved);
+          if (errorData.stack_trace && selectedProject) {
+            const frames = parseStackTrace(
+              errorData.stack_trace,
+              selectedProject.platform,
+            );
+            const contexts = errorData.contexts || [];
 
-        if (data.stack_trace && selectedProject) {
-          const frames = parseStackTrace(
-            data.stack_trace,
-            selectedProject.platform,
-          );
-          const contexts = data.contexts || [];
+            const framesWithContext = frames.map((frame) => {
+              const codeContext =
+                contexts.find((context: CodeContext) =>
+                  frame.includes(context.file),
+                ) || null;
+              return {
+                frame,
+                codeContext,
+              };
+            });
 
-          const framesWithContext = frames.map((frame) => {
-            const codeContext =
-              contexts.find((context) => frame.includes(context.file)) || null;
-            return {
-              frame,
-              codeContext,
-            };
-          });
-
-          setStackFrames(framesWithContext);
+            setStackFrames(framesWithContext);
+          }
         }
-      } catch (e) {
-        setLoadingError("No error data available.");
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
+        toast({
+          title: "Error Fetching Error Data",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -108,6 +136,7 @@ const ErrorDetails = () => {
     fetchErrorData();
   }, [selectedProject]);
 
+  // Handlers for actions
   const handleFrameClick = (index: number) => {
     setExpandedFrameIndex(index);
   };
@@ -116,42 +145,61 @@ const ErrorDetails = () => {
     let resolvedPayload = resolved ? false : true;
 
     try {
-      await toggleError(projectUuid, errorUuid, resolvedPayload);
-      setResolved(resolvedPayload);
-    } catch (e) {
-      alert("Could not toggle resolved state of error");
-    }
-  };
-
-  const removeError = async () => {
-    try {
-      await deleteError(projectUuid, errorUuid);
-
-      setProjects((prevProjects) => {
-        const newProjects = prevProjects.slice();
-        newProjects.map((project) => {
-          if (project.uuid === projectUuid) {
-            project.issue_count -= 1;
-          } else {
-            return project;
-          }
-        });
-        return newProjects;
-      });
+      if (projectUuid && errorUuid) {
+        await toggleError(projectUuid, errorUuid, resolvedPayload);
+        setResolved(resolvedPayload);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast({
-        title: "Successful Deletion",
-        status: "success",
+        title: "Error Updating Resolved Status",
+        description: errorMessage,
+        status: "error",
         duration: 3000,
         position: "bottom-right",
         variant: "left-accent",
         isClosable: true,
       });
+    }
+  };
 
-      navigate(`/projects/${projectUuid}/issues`);
-    } catch (e) {
+  const removeError = async () => {
+    try {
+      if (projectUuid && errorUuid) {
+        await deleteError(projectUuid, errorUuid);
+
+        setProjects((prevProjects) => {
+          const newProjects = prevProjects.slice();
+          newProjects.map((project) => {
+            if (project.uuid === projectUuid) {
+              project.issue_count -= 1;
+            } else {
+              return project;
+            }
+          });
+          return newProjects;
+        });
+
+        toast({
+          title: "Successful Deletion",
+          status: "success",
+          duration: 3000,
+          position: "bottom-right",
+          variant: "left-accent",
+          isClosable: true,
+        });
+
+        navigate(`/projects/${projectUuid}/issues`);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       toast({
         title: "Deletion Error",
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "bottom-right",
@@ -179,16 +227,6 @@ const ErrorDetails = () => {
       },
     });
   };
-
-  if (loadingError) {
-    return (
-      <WarningModal
-        isOpen={true}
-        onClose={() => setLoadingError(null)}
-        errorMessage={loadingError}
-      />
-    );
-  }
 
   if (!errorData) {
     return (
