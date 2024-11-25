@@ -43,6 +43,9 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  console.log('from assign users:')
+  console.log('users:', users)
+
   useEffect(() => {
     const fetchProjects = async () => {
       const { data } = await getAllProjects();
@@ -62,14 +65,6 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
       });
     }
   }, []);
-
-  // const handleProjectSelection = (uuid: string) => {
-  //   fetchUsersForProject(uuid);
-  // };
-
-  // const handleUserSelection = (uuid: string) => {
-  //   setSelectedUserUuid(uuid);
-  // };
 
   const fetchUsersForProject = async (uuid: string) => {
     try {
@@ -121,9 +116,12 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   const addNewUserToProject = async () => {
     try {
+      console.log('adding user to project...')
+      console.log('user uuid: ', selectedUserUuid)
       await addUserToProject(selectedProjectUuid, selectedUserUuid);
 
       const newUser = users.find((user) => user.uuid === selectedUserUuid);
+      console.log('new user to add:', newUser);
       if (newUser) {
         setCurrentUsers((prevUsers) => [...prevUsers, newUser]);
       }
@@ -231,7 +229,10 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
           <ModalBody>
             <Select
               placeholder="Select a user"
-              onChange={(e) => setSelectedUserUuid(e.target.value)}
+              onChange={(e) => {
+                console.log('selected value:', e.target.value);
+                setSelectedUserUuid(e.target.value)
+              }}
               value={selectedUserUuid}
             >
               {availableUsers.map((user) => (

@@ -50,7 +50,8 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         confirmed_password: confirmedPassword,
       };
 
-      const data = await createAccount(credentials);
+      const { data } = await createAccount(credentials);
+      console.log('data: ', data)
 
       const newUser = {
         uuid: data.uuid,
@@ -59,6 +60,8 @@ const CreateUser = ({ setUsers }: CreateUserProps) => {
         email: email,
         is_root: false,
       };
+
+      console.log('new user:', newUser);      
 
       setUsers((prevUsers) => [...prevUsers, newUser]);
 

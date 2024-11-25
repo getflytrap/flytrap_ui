@@ -9,7 +9,7 @@ export const getUsers = async (): Promise<{ status: string; data: User[] }> => {
 
 export const createAccount = async (
   account_data: CreateAccountRequest,
-): Promise<User> => {
+): Promise<{ status: string, data: User}> => {
   const { data } = await apiClient.post("/api/users", account_data);
 
   return data;
