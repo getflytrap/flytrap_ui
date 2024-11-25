@@ -5,7 +5,7 @@ import apiClient from "../apiClient";
 export const getUsers = async () => {
   try {
     const { data } = await apiClient.get("/api/users");
-    return data.payload; 
+    return data.payload;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -15,25 +15,25 @@ export const getUsers = async () => {
       }
     }
 
-    throw new Error("An unexpected error occurred while fetching daily counts.");
+    throw new Error(
+      "An unexpected error occurred while fetching daily counts.",
+    );
   }
 };
 
-export const createAccount = async (
-  accountData: CreateAccountData,
-) => {
+export const createAccount = async (accountData: CreateAccountData) => {
   if (!accountData) {
     throw new Error("Missing input data.");
   }
 
   try {
     const { data } = await apiClient.post("/api/users", accountData);
-    
+
     const userData = {
       uuid: data.payload.uuid,
       firstName: data.payload.first_name,
-      lastName: data.payload.last_name
-    }
+      lastName: data.payload.last_name,
+    };
 
     return userData;
   } catch (error) {
@@ -57,9 +57,9 @@ export const deleteAccount = async (id: string) => {
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
-        }  else if (status === 404) {
-          throw new Error("User not found.")
+          throw new Error("Access forbidden.");
+        } else if (status === 404) {
+          throw new Error("User not found.");
         }
 
         throw new Error("Internal server error.");
@@ -72,11 +72,8 @@ export const deleteAccount = async (id: string) => {
   }
 };
 
-export const updatePassword = async (
-  userUuid: string,
-  password: string,
-) => {
-  if (!userUuid || !password) { 
+export const updatePassword = async (userUuid: string, password: string) => {
+  if (!userUuid || !password) {
     throw new Error("Both user uuid and password are required.");
   }
 
@@ -89,9 +86,9 @@ export const updatePassword = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
-        }  else if (status === 404) {
-          throw new Error("User not found.")
+          throw new Error("Access forbidden.");
+        } else if (status === 404) {
+          throw new Error("User not found.");
         } else if (status === 400) {
           throw new Error("Invalid request.");
         }
@@ -121,8 +118,8 @@ export const getProjectsForUser = async (
     const projectData = {
       projects: data.payload.projects,
       currentPage: data.payload.current_page,
-      totalPages: data.payload.total_pages
-    }
+      totalPages: data.payload.total_pages,
+    };
 
     return projectData;
   } catch (error) {
@@ -130,8 +127,8 @@ export const getProjectsForUser = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
-        } 
+          throw new Error("Access forbidden.");
+        }
 
         throw new Error("Internal server error.");
       } else if (error.request) {

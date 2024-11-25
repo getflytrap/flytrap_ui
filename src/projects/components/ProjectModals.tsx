@@ -107,7 +107,7 @@ const ProjectModals = ({
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-      
+
       toast({
         title: "Error Creating Project",
         description: errorMessage,
@@ -145,7 +145,7 @@ const ProjectModals = ({
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-    
+
       toast({
         title: "Error Renaming Project",
         description: errorMessage,
@@ -179,7 +179,7 @@ const ProjectModals = ({
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-    
+
       toast({
         title: "Error Deleting Project",
         description: errorMessage,

@@ -14,7 +14,6 @@ import ProjectModals from "../components/ProjectModals";
 import PaginationControls from "../../shared/Pagination";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 
-
 /**
  * Projects component renders the list of projects, pagination controls,
  * and modals for project creation, editing, and deletion.
@@ -29,7 +28,7 @@ const Projects = () => {
     selectProject,
   } = useProjects();
 
-   // Check if the current user has root permissions
+  // Check if the current user has root permissions
   const { isRoot } = useAuth();
 
   // Modal controls for different actions

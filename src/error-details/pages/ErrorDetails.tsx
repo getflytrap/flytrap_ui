@@ -90,26 +90,28 @@ const ErrorDetails = () => {
         setIsLoading(true);
         if (projectUuid && errorUuid) {
           const errorData = await getError(projectUuid, errorUuid);
-  
+
           setErrorData(errorData);
           setResolved(errorData.resolved);
-  
+
           if (errorData.stack_trace && selectedProject) {
             const frames = parseStackTrace(
               errorData.stack_trace,
               selectedProject.platform,
             );
             const contexts = errorData.contexts || [];
-  
+
             const framesWithContext = frames.map((frame) => {
               const codeContext =
-                contexts.find((context: CodeContext) => frame.includes(context.file)) || null;
+                contexts.find((context: CodeContext) =>
+                  frame.includes(context.file),
+                ) || null;
               return {
                 frame,
                 codeContext,
               };
             });
-  
+
             setStackFrames(framesWithContext);
           }
         }

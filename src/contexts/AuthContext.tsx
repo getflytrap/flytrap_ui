@@ -22,7 +22,7 @@ interface AuthContextType {
   loading: boolean;
 }
 
-/** 
+/**
  * Create the AuthContext with default values for all fields.
  */
 export const AuthContext = createContext<AuthContextType>({
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
 
         const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
+          error instanceof Error ? error.message : "An unknown error occurred.";
 
         toast({
           title: "Session Error",

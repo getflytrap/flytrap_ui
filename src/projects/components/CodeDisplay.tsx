@@ -22,7 +22,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ language, code }) => {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
     setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 1500)
+    setTimeout(() => setIsCopied(false), 1500);
   };
 
   return (

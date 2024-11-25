@@ -44,15 +44,15 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
   /**
-  * Automatically fetch projects on initial render.
-  */
+   * Automatically fetch projects on initial render.
+   */
   useEffect(() => {
     fetchProjectsForUser();
   }, []);
 
   /**
-  * Updates the project issue count when a new notification is received.
-  */
+   * Updates the project issue count when a new notification is received.
+   */
   useEffect(() => {
     const handleNewNotification = (data: WebSocketDataType) => {
       setProjects((prevProjects) =>
@@ -106,8 +106,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   /**
-  * Selects a project by its UUID and updates the selected project state.
-  */
+   * Selects a project by its UUID and updates the selected project state.
+   */
   const selectProject = (projectUuid: string | null) => {
     const project = projects.find((p) => p.uuid === projectUuid) || null;
     setSelectedProject(project);

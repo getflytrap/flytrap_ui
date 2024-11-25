@@ -33,8 +33,8 @@ type HistogramProps = {
  */
 const Histogram = ({ dailyCounts }: HistogramProps) => {
   /**
- * Generates labels for the past 7 days based on the current date.
- */
+   * Generates labels for the past 7 days based on the current date.
+   */
   const generateLabels = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const labels = [];

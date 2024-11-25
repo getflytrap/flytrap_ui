@@ -14,7 +14,7 @@ interface CodeContextDisplayProps {
  * It highlights the line where an error occurred.
  *
  * @param {CodeContextDisplayProps} props - The props for the component.
- * @param {CodeContext | null} props.codeContext - The code snippet and line number to display. 
+ * @param {CodeContext | null} props.codeContext - The code snippet and line number to display.
  * If null, a placeholder message is shown.
  */
 const CodeContextDisplay = ({ codeContext }: CodeContextDisplayProps) => {

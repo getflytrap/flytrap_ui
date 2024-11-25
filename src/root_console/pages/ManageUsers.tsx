@@ -13,7 +13,7 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { getUsers } from "../../services/index";
@@ -43,8 +43,8 @@ const ManageUsers = () => {
         setUsers(usersData);
       } catch (error) {
         const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
-  
+          error instanceof Error ? error.message : "An unknown error occurred.";
+
         toast({
           title: "Error",
           description: errorMessage,

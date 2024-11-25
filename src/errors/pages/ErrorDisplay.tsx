@@ -31,7 +31,8 @@ const ErrorDisplay = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isInvalidProject, setIsInvalidProject] = useState(false);
   const [selectedHandled, setSelectedHandled] = useState<HandledFilter>("All");
-  const [selectedResolved, setSelectedResolved] = useState<ResolvedFilter>("All");
+  const [selectedResolved, setSelectedResolved] =
+    useState<ResolvedFilter>("All");
   const [selectedTime, setSelectedTime] = useState<TimeFilter>("Forever");
   const { projects, selectedProject, selectProject, fetchProjectsForUser } =
     useProjects();
@@ -126,7 +127,7 @@ const ErrorDisplay = () => {
       }
     } catch (error) {
       const errorMessage =
-          error instanceof Error ? error.message : "An unknown error occurred.";
+        error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast({
         title: "Failed to load error data.",

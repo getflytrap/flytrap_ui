@@ -55,11 +55,10 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
       try {
         const projectData = await getAllProjects();
         setProjects(projectData.projects);
-
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";
-        
+
         toast({
           title: "Error",
           description: errorMessage,
@@ -71,23 +70,25 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
         });
       }
     };
-    
+
     fetchProjects();
   }, []);
 
   /**
    * Fetches users for the selected project and updates the state.
-   * 
+   *
    * @param uuid - The UUID of the selected project.
    */
   const fetchUsersForProject = async (uuid: string) => {
     try {
       const usersForProject = await getUsersForProject(uuid);
-      setCurrentUsers(users.filter((user) => usersForProject.includes(user.uuid)));
+      setCurrentUsers(
+        users.filter((user) => usersForProject.includes(user.uuid)),
+      );
       setSelectedProjectUuid(uuid);
     } catch (error) {
       const errorMessage =
-          error instanceof Error ? error.message : "An unknown error occurred.";
+        error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast({
         title: "Error",
@@ -103,7 +104,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
 
   /**
    * Removes a user from the selected project.
-   * 
+   *
    * @param projectUuid - The UUID of the project.
    * @param userUuid - The UUID of the user to remove.
    */
@@ -128,7 +129,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
       });
     } catch (error) {
       const errorMessage =
-          error instanceof Error ? error.message : "An unknown error occurred.";
+        error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast({
         title: "Error",
@@ -155,7 +156,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
       setSelectedUserUuid("");
       toast({
         title: "Success",
-        description: 'User was added to the project.',
+        description: "User was added to the project.",
         status: "success",
         duration: 3000,
         position: "bottom-right",
@@ -261,7 +262,7 @@ const AssignUsers = ({ users }: AssignUsersProps) => {
             <Select
               placeholder="Select a user"
               onChange={(e) => {
-                setSelectedUserUuid(e.target.value)
+                setSelectedUserUuid(e.target.value);
               }}
               value={selectedUserUuid}
             >

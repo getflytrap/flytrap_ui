@@ -13,8 +13,8 @@ import CodeDisplay from "./CodeDisplay";
 import { useProjects } from "../../hooks/useProjects";
 
 /**
- * A component for setting up the Flytrap JavaScript SDK. 
- * It provides users with installation and setup instructions, 
+ * A component for setting up the Flytrap JavaScript SDK.
+ * It provides users with installation and setup instructions,
  * dynamically inserting their project details such as API Key and Project UUID.
  *
  * @param apiKey - The API Key for the current project.

@@ -6,7 +6,7 @@ export const addUserToProject = async (
   userUuid: string,
 ) => {
   if (!projectUuid || !userUuid) {
-    throw new Error("Both project UUID and user UUID are required.")
+    throw new Error("Both project UUID and user UUID are required.");
   }
 
   try {
@@ -18,7 +18,7 @@ export const addUserToProject = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         } else if (status === 400) {
           const message = error.response?.data?.message;
 
@@ -26,7 +26,7 @@ export const addUserToProject = async (
             throw new Error(message);
           }
 
-          throw new Error("Project or user not found.")
+          throw new Error("Project or user not found.");
         }
 
         throw new Error("Internal server error.");
@@ -34,7 +34,7 @@ export const addUserToProject = async (
         throw new Error("Network error.");
       }
     }
-    
+
     throw new Error("An unexpected error occurred while fetching users.");
   }
 };
@@ -44,7 +44,7 @@ export const removeUserFromProject = async (
   userUuid: string,
 ) => {
   if (!projectUuid || !userUuid) {
-    throw new Error("Both project UUID and user UUID are required.")
+    throw new Error("Both project UUID and user UUID are required.");
   }
 
   try {
@@ -54,9 +54,9 @@ export const removeUserFromProject = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         } else if (status === 400) {
-          throw new Error("Project or user not found.")
+          throw new Error("Project or user not found.");
         }
 
         throw new Error("Internal server error.");
@@ -64,14 +64,12 @@ export const removeUserFromProject = async (
         throw new Error("Network error.");
       }
     }
-    
+
     throw new Error("An unexpected error occurred while fetching users.");
   }
 };
 
-export const getUsersForProject = async (
-  projectUuid: string,
-) => {
+export const getUsersForProject = async (projectUuid: string) => {
   try {
     const { data } = await apiClient.get(`/api/projects/${projectUuid}/users`);
     return data.payload;
@@ -80,15 +78,15 @@ export const getUsersForProject = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
-        } 
+          throw new Error("Access forbidden.");
+        }
 
         throw new Error("Internal server error.");
       } else if (error.request) {
         throw new Error("Network error.");
       }
     }
-    
+
     throw new Error("An unexpected error occurred while fetching users.");
   }
 };

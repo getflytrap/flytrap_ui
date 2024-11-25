@@ -1,6 +1,5 @@
 import { Center, Spinner } from "@chakra-ui/react";
 
-
 /**
  * A full-page loading spinner component styled with Chakra UI.
  * It centers a customizable spinner vertically and horizontally.

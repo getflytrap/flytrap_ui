@@ -14,7 +14,7 @@ import transparent_logo from "../../assets/transparent_logo.png";
 
 /**
  * Landing Page component.
- * Displays a welcoming interface with branding, a login/dashboard button based on authentication status, 
+ * Displays a welcoming interface with branding, a login/dashboard button based on authentication status,
  * and developer profiles.
  */
 const LandingPage = () => {

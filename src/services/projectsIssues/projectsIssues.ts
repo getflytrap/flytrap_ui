@@ -22,15 +22,18 @@ export const getIssues = async (
   };
 
   try {
-    const { data } = await apiClient.get(`/api/projects/${projectUuid}/issues`, {
-      params,
-    });
-  
+    const { data } = await apiClient.get(
+      `/api/projects/${projectUuid}/issues`,
+      {
+        params,
+      },
+    );
+
     const issuesData = {
       issues: data.payload.issues,
       currentPage: data.payload.current_page,
-      totalPages: data.payload.total_pages
-    }
+      totalPages: data.payload.total_pages,
+    };
 
     return issuesData;
   } catch (error) {
@@ -38,7 +41,7 @@ export const getIssues = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         }
 
         throw new Error("Internal server error.");
@@ -59,7 +62,7 @@ export const deleteIssues = async (projectUuid: string) => {
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         }
 
         throw new Error("Internal server error.");
@@ -72,10 +75,7 @@ export const deleteIssues = async (projectUuid: string) => {
   }
 };
 
-export const getError = async (
-  projectUuid: string,
-  errorUuid: string,
-) => {
+export const getError = async (projectUuid: string, errorUuid: string) => {
   if (!projectUuid || !errorUuid) {
     throw new Error("Both project uuid and error uuid are required.");
   }
@@ -91,7 +91,7 @@ export const getError = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         }
 
         throw new Error("Internal server error.");
@@ -111,7 +111,7 @@ export const getRejection = async (
   if (!projectUuid || !rejectionUuid) {
     throw new Error("Both project uuid and error uuid are required.");
   }
-  
+
   try {
     const { data } = await apiClient.get(
       `/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`,
@@ -122,7 +122,7 @@ export const getRejection = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         }
 
         throw new Error("Internal server error.");
@@ -131,7 +131,9 @@ export const getRejection = async (
       }
     }
 
-    throw new Error("An unexpected error occurred while fetching rejection data.");
+    throw new Error(
+      "An unexpected error occurred while fetching rejection data.",
+    );
   }
 };
 
@@ -160,7 +162,7 @@ export const toggleError = async (
         } else if (status === 400) {
           throw new Error("Invalid request.");
         } else if (status === 404) {
-          throw new Error("Error not found.")
+          throw new Error("Error not found.");
         }
 
         throw new Error("Internal server error.");
@@ -182,7 +184,7 @@ export const toggleRejection = async (
     throw new Error("Both project uuid and error uuid are required.");
   }
 
-  try { 
+  try {
     await apiClient.patch(
       `/api/projects/${projectUuid}/issues/rejections/${rejectionUuid}`,
       {
@@ -194,11 +196,11 @@ export const toggleRejection = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         } else if (status === 400) {
           throw new Error("Invalid request.");
         } else if (status === 404) {
-          throw new Error("Rejection not found.")
+          throw new Error("Rejection not found.");
         }
 
         throw new Error("Internal server error.");
@@ -211,14 +213,11 @@ export const toggleRejection = async (
   }
 };
 
-export const deleteError = async (
-  projectUuid: string,
-  errorUuid: string,
-) => {
+export const deleteError = async (projectUuid: string, errorUuid: string) => {
   if (!projectUuid || !errorUuid) {
     throw new Error("Both project uuid and error uuid are required.");
   }
-  
+
   try {
     await apiClient.delete(
       `/api/projects/${projectUuid}/issues/errors/${errorUuid}`,
@@ -228,9 +227,9 @@ export const deleteError = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         } else if (status === 404) {
-          throw new Error("Error not found.")
+          throw new Error("Error not found.");
         }
 
         throw new Error("Internal server error.");
@@ -246,7 +245,7 @@ export const deleteError = async (
 export const deleteRejection = async (
   projectUuid: string,
   rejectionUuid: string,
- ) => {
+) => {
   if (!projectUuid || !rejectionUuid) {
     throw new Error("Both project uuid and error uuid are required.");
   }
@@ -260,9 +259,9 @@ export const deleteRejection = async (
       if (error.response) {
         const status = error.response.status;
         if (status === 403) {
-          throw new Error("Access forbidden.")
+          throw new Error("Access forbidden.");
         } else if (status === 404) {
-          throw new Error("Rejection not found.")
+          throw new Error("Rejection not found.");
         }
 
         throw new Error("Internal server error.");
@@ -275,9 +274,7 @@ export const deleteRejection = async (
   }
 };
 
-export const getDailyCounts = async (
-  projectUuid: string | undefined,
-) => {
+export const getDailyCounts = async (projectUuid: string | undefined) => {
   if (!projectUuid) {
     throw new Error("Project UUID is required to fetch daily counts.");
   }
@@ -297,6 +294,8 @@ export const getDailyCounts = async (
       }
     }
 
-    throw new Error("An unexpected error occurred while fetching daily counts.");
+    throw new Error(
+      "An unexpected error occurred while fetching daily counts.",
+    );
   }
 };

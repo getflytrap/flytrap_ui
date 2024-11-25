@@ -22,11 +22,11 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     const socket = io(
       import.meta.env.VITE_BASEURL
         ? `${import.meta.env.VITE_BASEURL}/notifications`
-        : '/notifications',
+        : "/notifications",
       {
-      query: { token: accessToken },
-      transports: ["websocket"],
-      }
+        query: { token: accessToken },
+        transports: ["websocket"],
+      },
     );
 
     socket.on("authenticated", () => {

@@ -10,7 +10,7 @@ type ProjectListProps = {
 
 /**
  * Renders a list of projects or a message if no projects are available.
- * 
+ *
  * @param projects - Array of project data
  * @param onEditOpen - Function to handle opening the edit modal
  * @param onDeleteOpen - Function to handle opening the delete modal
@@ -20,11 +20,7 @@ const ProjectList = ({
   onEditOpen,
   onDeleteOpen,
 }: ProjectListProps) => (
-  <Grid
-    templateColumns={["1fr", "repeat(2, 1fr)"]}
-    gap={4}
-    width="100%"
-  >
+  <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={4} width="100%">
     {projects?.length ? (
       projects.map((project) => (
         <ProjectCard
@@ -35,11 +31,7 @@ const ProjectList = ({
         />
       ))
     ) : (
-      <Text
-        fontSize="lg"
-        my="30px"
-        p="20px"
-      >
+      <Text fontSize="lg" my="30px" p="20px">
         No Current Projects
       </Text>
     )}

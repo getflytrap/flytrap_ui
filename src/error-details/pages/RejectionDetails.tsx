@@ -63,7 +63,7 @@ const RejectionDetails = () => {
   const { project_uuid: projectUuid, rejection_uuid: rejectionUuid } =
     useParams();
 
-   /**
+  /**
    * Load project data and select the project if not already selected.
    */
   useEffect(() => {
@@ -83,7 +83,7 @@ const RejectionDetails = () => {
     const fetchRejectionData = async () => {
       try {
         setIsLoading(true);
-        
+
         if (projectUuid && rejectionUuid) {
           const rejectionData = await getRejection(projectUuid, rejectionUuid);
           setRejectionData(rejectionData);
@@ -138,7 +138,7 @@ const RejectionDetails = () => {
     try {
       if (projectUuid && rejectionUuid) {
         await deleteRejection(projectUuid, rejectionUuid);
-  
+
         setProjects((prevProjects) => {
           const newProjects = prevProjects.slice();
           newProjects.map((project) => {
@@ -158,7 +158,7 @@ const RejectionDetails = () => {
           variant: "left-accent",
           isClosable: true,
         });
-  
+
         navigate(`/projects/${projectUuid}/issues`);
       }
     } catch (error) {

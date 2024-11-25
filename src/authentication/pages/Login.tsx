@@ -18,7 +18,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { login as postLoginData } from "../../services/auth/auth";
 import transparent_logo from "../../assets/transparent_logo.png";
 
-
 const Login = () => {
   const { login, isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-   // Redirect if already logged in
+  // Redirect if already logged in
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/projects");

@@ -1,10 +1,7 @@
 import axios from "axios";
 import apiClient from "../apiClient";
 
-export const login = async (
-  email: string,
-  password: string,
-) => {
+export const login = async (email: string, password: string) => {
   try {
     const { data } = await apiClient.post("/api/auth/login", {
       email,
@@ -13,9 +10,10 @@ export const login = async (
 
     // Set access token in headers and session storage
     const accessToken = data.payload.access_token;
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    apiClient.defaults.headers.common["Authorization"] =
+      `Bearer ${accessToken}`;
     sessionStorage.setItem("access_token", accessToken);
-  
+
     // Extract user data
     const userData = {
       userUuid: data.payload.user_uuid,
@@ -23,7 +21,7 @@ export const login = async (
       lastName: data.payload.last_name,
       isRoot: data.payload.is_root,
     };
-  
+
     return userData;
   } catch (error) {
     // Handle specific error scenarios
@@ -59,9 +57,9 @@ export const logout = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        throw new Error("Internal server error.")
+        throw new Error("Internal server error.");
       } else if (error.request) {
-        throw new Error("Network error.")
+        throw new Error("Network error.");
       }
     }
 
@@ -84,7 +82,7 @@ export const checkAuthStatus = async () => {
       lastName: data.payload.last_name,
       isRoot: data.payload.is_root,
     };
-    
+
     return userData;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -95,7 +93,7 @@ export const checkAuthStatus = async () => {
           // Explicitly indicate no active session
           return null;
         } else if (status === 404) {
-          throw new Error("User not found. Please log in again.")
+          throw new Error("User not found. Please log in again.");
         } else {
           throw new Error("Internal server error.");
         }

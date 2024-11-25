@@ -8,7 +8,7 @@ import ErrorBoundary from "./shared/ErrorBoundary.tsx";
 import App from "./App.tsx";
 
 /**
- * Entry point for the React application. 
+ * Entry point for the React application.
  * Renders the app within the root element with essential providers and configurations.
  */
 createRoot(document.getElementById("root")!).render(

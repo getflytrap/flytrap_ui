@@ -13,7 +13,7 @@ import {
   Flex,
   Box,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { FaReact, FaNodeJs, FaPython, FaJsSquare } from "react-icons/fa";
@@ -52,7 +52,7 @@ const ProjectCard = ({
         setDailyCounts(counts);
       } catch (error) {
         const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
+          error instanceof Error ? error.message : "An unknown error occurred.";
 
         toast({
           title: "Daily Summary Error",
@@ -144,24 +144,24 @@ const ProjectCard = ({
 
       <CardFooter>
         <HStack justify="center" spacing={8} width="100%">
-        {isRoot && (
-          <>
-            <Button
-              variant="ghost"
-              leftIcon={<EditIcon />}
-              onClick={handleEditClick}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="ghost"
-              leftIcon={<DeleteIcon />}
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </Button>
-          </>
-        )}
+          {isRoot && (
+            <>
+              <Button
+                variant="ghost"
+                leftIcon={<EditIcon />}
+                onClick={handleEditClick}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="ghost"
+                leftIcon={<DeleteIcon />}
+                onClick={handleDeleteClick}
+              >
+                Delete
+              </Button>
+            </>
+          )}
           <Button
             variant="ghost"
             leftIcon={<InfoOutlineIcon />}

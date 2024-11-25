@@ -72,6 +72,6 @@ const Sidebar = () => {
       </Box>
     </Flex>
   );
-}
+};
 
 export default Sidebar;
