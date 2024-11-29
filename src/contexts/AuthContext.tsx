@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
-import { logout as logoutService, checkAuthStatus } from "../services";
+import { logout as logoutService, getSessionInfo } from "../services";
 import { useWebSocket } from "../hooks/useWebSocket";
 
 /**
@@ -54,11 +54,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const data = await checkAuthStatus();
+        const data = await getSessionInfo();
         if (data) {
-          setUserUuid(data.userUuid);
-          setName(`${data.firstName} ${data.lastName}`);
-          setIsRoot(data.isRoot);
+          setUserUuid(data.user_uuid);
+          setName(`${data.first_name} ${data.last_name}`);
+          setIsRoot(data.is_root);
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);

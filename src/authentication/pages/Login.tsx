@@ -15,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useAuth } from "../../hooks/useAuth";
-import { login as postLoginData } from "../../services/auth/auth";
+import { login as loginService } from "../../services/auth/auth";
 import transparent_logo from "../../assets/transparent_logo.png";
 
 const Login = () => {
@@ -36,9 +36,8 @@ const Login = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      const data = await postLoginData(email, password);
-
-      login(data.userUuid, data.firstName, data.lastName, data.isRoot);
+      const data = await loginService(email, password);
+      login(data.user_uuid, data.first_name, data.last_name, data.is_root);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";

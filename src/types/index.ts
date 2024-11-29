@@ -80,3 +80,15 @@ export interface WebSocketDataType {
   project_name: string;
   issue_data: object;
 }
+
+export interface ApiErrorResponse {
+  message: string;
+}
+
+export interface AccountDataType {
+  first_name: string,
+  last_name: string,
+  email: string,
+  password: string,
+  confirmed_password: string,
+}

@@ -39,8 +39,8 @@ const ManageUsers = () => {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const usersData = await getUsers();
-        setUsers(usersData);
+        const data = await getUsers();
+        setUsers(data);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";

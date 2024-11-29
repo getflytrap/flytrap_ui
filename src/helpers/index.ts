@@ -1,3 +1,6 @@
+import axios from "axios";
+import { ApiErrorResponse } from "../types";
+
 export const convertHandledToBoolean = (handled: string): boolean | null => {
   if (handled === "Handled") return true;
   if (handled === "Unhandled") return false;
@@ -57,3 +60,29 @@ export const parseStackTrace = (stackTrace: string, platform: string) => {
 
   return frames;
 };
+
+export const logError = (error: unknown): void => {
+  if (import.meta.env.MODE === 'development') {
+    console.error(error);
+  }
+}
+
+export const normalizeError = (error: unknown): Error => {
+  // Normalize Axios errors
+  if (axios.isAxiosError(error)) {
+    if (error.request && !error.response) {
+      return new Error("Network error. Please try again later.");
+    }
+
+    const apiMessage = (error.response?.data as ApiErrorResponse)?.message || "An unknown error occurred.";
+    return new Error(apiMessage);
+  }
+
+  // Standard JS errors
+  if (error instanceof Error) {
+    return error;
+  }
+
+  // Unknown error types
+  return new Error("An unknown error occurred.")
+}

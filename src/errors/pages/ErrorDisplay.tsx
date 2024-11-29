@@ -121,9 +121,9 @@ const ErrorDisplay = () => {
       );
 
       setIssues(data.issues);
-      if (data.currentPage && data.totalPages) {
-        setCurrentPage(data.currentPage);
-        setTotalPages(data.totalPages);
+      if (data.current_page && data.total_pages) {
+        setCurrentPage(data.current_page);
+        setTotalPages(data.total_pages);
       }
     } catch (error) {
       const errorMessage =
