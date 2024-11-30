@@ -8,19 +8,23 @@ export const getIssues = async (
   selectedHandled: boolean | null,
   selectedResolved: boolean | null,
   selectedTime: string | null,
-  currentPage: number,
+  page: number,
   limit: number,
 ) => {
   if (!projectUuid) {
     throw new Error("Project identifier is required.");
   }
 
+  if (page < 1 || limit < 1) {
+    throw new Error('Invalid pagination parameters.')
+  }
+
   const params = {
     handled: selectedHandled,
     resolved: selectedResolved,
     time: selectedTime,
-    page: currentPage,
-    limit: limit,
+    page,
+    limit,
   };
 
   try {

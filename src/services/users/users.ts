@@ -25,7 +25,7 @@ export const createAccount = async (accountData: AccountDataType) => {
 
   try {
     const { data } = await apiClient.post("/api/users", accountData);
-
+    
     createAccountResponseSchema.parse(data);
 
     return data.payload;
@@ -66,7 +66,10 @@ export const getProjectsForUser = async (
     throw new Error("User identifier required.");
   }
 
-  // TODO: Parameter validation
+  if (page < 1 || limit < 1) {
+    throw new Error('Invalid pagination parameters.')
+  }
+
   const params = { page, limit };
 
   try {

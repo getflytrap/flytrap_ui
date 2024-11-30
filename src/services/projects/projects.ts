@@ -5,6 +5,10 @@ import { getAllProjectsResponseSchema, createProjectResponseSchema } from "./pro
 
 export const getAllProjects = async (page: number = 1, limit?: number) => {
   try {
+    if (page < 1 || (limit && limit < 1)) {
+      throw new Error('Invalid pagination parameters.')
+    }
+
     const params = limit ? { page, limit } : { page };
     const { data } = await apiClient.get("/api/projects", { params });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { projectSchema } from "../projects/projectSchemas";
 
 const userSchema = z.object({
-  user_uuid: z.string(),
+  uuid: z.string(),
   first_name: z.string(),
   last_name: z.string(),
   email: z.string().email(),

@@ -1,4 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { logout as logoutService, getSessionInfo } from "../services";
 import { useWebSocket } from "../hooks/useWebSocket";
@@ -45,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [name, setName] = useState<string | null>(null);
   const [isRoot, setIsRoot] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const location = useLocation(); 
   const toast = useToast();
 
   /**
@@ -53,10 +55,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   useEffect(() => {
     const checkSession = async () => {
+      const { pathname } = location;
       try {
         const data = await getSessionInfo();
         if (data) {
-          setUserUuid(data.user_uuid);
+          setUserUuid(data.uuid);
           setName(`${data.first_name} ${data.last_name}`);
           setIsRoot(data.is_root);
           setIsLoggedIn(true);
@@ -69,15 +72,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";
 
-        toast({
-          title: "Session Error",
-          description: errorMessage,
-          status: "error",
-          duration: 3000,
-          position: "bottom-right",
-          variant: "left-accent",
-          isClosable: true,
-        });
+        if (errorMessage !== "Authentication required. Please log in." && pathname !== "/login" && pathname !== "/") {
+          toast({
+            title: "Session Error",
+            description: errorMessage,
+            status: "error",
+            duration: 3000,
+            position: "bottom-right",
+            variant: "left-accent",
+            isClosable: true,
+          });
+        }
       } finally {
         setLoading(false);
       }

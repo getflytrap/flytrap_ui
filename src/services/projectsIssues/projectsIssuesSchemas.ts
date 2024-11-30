@@ -28,11 +28,11 @@ const errorDetailSchema = z.object({
   handled: z.boolean(),
   resolved: z.boolean(),
   contexts: z.any(),
-  method: z.string(),
-  path: z.string(),
-  os: z.string(),
-  browser: z.string(),
-  runtime: z.string(),
+  method: z.string().optional().nullable(),
+  path: z.string().optional().nullable(),
+  os: z.string().optional().nullable(),
+  browser: z.string().optional().nullable(),
+  runtime: z.string().optional().nullable(),
   total_occurrences: z.number(),
   distinct_users: z.number(),
 });
@@ -53,11 +53,11 @@ const rejectionDetailSchema = z.object({
   project_uuid: z.string(),
   handled: z.boolean(),
   resolved: z.boolean(),
-  method: z.string(),
-  path: z.string(),
-  os: z.string(),
-  browser: z.string(),
-  runtime: z.string(),
+  method: z.string().optional().nullable(),
+  path: z.string().optional().nullable(),
+  os: z.string().optional().nullable(),
+  browser: z.string().optional().nullable(),
+  runtime: z.string().optional().nullable(),
 });
 
 // Union of error and rejection issues

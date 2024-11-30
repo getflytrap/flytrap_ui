@@ -63,7 +63,7 @@ export const parseStackTrace = (stackTrace: string, platform: string) => {
 
 export const logError = (error: unknown): void => {
   if (import.meta.env.MODE === 'development') {
-    console.error(error);
+    console.error('[DEBUG] ',error);
   }
 }
 

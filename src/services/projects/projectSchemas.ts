@@ -24,5 +24,5 @@ export const getAllProjectsResponseSchema = z.object({
 });
 
 export const createProjectResponseSchema = z.object({
-  paylod: projectSchema,
+  payload: projectSchema,
 })

@@ -38,10 +38,10 @@ apiClient.interceptors.response.use(
 
     // Handle token refresh if unauthorized (401 error)
     if (error.response?.status === 401 && originalRequest) {
+      // Skip token refresh
       if (originalRequest.skipRefresh) {
-        const normalizedError = normalizeError(error)
-        logError(normalizedError);
-        return Promise.reject(normalizedError);
+        logError(error);
+        return Promise.reject(normalizeError(error));
       }
 
       if (!originalRequest.retry) {
@@ -59,19 +59,17 @@ apiClient.interceptors.response.use(
           // Retry the original request with the new token
           return apiClient(originalRequest);
         } catch (refreshError) {
-          const normalizedError = normalizeError(refreshError);
-          logError(normalizedError);
+          logError(refreshError);
           // Remove the Authorization header if refresh fails
           delete apiClient.defaults.headers.common["Authorization"];
-          return Promise.reject(normalizedError);
+          return Promise.reject(normalizeError(refreshError));
         }
       }
     }
 
 
-    const normalizedError = normalizeError(error)
-    logError(normalizedError);
-    return Promise.reject(normalizedError);
+    logError(error);
+    return Promise.reject(normalizeError(error));
   },
 );
 

@@ -15,11 +15,11 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ChakraProvider theme={customTheme}>
       <ErrorBoundary fallback={<h1>Something went wrong!</h1>}>
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <App />
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </ErrorBoundary>
     </ChakraProvider>
   </StrictMode>,
