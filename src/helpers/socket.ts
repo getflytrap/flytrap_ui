@@ -1,34 +1,23 @@
-import io from "socket.io-client";
-import { useToast } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { io, Socket } from "socket.io-client";
 import { eventBus } from "./eventBus";
 
-/**
- * Custom hook for managing a WebSocket connection.
- * Initializes the WebSocket connection when the user is logged in
- * and handles authentication, notifications, and disconnection events.
- *
- * @param isLoggedIn - Boolean or null indicating the user's logged-in state.
- */
-export const useWebSocket = (isLoggedIn: boolean | null) => {
-  const toast = useToast();
+let socket: Socket | null = null;
 
-  useEffect(() => {
-    // Ensure a valid access token exists before establishing the connection
-    const accessToken = sessionStorage.getItem("access_token");
-    if (!accessToken) return;
-
-    // Construct WebSocket URL and options
-    const socket = io(
+export const connectSocket = (accessToken: string, toast: any) => {
+  if (!socket) {
+    socket = io(
       import.meta.env.VITE_BASEURL
-        ? `${import.meta.env.VITE_BASEURL}/notifications`
-        : "/notifications",
+      ? `${import.meta.env.VITE_BASEURL}/notifications`
+      : "/notifications", 
       {
-        // query: { token: accessToken },
+        autoConnect: false,
         transports: ["websocket"],
+        auth: {
+          token: accessToken,
+        },
         reconnectionAttempts: 5,
         reconnectionDelay: 1000,
-      },
+      }
     );
 
     if (import.meta.env.MODE === "development") {
@@ -62,12 +51,18 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
       // Emit an event for the notification
       eventBus.emit("newIssueNotification", data);
     });
+  }
 
-    return () => {
-      if (socket.connected) {
-        console.log("Cleaning up WebSocket connection.");
-        socket.disconnect();
-      }
-    };
-  }, [isLoggedIn, toast]);
+  if (!socket.connected) {
+    socket.connect();
+  }
 };
+
+export const disconnectSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+};
+
+export const getSocket = () => socket;

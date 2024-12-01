@@ -2,7 +2,8 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { logout as logoutService, getSessionInfo } from "../services";
-import { useWebSocket } from "../hooks/useWebSocket";
+// import { useWebSocket } from "../hooks/useWebSocket";
+import { connectSocket, disconnectSocket } from "../helpers/socket";
 
 /**
  * AuthContextType defines the shape of the authentication context,
@@ -63,6 +64,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setName(`${data.first_name} ${data.last_name}`);
           setIsRoot(data.is_root);
           setIsLoggedIn(true);
+
+          const accessToken = sessionStorage.getItem("access_token");
+          if (accessToken) {
+            connectSocket(accessToken, toast);
+          }
         } else {
           setIsLoggedIn(false);
         }
@@ -110,6 +116,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsRoot(isRoot);
     setIsLoggedIn(true);
 
+    const accessToken = sessionStorage.getItem("access_token");
+    if (accessToken) {
+      connectSocket(accessToken, toast);
+    }
+
     toast({
       title: "Successful Login",
       description: `Welcome, ${firstName} ${lastName}!`,
@@ -154,13 +165,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsRoot(false);
       setIsLoggedIn(false);
       sessionStorage.removeItem("access_token");
+      disconnectSocket();
     }
   };
-
-  /**
-   * Initializes the WebSocket connection based on the logged-in state.
-   */
-  useWebSocket(isLoggedIn);
 
   return (
     <AuthContext.Provider
