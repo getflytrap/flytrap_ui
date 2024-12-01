@@ -73,12 +73,12 @@ export const getIssuesResponseSchema = z.object({
 
 export const getErrorResponseSchema = z.object({
   payload: errorDetailSchema,
-})
+});
 
 export const getRejectionResponseSchema = z.object({
   payload: rejectionDetailSchema,
-})
+});
 
 export const getSummaryResponseSchema = z.object({
   payload: z.array(z.number()),
-})
+});

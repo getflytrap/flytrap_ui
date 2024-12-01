@@ -28,5 +28,5 @@ Quickly locate specific errors using filters.
 
 Frontend: React (with Chakra UI for styling and React Router for navigation)
 Backend: Flask API hosted on AWS EC2, using PostgreSQL on AWS RDS for data storage
-Notifications: WebSockets for real-time updates
+Notifications: Websockets for near real-time updates
 Infrastructure: Dockerized services, AWS Lambda for error processing, and API Gateway for SDK interaction

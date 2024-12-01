@@ -1,12 +1,15 @@
 import { ZodError } from "zod";
 import apiClient from "../apiClient";
 import { logError } from "../../helpers";
-import { getAllProjectsResponseSchema, createProjectResponseSchema } from "./projectSchemas";
+import {
+  getAllProjectsResponseSchema,
+  createProjectResponseSchema,
+} from "./projectSchemas";
 
 export const getAllProjects = async (page: number = 1, limit?: number) => {
   try {
     if (page < 1 || (limit && limit < 1)) {
-      throw new Error('Invalid pagination parameters.')
+      throw new Error("Invalid pagination parameters.");
     }
 
     const params = limit ? { page, limit } : { page };

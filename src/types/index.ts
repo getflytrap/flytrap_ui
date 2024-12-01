@@ -86,9 +86,9 @@ export interface ApiErrorResponse {
 }
 
 export interface AccountDataType {
-  first_name: string,
-  last_name: string,
-  email: string,
-  password: string,
-  confirmed_password: string,
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  confirmed_password: string;
 }

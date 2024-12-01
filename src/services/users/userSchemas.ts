@@ -27,4 +27,4 @@ export const getProjectsForUserResponseSchema = z.object({
     current_page: z.number(),
     total_pages: z.number(),
   }),
-})
+});

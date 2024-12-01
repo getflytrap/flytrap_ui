@@ -42,4 +42,3 @@ export const removeUserFromProject = async (
 
   await apiClient.delete(`/api/projects/${projectUuid}/users/${userUuid}`);
 };
-

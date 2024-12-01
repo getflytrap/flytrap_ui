@@ -2,7 +2,11 @@ import { ZodError } from "zod";
 import apiClient from "../apiClient";
 import { logError } from "../../helpers";
 import { AccountDataType } from "../../types";
-import { sessionInfoResponseSchema, createAccountResponseSchema, getProjectsForUserResponseSchema } from "./userSchemas";
+import {
+  sessionInfoResponseSchema,
+  createAccountResponseSchema,
+  getProjectsForUserResponseSchema,
+} from "./userSchemas";
 
 export const getUsers = async () => {
   try {
@@ -25,7 +29,7 @@ export const createAccount = async (accountData: AccountDataType) => {
 
   try {
     const { data } = await apiClient.post("/api/users", accountData);
-    
+
     createAccountResponseSchema.parse(data);
 
     return data.payload;
@@ -67,7 +71,7 @@ export const getProjectsForUser = async (
   }
 
   if (page < 1 || limit < 1) {
-    throw new Error('Invalid pagination parameters.')
+    throw new Error("Invalid pagination parameters.");
   }
 
   const params = { page, limit };

@@ -24,7 +24,6 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    // ? Normalize here?
     logError(error);
     return Promise.reject(error);
   },
@@ -46,16 +45,17 @@ apiClient.interceptors.response.use(
 
       if (!originalRequest.retry) {
         originalRequest.retry = true;
-        
+
         try {
           const { data } = await refreshClient.post("/api/auth/refresh");
           const newAccessToken = data.payload;
-  
+
           // Update the Authorization header for future requests
           apiClient.defaults.headers.common["Authorization"] =
             `Bearer ${newAccessToken}`;
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-  
+          sessionStorage.setItem("access_token", newAccessToken);
+
           // Retry the original request with the new token
           return apiClient(originalRequest);
         } catch (refreshError) {
@@ -66,7 +66,6 @@ apiClient.interceptors.response.use(
         }
       }
     }
-
 
     logError(error);
     return Promise.reject(normalizeError(error));

@@ -1,7 +1,12 @@
 import { ZodError } from "zod";
 import apiClient from "../apiClient";
 import { logError } from "../../helpers";
-import { getIssuesResponseSchema, getErrorResponseSchema, getRejectionResponseSchema, getSummaryResponseSchema } from "./projectsIssuesSchemas";
+import {
+  getIssuesResponseSchema,
+  getErrorResponseSchema,
+  getRejectionResponseSchema,
+  getSummaryResponseSchema,
+} from "./projectsIssuesSchemas";
 
 export const getIssues = async (
   projectUuid: string | undefined,
@@ -16,7 +21,7 @@ export const getIssues = async (
   }
 
   if (page < 1 || limit < 1) {
-    throw new Error('Invalid pagination parameters.')
+    throw new Error("Invalid pagination parameters.");
   }
 
   const params = {
@@ -49,7 +54,7 @@ export const getIssues = async (
 
 export const deleteIssues = async (projectUuid: string) => {
   if (!projectUuid) {
-    throw new Error('Project identifier required.');
+    throw new Error("Project identifier required.");
   }
 
   await apiClient.delete(`/api/projects/${projectUuid}/issues`);

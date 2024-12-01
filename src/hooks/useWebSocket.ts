@@ -24,10 +24,24 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
         ? `${import.meta.env.VITE_BASEURL}/notifications`
         : "/notifications",
       {
-        query: { token: accessToken },
+        // query: { token: accessToken },
         transports: ["websocket"],
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
       },
     );
+
+    if (import.meta.env.MODE === "development") {
+      socket.on("connect", () =>
+        console.log("WebSocket connected successfully."),
+      );
+      socket.on("connect_error", (error) =>
+        console.error("WebSocket connection error:", error),
+      );
+      socket.on("disconnect", (reason) =>
+        console.warn("WebSocket disconnected:", reason),
+      );
+    }
 
     socket.on("authenticated", () => {
       sessionStorage.removeItem("access_token");
@@ -50,7 +64,10 @@ export const useWebSocket = (isLoggedIn: boolean | null) => {
     });
 
     return () => {
-      socket.disconnect();
+      if (socket.connected) {
+        console.log("Cleaning up WebSocket connection.");
+        socket.disconnect();
+      }
     };
   }, [isLoggedIn, toast]);
 };

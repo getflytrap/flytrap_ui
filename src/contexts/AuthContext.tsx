@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [name, setName] = useState<string | null>(null);
   const [isRoot, setIsRoot] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
-  const location = useLocation(); 
+  const location = useLocation();
   const toast = useToast();
 
   /**
@@ -72,7 +72,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";
 
-        if (errorMessage !== "Authentication required. Please log in." && pathname !== "/login" && pathname !== "/") {
+        if (
+          errorMessage !== "Authentication required. Please log in." &&
+          pathname !== "/login" &&
+          pathname !== "/"
+        ) {
           toast({
             title: "Session Error",
             description: errorMessage,

@@ -20,9 +20,9 @@ export const getAllProjectsResponseSchema = z.object({
     projects: z.array(projectWithIssuesSchema),
     total_pages: z.number(),
     current_page: z.number(),
-  })
+  }),
 });
 
 export const createProjectResponseSchema = z.object({
   payload: projectSchema,
-})
+});

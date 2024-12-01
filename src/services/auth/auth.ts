@@ -6,10 +6,14 @@ import { loginResponseSchema } from "./authSchemas";
 
 export const login = async (email: string, password: string) => {
   try {
-    const { data } = await apiClient.post("/api/auth/login", {
-      email,
-      password,
-    }, { skipRefresh: true } as InternalAxiosRequestConfig);
+    const { data } = await apiClient.post(
+      "/api/auth/login",
+      {
+        email,
+        password,
+      },
+      { skipRefresh: true } as InternalAxiosRequestConfig,
+    );
 
     loginResponseSchema.parse(data);
 

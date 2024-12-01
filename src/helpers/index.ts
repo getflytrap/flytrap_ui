@@ -62,10 +62,10 @@ export const parseStackTrace = (stackTrace: string, platform: string) => {
 };
 
 export const logError = (error: unknown): void => {
-  if (import.meta.env.MODE === 'development') {
-    console.error('[DEBUG] ',error);
+  if (import.meta.env.MODE === "development") {
+    console.error("[DEBUG] ", error);
   }
-}
+};
 
 export const normalizeError = (error: unknown): Error => {
   // Normalize Axios errors
@@ -74,7 +74,9 @@ export const normalizeError = (error: unknown): Error => {
       return new Error("Network error. Please try again later.");
     }
 
-    const apiMessage = (error.response?.data as ApiErrorResponse)?.message || "An unknown error occurred.";
+    const apiMessage =
+      (error.response?.data as ApiErrorResponse)?.message ||
+      "An unknown error occurred.";
     return new Error(apiMessage);
   }
 
@@ -84,5 +86,5 @@ export const normalizeError = (error: unknown): Error => {
   }
 
   // Unknown error types
-  return new Error("An unknown error occurred.")
-}
+  return new Error("An unknown error occurred.");
+};

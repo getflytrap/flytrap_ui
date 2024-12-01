@@ -10,7 +10,5 @@ export const loginResponseSchema = z.object({
       is_root: z.boolean(),
     }),
     access_token: z.string(),
-  })
+  }),
 });
-
-

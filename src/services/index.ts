@@ -11,7 +11,7 @@ import {
   deleteAccount,
   updatePassword,
   getProjectsForUser,
-  getSessionInfo
+  getSessionInfo,
 } from "./users/users";
 import {
   addUserToProject,
