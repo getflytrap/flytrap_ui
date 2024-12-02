@@ -3,7 +3,7 @@ import { getProjectsForUser } from "../services/users/users";
 import { useAuth } from "../hooks/useAuth";
 import { Project } from "../types";
 import { useToast } from "@chakra-ui/react";
-import { eventBus } from "../hooks/eventBus";
+import { eventBus } from "../helpers/eventBus";
 import { WebSocketDataType } from "../types";
 
 const PROJECT_LIMIT_PER_PAGE = 10;
@@ -84,8 +84,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
         PROJECT_LIMIT_PER_PAGE,
       );
       setProjects(data.projects || []);
-      setCurrentPage(data.currentPage || 1);
-      setTotalPages(data.totalPages || 1);
+      setCurrentPage(data.current_page || 1);
+      setTotalPages(data.total_pages || 1);
     } catch (error) {
       const errorMessage =
         error instanceof Error

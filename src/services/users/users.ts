@@ -1,27 +1,28 @@
-import axios from "axios";
-import { CreateAccountData } from "./usersTypes";
+import { ZodError } from "zod";
 import apiClient from "../apiClient";
+import { logError } from "../../helpers";
+import { AccountDataType } from "../../types";
+import {
+  sessionInfoResponseSchema,
+  createAccountResponseSchema,
+  getProjectsForUserResponseSchema,
+} from "./userSchemas";
 
 export const getUsers = async () => {
   try {
     const { data } = await apiClient.get("/api/users");
     return data.payload;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        throw new Error("Internal server error.");
-      } else if (error.request) {
-        throw new Error("Network error.");
-      }
+    if (error instanceof ZodError) {
+      logError(error);
+      throw new Error("An unexpected error occurred.");
     }
 
-    throw new Error(
-      "An unexpected error occurred while fetching daily counts.",
-    );
+    throw error;
   }
 };
 
-export const createAccount = async (accountData: CreateAccountData) => {
+export const createAccount = async (accountData: AccountDataType) => {
   if (!accountData) {
     throw new Error("Missing input data.");
   }
@@ -29,78 +30,35 @@ export const createAccount = async (accountData: CreateAccountData) => {
   try {
     const { data } = await apiClient.post("/api/users", accountData);
 
-    const userData = {
-      uuid: data.payload.uuid,
-      firstName: data.payload.first_name,
-      lastName: data.payload.last_name,
-    };
+    createAccountResponseSchema.parse(data);
 
-    return userData;
+    return data.payload;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        throw new Error("Internal server error.");
-      } else if (error.request) {
-        throw new Error("Network error.");
-      }
+    if (error instanceof ZodError) {
+      logError(error);
+      throw new Error("An unexpected error occurred.");
     }
 
-    throw new Error("An unexpected error occurred while creating account.");
+    throw error;
   }
 };
 
-export const deleteAccount = async (id: string) => {
-  try {
-    await apiClient.delete(`/api/users/${id}`);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 403) {
-          throw new Error("Access forbidden.");
-        } else if (status === 404) {
-          throw new Error("User not found.");
-        }
-
-        throw new Error("Internal server error.");
-      } else if (error.request) {
-        throw new Error("Network error.");
-      }
-    }
-
-    throw new Error("An unexpected error occurred while deleting account.");
+export const deleteAccount = async (userUuid: string) => {
+  if (!userUuid) {
+    throw new Error("User identifier required.");
   }
+
+  await apiClient.delete(`/api/users/${userUuid}`);
 };
 
 export const updatePassword = async (userUuid: string, password: string) => {
   if (!userUuid || !password) {
-    throw new Error("Both user uuid and password are required.");
+    throw new Error("Both user identifier and new password are required.");
   }
 
-  try {
-    await apiClient.patch(`/api/users/${userUuid}`, {
-      password,
-    });
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 403) {
-          throw new Error("Access forbidden.");
-        } else if (status === 404) {
-          throw new Error("User not found.");
-        } else if (status === 400) {
-          throw new Error("Invalid request.");
-        }
-
-        throw new Error("Internal server error.");
-      } else if (error.request) {
-        throw new Error("Network error.");
-      }
-    }
-
-    throw new Error("An unexpected error occurred while updating password.");
-  }
+  await apiClient.patch(`/api/users/${userUuid}`, {
+    password,
+  });
 };
 
 export const getProjectsForUser = async (
@@ -108,6 +66,14 @@ export const getProjectsForUser = async (
   page: number,
   limit: number,
 ) => {
+  if (!userUuid) {
+    throw new Error("User identifier required.");
+  }
+
+  if (page < 1 || limit < 1) {
+    throw new Error("Invalid pagination parameters.");
+  }
+
   const params = { page, limit };
 
   try {
@@ -115,26 +81,29 @@ export const getProjectsForUser = async (
       params,
     });
 
-    const projectData = {
-      projects: data.payload.projects,
-      currentPage: data.payload.current_page,
-      totalPages: data.payload.total_pages,
-    };
-
-    return projectData;
+    getProjectsForUserResponseSchema.parse(data);
+    return data.payload;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 403) {
-          throw new Error("Access forbidden.");
-        }
-
-        throw new Error("Internal server error.");
-      } else if (error.request) {
-        throw new Error("Network error.");
-      }
+    if (error instanceof ZodError) {
+      logError(error);
+      throw new Error("An unexpected error occurred.");
     }
-    throw new Error("An unexpected error occurred while fetching projects.");
+
+    throw error;
+  }
+};
+
+export const getSessionInfo = async () => {
+  try {
+    const { data } = await apiClient.get("/api/users/me");
+    sessionInfoResponseSchema.parse(data);
+    return data.payload;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      logError(error);
+      throw new Error("An unexpected error occurred.");
+    }
+
+    throw error;
   }
 };

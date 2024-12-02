@@ -4,10 +4,7 @@ import axios, {
   AxiosResponse,
   AxiosError,
 } from "axios";
-
-interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
-  _retry?: boolean;
-}
+import { logError, normalizeError } from "../helpers";
 
 const apiClient: AxiosInstance = axios.create({
   withCredentials: true,
@@ -22,11 +19,12 @@ const refreshClient: AxiosInstance = axios.create({
 
 // Request interceptor to set headers for API requests
 apiClient.interceptors.request.use(
-  (config: CustomAxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error: AxiosError) => {
+    logError(error);
     return Promise.reject(error);
   },
 );
@@ -38,32 +36,39 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     // Handle token refresh if unauthorized (401 error)
-    if (
-      error.response?.status === 401 &&
-      originalRequest &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
+    if (error.response?.status === 401 && originalRequest) {
+      // Skip token refresh
+      if (originalRequest.skipRefresh) {
+        logError(error);
+        return Promise.reject(normalizeError(error));
+      }
 
-      try {
-        const { data } = await refreshClient.post("/api/auth/refresh");
-        const newAccessToken = data.payload;
+      if (!originalRequest.retry) {
+        originalRequest.retry = true;
 
-        // Update the Authorization header for future requests
-        apiClient.defaults.headers.common["Authorization"] =
-          `Bearer ${newAccessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        try {
+          const { data } = await refreshClient.post("/api/auth/refresh");
+          const newAccessToken = data.payload;
 
-        // Retry the original request with the new token
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        // Remove the Authorization header if refresh fails
-        delete apiClient.defaults.headers.common["Authorization"];
-        return Promise.reject(refreshError);
+          // Update the Authorization header for future requests
+          apiClient.defaults.headers.common["Authorization"] =
+            `Bearer ${newAccessToken}`;
+          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          sessionStorage.setItem("access_token", newAccessToken);
+
+          // Retry the original request with the new token
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          logError(refreshError);
+          // Remove the Authorization header if refresh fails
+          delete apiClient.defaults.headers.common["Authorization"];
+          return Promise.reject(normalizeError(refreshError));
+        }
       }
     }
 
-    return Promise.reject(error);
+    logError(error);
+    return Promise.reject(normalizeError(error));
   },
 );
 

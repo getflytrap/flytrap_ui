@@ -1,4 +1,4 @@
-import { login, logout, checkAuthStatus } from "./auth/auth";
+import { login, logout } from "./auth/auth";
 import {
   getAllProjects,
   createProject,
@@ -11,6 +11,7 @@ import {
   deleteAccount,
   updatePassword,
   getProjectsForUser,
+  getSessionInfo,
 } from "./users/users";
 import {
   addUserToProject,
@@ -31,7 +32,6 @@ import {
 export {
   login,
   logout,
-  checkAuthStatus,
   getAllProjects,
   createProject,
   deleteProject,
@@ -52,5 +52,6 @@ export {
   deleteAccount,
   updatePassword,
   getProjectsForUser,
+  getSessionInfo,
   getDailyCounts,
 };

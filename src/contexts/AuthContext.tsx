@@ -1,7 +1,9 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { logout as logoutService, checkAuthStatus } from "../services";
-import { useWebSocket } from "../hooks/useWebSocket";
+import { logout as logoutService, getSessionInfo } from "../services";
+// import { useWebSocket } from "../hooks/useWebSocket";
+import { connectSocket, disconnectSocket } from "../helpers/socket";
 
 /**
  * AuthContextType defines the shape of the authentication context,
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [name, setName] = useState<string | null>(null);
   const [isRoot, setIsRoot] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
   const toast = useToast();
 
   /**
@@ -53,13 +56,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   useEffect(() => {
     const checkSession = async () => {
+      const { pathname } = location;
       try {
-        const data = await checkAuthStatus();
+        const data = await getSessionInfo();
         if (data) {
-          setUserUuid(data.userUuid);
-          setName(`${data.firstName} ${data.lastName}`);
-          setIsRoot(data.isRoot);
+          setUserUuid(data.uuid);
+          setName(`${data.first_name} ${data.last_name}`);
+          setIsRoot(data.is_root);
           setIsLoggedIn(true);
+
+          const accessToken = sessionStorage.getItem("access_token");
+          if (accessToken) {
+            connectSocket(accessToken, toast);
+          }
         } else {
           setIsLoggedIn(false);
         }
@@ -69,15 +78,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";
 
-        toast({
-          title: "Session Error",
-          description: errorMessage,
-          status: "error",
-          duration: 3000,
-          position: "bottom-right",
-          variant: "left-accent",
-          isClosable: true,
-        });
+        if (
+          errorMessage !== "Authentication required. Please log in." &&
+          pathname !== "/login" &&
+          pathname !== "/"
+        ) {
+          toast({
+            title: "Session Error",
+            description: errorMessage,
+            status: "error",
+            duration: 3000,
+            position: "bottom-right",
+            variant: "left-accent",
+            isClosable: true,
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -100,6 +115,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setName(`${firstName} ${lastName}`);
     setIsRoot(isRoot);
     setIsLoggedIn(true);
+
+    const accessToken = sessionStorage.getItem("access_token");
+    if (accessToken) {
+      connectSocket(accessToken, toast);
+    }
 
     toast({
       title: "Successful Login",
@@ -145,13 +165,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsRoot(false);
       setIsLoggedIn(false);
       sessionStorage.removeItem("access_token");
+      disconnectSocket();
     }
   };
-
-  /**
-   * Initializes the WebSocket connection based on the logged-in state.
-   */
-  useWebSocket(isLoggedIn);
 
   return (
     <AuthContext.Provider
