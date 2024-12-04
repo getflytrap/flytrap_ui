@@ -4,7 +4,7 @@ import { z } from "zod";
 export const loginResponseSchema = z.object({
   payload: z.object({
     user: z.object({
-      user_uuid: z.string(),
+      uuid: z.string(),
       first_name: z.string(),
       last_name: z.string(),
       is_root: z.boolean(),

@@ -37,7 +37,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await loginService(email, password);
-      login(data.user_uuid, data.first_name, data.last_name, data.is_root);
+      login(data.uuid, data.first_name, data.last_name, data.is_root);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
