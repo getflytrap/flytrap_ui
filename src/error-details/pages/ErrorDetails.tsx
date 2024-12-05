@@ -232,7 +232,7 @@ const ErrorDetails = () => {
     return (
       <Center>
         <Text fontSize="2rem" p={8}>
-          No Error Data Avaialable
+          No Error Data Available
         </Text>
       </Center>
     );
