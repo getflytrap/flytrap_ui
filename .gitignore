@@ -6,3 +6,4 @@ dist/
 .git-coauthors.save
 .vite
 update_ui.sh
+.DS_Store
