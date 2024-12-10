@@ -7,6 +7,8 @@ This guide will walk you through setting up the Flytrap UI locally for developme
 
 To learn more about Flytrap, check out our [case study](https://getflytrap.github.io/).
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## 🛠️ Key Features
 - **User and Project Management:** Add and manage users and projects seamlessly.
 - **Error Insights and Stats:** View error details, including code context for stack frames, and analyze error trends per project.
