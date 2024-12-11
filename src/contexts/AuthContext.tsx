@@ -2,7 +2,6 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { logout as logoutService, getSessionInfo } from "../services";
-// import { useWebSocket } from "../hooks/useWebSocket";
 import { connectSocket, disconnectSocket } from "../helpers/socket";
 
 /**
