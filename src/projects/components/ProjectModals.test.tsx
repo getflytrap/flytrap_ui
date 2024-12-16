@@ -2,20 +2,9 @@ import { render, screen } from "@testing-library/react";
 import ProjectModals from "./ProjectModals";
 import { describe, it, vi } from "vitest";
 import { ChakraProvider } from "@chakra-ui/react";
-import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import { AuthProvider } from "../../contexts/AuthContext";
 import { ProjectsProvider } from "../../contexts/ProjectsContext";
-import { useNavigate } from "react-router-dom";
-
-const mockProject = {
-  uuid: "123",
-  name: "Project 1",
-  issue_count: 5,
-  platform: "Flask",
-  api_key: "123",
-};
 
 function renderWithAllWrappers(component: JSX.Element) {
   render(
