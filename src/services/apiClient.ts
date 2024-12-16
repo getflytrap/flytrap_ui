@@ -26,7 +26,7 @@ apiClient.interceptors.request.use(
   (error: AxiosError) => {
     logError(error);
     return Promise.reject(error);
-  },
+  }
 );
 
 // Response interceptor to handle errors and retry the request if unauthorized
@@ -69,7 +69,7 @@ apiClient.interceptors.response.use(
 
     logError(error);
     return Promise.reject(normalizeError(error));
-  },
+  }
 );
 
 export default apiClient;
