@@ -1,22 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import ProjectModals from "./ProjectModals";
-import { describe, it, vi } from "vitest";
+import { describe, it } from "vitest";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../../contexts/AuthContext";
 import { ProjectsProvider } from "../../contexts/ProjectsContext";
-
-function renderWithAllWrappers(component: JSX.Element) {
-  render(
-    <ChakraProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <ProjectsProvider>{component}</ProjectsProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </ChakraProvider>
-  );
-}
+import { renderWithAllWrappers } from "../../shared/testUtils";
 
 describe("ProjectModals component", () => {
   it("New project modal renders properly", () => {

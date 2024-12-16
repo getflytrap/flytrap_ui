@@ -1,13 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import ProjectCard from "./ProjectCard";
 import { describe, it, vi } from "vitest";
-import { ChakraProvider } from "@chakra-ui/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { AuthProvider } from "../../contexts/AuthContext";
-import { ProjectsProvider } from "../../contexts/ProjectsContext";
-import { useNavigate } from "react-router-dom";
+
+import { renderWithAllWrappers } from "../../shared/testUtils";
 
 vi.mock("../../hooks/useAuth", () => ({
   useAuth: vi.fn(),
@@ -42,18 +39,6 @@ vi.mock("react-chartjs-2", () => ({
 
 const mockOnEditOpen = vi.fn();
 const mockOnDeleteOpen = vi.fn();
-
-function renderWithAllWrappers(component: JSX.Element) {
-  render(
-    <ChakraProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <ProjectsProvider>{component}</ProjectsProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </ChakraProvider>
-  );
-}
 
 describe("ProjectCard component", () => {
   it("project card renders properly", () => {

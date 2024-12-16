@@ -1,14 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import Projects from "./Projects";
 import { vi } from "vitest";
 import { act } from "@testing-library/react";
-import { ChakraProvider } from "@chakra-ui/react";
 import userEvent from "@testing-library/user-event";
 import { useProjects } from "../../hooks/useProjects";
 import { useAuth } from "../../hooks/useAuth";
-import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "../../contexts/AuthContext";
-import { ProjectsProvider } from "../../contexts/ProjectsContext";
+import { renderWithAllWrappers } from "../../shared/testUtils";
 
 const useProjectsMocked = vi.mocked(useProjects, true);
 const useAuthMocked = vi.mocked(useAuth, true);
@@ -26,18 +23,6 @@ vi.mock("react-chartjs-2", () => ({
   Bar: () => <div>Mocked Bar Chart</div>,
   Line: () => <div>Mocked Line Chart</div>,
 }));
-
-function renderWithAllWrappers(component: JSX.Element) {
-  render(
-    <ChakraProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <ProjectsProvider>{component}</ProjectsProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </ChakraProvider>
-  );
-}
 
 describe("Projects Component", () => {
   it("renders the loading spinner when data is loading", async () => {
